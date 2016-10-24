@@ -26,5 +26,24 @@ namespace JoinUs
         {
             this.InitializeComponent();
         }
+        private void HamburgerButton_Click(object sender, RoutedEventArgs e)
+        {
+            AccueilSplitView.IsPaneOpen = !AccueilSplitView.IsPaneOpen;
+        }
+
+        private void CreateEventButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void SearchButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void ProfileButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+
     }
 }
