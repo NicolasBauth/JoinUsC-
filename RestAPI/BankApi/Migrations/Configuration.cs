@@ -14,6 +14,7 @@ namespace JoinUsAPI.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
+            AutomaticMigrationDataLossAllowed = true;
             ContextKey = "JoinUsAPI.Models.ApplicationDbContext";
         }
         
