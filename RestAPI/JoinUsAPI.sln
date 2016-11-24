@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model.Tests", "Model.Tests\Model.Tests.csproj", "{DD27AC6E-C28B-4B93-A092-A7CD798D5FCB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JoinUsAPI", "BankApi\JoinUsAPI.csproj", "{8A56AC5B-1186-4979-9956-B0FAC8E1F7DC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JoinUsAPI", "JoinUsAPI\JoinUsAPI.csproj", "{8A56AC5B-1186-4979-9956-B0FAC8E1F7DC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
