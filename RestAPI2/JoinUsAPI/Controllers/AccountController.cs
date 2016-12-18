@@ -91,6 +91,10 @@ namespace JoinUsAPI.Controllers
         [ResponseType(typeof(UserReturnModel))]
         public async Task<IHttpActionResult> Login(LoginBindingModel model)
         {
+            //Retrouver l'utilisateur courant (à convertir en un modèle à renvoyer)
+            //faire une méthode de getcurrentUser
+            //UserManager.FindById(User.Identity.GetUserId())
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
