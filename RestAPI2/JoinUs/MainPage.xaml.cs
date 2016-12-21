@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JoinUs.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -27,7 +28,12 @@ namespace JoinUs
             this.InitializeComponent();
             var loader = new Windows.ApplicationModel.Resources.ResourceLoader();
         }
-        
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            ((MainPageViewModel)DataContext).OnNavigatedTo(e);
+        }
+
 
 
     }

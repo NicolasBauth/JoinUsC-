@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Views;
+using JoinUs.AppToastCenter;
 using JoinUs.DAO;
 using JoinUs.Model;
 using System;
@@ -11,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.UI.Xaml.Navigation;
 
 namespace JoinUs.ViewModel
 {
@@ -26,6 +28,19 @@ namespace JoinUs.ViewModel
         private string _tagsText;
         private ICommand _createCommand;
         private INavigationService _navigationService;
+        private User _currentUser;
+
+        public void OnNavigatedTo( NavigationEventArgs e)
+        {
+            _currentUser = (User)e.Parameter;
+            List<Category> userInterests = (List<Category>)_currentUser.Interests;
+            List<CategoriesCheckBoxListViewModel> categories = new List<CategoriesCheckBoxListViewModel>();
+            foreach (var category in userInterests)
+            {
+                categories.Add(new CategoriesCheckBoxListViewModel(category.Name));
+            }
+            Interests = new ObservableCollection<CategoriesCheckBoxListViewModel>(categories);
+        }
         
         public string NameText
         {
@@ -120,14 +135,7 @@ namespace JoinUs.ViewModel
         }
         public CreateEventPageViewModel(INavigationService navigationService)
         {
-            User currentUser = UserDAO.GetCurrentUser();
-            List<Category> userInterests = (List<Category>)currentUser.Interests;
-            List<CategoriesCheckBoxListViewModel> categories = new List<CategoriesCheckBoxListViewModel>();
-            foreach (var category in userInterests)
-            {
-                categories.Add(new CategoriesCheckBoxListViewModel(category.Name));
-            }
-            Interests = new ObservableCollection<CategoriesCheckBoxListViewModel>(categories);
+            
             _navigationService = navigationService;
         }
 
@@ -179,7 +187,12 @@ namespace JoinUs.ViewModel
                 dateAndTimeOfEvent = dateOfEvent.Add(Time);
                 eventToCreate.Date = dateAndTimeOfEvent;
 
-                _navigationService.NavigateTo("MainPage");
+                _navigationService.NavigateTo("MainPage",_currentUser);
+                ToastCenter.InformativeNotify("Evènement créé!", "Votre évènement a été créé avec succès!");
+            }
+            else
+            {
+                ToastCenter.InformativeNotify("Mauvais formulaire", "Des champs obligatoires ne sont pas remplis. Seuls les tags, le lien facebook et les catégories sont optionnels.");
             }
 
         }
@@ -252,17 +265,17 @@ namespace JoinUs.ViewModel
 
         public void GoToProfile()
         {
-            _navigationService.NavigateTo("ProfilePage");
+            _navigationService.NavigateTo("ProfilePage",_currentUser);
         }
 
         public void GoToSearchEvent()
         {
-            _navigationService.NavigateTo("SearchEventPage");
+            _navigationService.NavigateTo("SearchEventPage",_currentUser);
         }
 
         public void GoToCreateEvent()
         {
-            _navigationService.NavigateTo("CreateEventPage");
+            _navigationService.NavigateTo("CreateEventPage",_currentUser);
         }
 
         public void CloseOpenPane()

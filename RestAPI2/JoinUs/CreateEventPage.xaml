@@ -65,7 +65,7 @@
                     <Border Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Background="SkyBlue"></Border>
                     <Border Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" Background="Honeydew"></Border>
                     <Border Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2" Background="SkyBlue"></Border>
-                    <TextBlock  Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Name="title" x:Uid="CreateAnEvent"  FontSize="40" HorizontalAlignment="Center" />
+                    <TextBlock  Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Name="title" x:Uid="CreateAnEvent"  FontSize="40" HorizontalAlignment="Center" Foreground="Gold"/>
                     <TextBox FontFamily="Impact" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="150" MinHeight="25" Grid.Column="1" Grid.Row="1" Name="nameInput" Text="{Binding NameText, Mode=TwoWay}" />
                     <TextBlock  Grid.Row="1" Grid.Column="0" Name="textNom" Text="Nom"
                    FontFamily="Segoe UI Light Italic"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -103,7 +103,7 @@
                     <TextBox FontFamily="Impact" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="150" MinHeight="25" Grid.Column="1" Grid.Row="8" Name="TagsInput" Text="{Binding TagsText, Mode=TwoWay}"/>
 
                     <TextBlock Grid.Row="8" Grid.Column="0" Name="textTags" FontFamily="Segoe UI Light Italic" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Tags" />
-                    <Button Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" FontFamily="Segoe UI Light Italic" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Créer l'event" FontSize="23" Background="SkyBlue" Command="{Binding CreateCommand}" />
+                    <Button Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" FontFamily="Segoe UI Light Italic" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Créer l'event" FontSize="23" Background="SteelBlue" Foreground="Gold" Command="{Binding CreateCommand}" />
 
                 </Grid>
             </ScrollViewer>

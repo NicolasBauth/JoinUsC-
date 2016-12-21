@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Views;
+using JoinUs.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.UI.Xaml.Navigation;
 
 namespace JoinUs.ViewModel
 {
@@ -19,6 +21,12 @@ namespace JoinUs.ViewModel
         private ICommand _goToCreateEventCommand;
         private ICommand _closeOpenPaneCommand;
         private bool _isPaneOpen;
+        private User _currentUser;
+
+        public void OnNavigatedTo(NavigationEventArgs e)
+        {
+            _currentUser = (User)e.Parameter;
+        }
 
         public MainPageViewModel(INavigationService navigationService)
         {
@@ -86,17 +94,17 @@ namespace JoinUs.ViewModel
 
         public void GoToProfile()
         {
-            _navigationService.NavigateTo("ProfilePage");
+            _navigationService.NavigateTo("ProfilePage",_currentUser);
         }
 
         public void GoToSearchEvent()
         {
-            _navigationService.NavigateTo("SearchEventPage");
+            _navigationService.NavigateTo("SearchEventPage",_currentUser);
         }
 
         public void GoToCreateEvent()
         {
-            _navigationService.NavigateTo("CreateEventPage");
+            _navigationService.NavigateTo("CreateEventPage",_currentUser);
         }
 
         public void CloseOpenPane()

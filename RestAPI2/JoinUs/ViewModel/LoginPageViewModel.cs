@@ -73,8 +73,10 @@ namespace JoinUs.ViewModel
             {
                 if (UserDAO.AuthenticateUser(Login, Password))
                 {
-                    User CurrentUser = UserDAO.GetUserByUserName(Login);
-                    _navigationService.NavigateTo("MainPage", CurrentUser);
+                    User currentUser = UserDAO.GetUserByUserName(Login);
+                    currentUser.Interests = CategoryDAO.GetInterestsOfUserByUserName(currentUser.UserName);
+                    _navigationService.NavigateTo("MainPage", currentUser);
+
                 }
                 else
                 {

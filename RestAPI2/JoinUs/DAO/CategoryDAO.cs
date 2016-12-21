@@ -31,5 +31,10 @@ namespace JoinUs.DAO
                 new Category("Culture","Assets/Culture.jpg")
             };
         }
+
+        public static void UpdateUserInterests(User userToUpdate, IEnumerable<Category> interestsList)
+        {
+            userToUpdate.Interests = interestsList;
+        }
     }
 }

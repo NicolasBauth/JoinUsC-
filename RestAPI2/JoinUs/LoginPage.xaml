@@ -31,9 +31,9 @@
         
             <PasswordBox BorderBrush="LightGray" Password="{Binding Password,Mode=TwoWay}" Grid.Row="2" Grid.Column="1" MinHeight="30" MinWidth="120" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
-            <Button Content="Joy'n Us!" Background="SteelBlue"  Command="{Binding LoginCommand}" Grid.Row="3" Grid.Column="0" FontFamily="Impact" FontSize="25" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Button Content="Joy'n Us!" Background="SteelBlue"  Command="{Binding LoginCommand}" Grid.Row="3" Grid.Column="0" FontFamily="Impact" FontSize="25" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Gold"/>
 
-        <Button Content="Créer Un compte" Background="SteelBlue"   Command="{Binding RegisterCommand}" Grid.Row="3" Grid.Column="1" FontFamily="Impact" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Button Content="Créer Un compte" Background="SteelBlue"   Command="{Binding RegisterCommand}" Grid.Row="3" Grid.Column="1" FontFamily="Impact" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Gold"/>
 
     </Grid>
     

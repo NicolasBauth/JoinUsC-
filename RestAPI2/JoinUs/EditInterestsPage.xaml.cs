@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JoinUs.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -25,6 +26,10 @@ namespace JoinUs
         public EditInterestsPage()
         {
             this.InitializeComponent();
+        }
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            ((EditInterestsPageViewModel)DataContext).OnNavigatedTo(e);
         }
     }
 }

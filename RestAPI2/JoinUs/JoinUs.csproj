@@ -126,6 +126,9 @@
     <Compile Include="Model\Event.cs" />
     <Compile Include="Model\Tag.cs" />
     <Compile Include="Model\User.cs" />
+    <Compile Include="ProfileFromOutsidePage.xaml.cs">
+      <DependentUpon>ProfileFromOutsidePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ProfilePage.xaml.cs">
       <DependentUpon>ProfilePage.xaml</DependentUpon>
     </Compile>
@@ -140,10 +143,14 @@
     <Compile Include="ViewModel\CreateEventPageViewModel.cs" />
     <Compile Include="ViewModel\EditInterestsPageViewModel.cs" />
     <Compile Include="ViewModel\EventDescriptionPageViewModel.cs" />
+    <Compile Include="ViewModel\EventDescriptionPayload.cs" />
     <Compile Include="ViewModel\EventListPageViewModel.cs" />
+    <Compile Include="ViewModel\EventListPayload.cs" />
     <Compile Include="ViewModel\LocateEventsPageViewModel.cs" />
     <Compile Include="ViewModel\LoginPageViewModel.cs" />
     <Compile Include="ViewModel\MainPageViewModel.cs" />
+    <Compile Include="ViewModel\ProfileFromOutsidePageViewModel.cs" />
+    <Compile Include="ViewModel\ProfileFromOutsidePayload.cs" />
     <Compile Include="ViewModel\ProfilePageViewModel.cs" />
     <Compile Include="ViewModel\RegisterPageViewModel.cs" />
     <Compile Include="ViewModel\SearchPageViewModel.cs" />
@@ -162,6 +169,8 @@
     <Content Include="Assets\Joynus.png" />
     <Content Include="Assets\Party.jpg" />
     <Content Include="Assets\PhotoProfilNicolas.jpg" />
+    <Content Include="Assets\userIcon.jpg" />
+    <Content Include="Assets\usersIcon.jpg" />
     <Content Include="Assets\VideoGame.jpg" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
@@ -204,6 +213,10 @@
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ProfileFromOutsidePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ProfilePage.xaml">
       <SubType>Designer</SubType>

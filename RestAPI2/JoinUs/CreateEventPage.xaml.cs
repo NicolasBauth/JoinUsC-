@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JoinUs.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -28,6 +29,11 @@ namespace JoinUs
 
         }
 
-        
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            ((CreateEventPageViewModel)DataContext).OnNavigatedTo(e);
+        }
+
+
     }
 }

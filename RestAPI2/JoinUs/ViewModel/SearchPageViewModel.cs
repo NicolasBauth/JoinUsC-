@@ -1,13 +1,17 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Views;
+using JoinUs.DAO;
+using JoinUs.Model;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.UI.Xaml.Navigation;
 
 namespace JoinUs.ViewModel
 {
@@ -23,6 +27,107 @@ namespace JoinUs.ViewModel
         private ICommand _goToSearchEventCommand;
         private ICommand _goToCreateEventCommand;
         private ICommand _closeOpenPaneCommand;
+        private ICommand _goToFoundEventListCommand;
+        private ObservableCollection<CategoriesCheckBoxListViewModel> _categories;
+        private User _currentUser;
+        private int _searchRadius;
+        private string _city;
+        private string _tags;
+
+        public void OnNavigatedTo(NavigationEventArgs e)
+        {
+            _currentUser = (User)e.Parameter;
+            
+            List<Category> userInterests = (List<Category>)_currentUser.Interests;
+            List<CategoriesCheckBoxListViewModel> categories = new List<CategoriesCheckBoxListViewModel>();
+            foreach (var category in userInterests)
+            {
+                categories.Add(new CategoriesCheckBoxListViewModel(category.Name));
+            }
+            Categories = new ObservableCollection<CategoriesCheckBoxListViewModel>(categories);
+        }
+
+        public ObservableCollection<CategoriesCheckBoxListViewModel> Categories
+        {
+            get { return _categories; }
+            set
+            {
+                _categories = value;
+                RaisePropertyChanged("Categories");
+            }
+        }
+
+        public int SearchRadius
+        {
+            get
+            {
+                return _searchRadius;
+            }
+            set
+            {
+                _searchRadius = value;
+                RaisePropertyChanged("SearchRadius");
+            }
+        }
+
+        public string City
+        {
+            get
+            {
+                return _city;
+            }
+            set
+            {
+                _city = value;
+                RaisePropertyChanged("City");
+            }
+        }
+
+        public string Tags
+        {
+            get
+            {
+                return _tags;
+            }
+            set
+            {
+                _tags = value;
+                RaisePropertyChanged("Tags");
+            }
+        }
+
+
+        public ICommand GoToFoundEventListCommand
+        {
+            get
+            {
+                if(_goToFoundEventListCommand == null)
+                {
+                    _goToFoundEventListCommand = new RelayCommand(() => GoToFoundEventList());
+                }
+                return _goToFoundEventListCommand;
+            }
+        }
+
+        public void GoToFoundEventList()
+        {
+            List<string> categoriesNameToSearch = new List<string>();
+            foreach(var category in Categories)
+            {
+                if(category.IsChecked)
+                {
+                    categoriesNameToSearch.Add(category.CategoryName);
+                }
+            }
+            List<Category> categoriesToSearch = new List<Category>();
+            foreach(var categoryName in categoriesNameToSearch)
+            {
+                categoriesToSearch.Add(new Category(categoryName));
+            }
+            List<Event> matchingEvents = EventDAO.GetEventsAround(SearchRadius, categoriesToSearch);
+            EventListPayload payloadToSend = new EventListPayload(_currentUser, matchingEvents);
+            _navigationService.NavigateTo("EventListPage", payloadToSend);
+        }
 
         private bool _isPaneOpen;
 
@@ -88,17 +193,17 @@ namespace JoinUs.ViewModel
 
         public void GoToProfile()
         {
-            _navigationService.NavigateTo("ProfilePage");
+            _navigationService.NavigateTo("ProfilePage",_currentUser);
         }
 
         public void GoToSearchEvent()
         {
-            _navigationService.NavigateTo("SearchEventPage");
+            _navigationService.NavigateTo("SearchEventPage",_currentUser);
         }
 
         public void GoToCreateEvent()
         {
-            _navigationService.NavigateTo("CreateEventPage");
+            _navigationService.NavigateTo("CreateEventPage",_currentUser);
         }
 
         public void CloseOpenPane()

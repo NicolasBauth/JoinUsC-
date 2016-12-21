@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Views;
+using JoinUs.AppToastCenter;
 using JoinUs.DAO;
 using JoinUs.Model;
 using System;
@@ -11,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.UI.Xaml.Navigation;
 
 namespace JoinUs.ViewModel
 {
@@ -21,6 +23,64 @@ namespace JoinUs.ViewModel
         private string _presentationString;
         private User _owner;
         private INavigationService _navigationService;
+        private ICommand _goToEditInterestsCommand;
+        private ICommand _browseEventsCommand;
+
+        public ICommand BrowseEventsCommand
+        {
+            get
+            {
+                if(_browseEventsCommand == null)
+                {
+                    _browseEventsCommand = new RelayCommand(() => BrowseEvents());
+                }
+                return _browseEventsCommand;
+            }
+        }
+
+        public void BrowseEvents()
+        {
+            if (EventDAO.GetAllEventsOfUser(Owner) != null)
+            {
+                if (EventDAO.GetAllEventsOfUser(Owner).Count != 0)
+                {
+                    List<Event> eventsToDisplay = EventDAO.GetAllEventsOfUser(Owner);
+                    EventListPayload payloadToSend = new EventListPayload(Owner, eventsToDisplay);
+                    _navigationService.NavigateTo("EventListPage", payloadToSend);
+                }
+                else
+                {
+                    ToastCenter.InformativeNotify("Pas d'évènements", "L'utilisateur n'a aucun évènement à afficher");
+                }
+            }
+            
+        }
+
+        public ICommand GoToEditInterestsCommand
+        {
+            get
+            {
+                if(_goToEditInterestsCommand == null)
+                {
+                    _goToEditInterestsCommand = new RelayCommand(() => GoToEditInterests());
+                }
+                return _goToEditInterestsCommand;
+            }
+        }
+
+        public void GoToEditInterests()
+        {
+            _navigationService.NavigateTo("EditInterestsPage", _owner);
+        }
+
+
+        public void OnNavigatedTo(NavigationEventArgs e)
+        {
+            Owner = (User)e.Parameter;
+            Categories = new ObservableCollection<Category>(Owner.Interests);
+            PresentationString = Owner.FirstName + " " + Owner.LastName + "," + Owner.Age + " ans";
+            ProfileImagePath = Owner.ProfileImagePath;
+        }
         public ObservableCollection<Category> Categories
         {
             get { return _categories; }
@@ -58,11 +118,7 @@ namespace JoinUs.ViewModel
         
 
         public ProfilePageViewModel(INavigationService navigationService)
-        {
-            Owner = UserDAO.GetCurrentUser();
-            Categories = new ObservableCollection<Category>(CategoryDAO.GetAllCategories());
-            PresentationString = Owner.FirstName + " " + Owner.LastName + "," + Owner.Age + " ans";
-            ProfileImagePath = Owner.ProfileImagePath;
+        { 
             _navigationService = navigationService;
         }
 
@@ -134,17 +190,17 @@ namespace JoinUs.ViewModel
 
         public void GoToProfile()
         {
-            _navigationService.NavigateTo("ProfilePage");
+            _navigationService.NavigateTo("ProfilePage",Owner);
         }
 
         public void GoToSearchEvent()
         {
-            _navigationService.NavigateTo("SearchEventPage");
+            _navigationService.NavigateTo("SearchEventPage",Owner);
         }
 
         public void GoToCreateEvent()
         {
-            _navigationService.NavigateTo("CreateEventPage");
+            _navigationService.NavigateTo("CreateEventPage",Owner);
         }
 
         public void CloseOpenPane()

@@ -35,9 +35,45 @@
             </StackPanel>
         </SplitView.Pane>
         <SplitView.Content>
-            <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+            <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Visible">
+                <Grid Background="SteelBlue">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" MinHeight="80" MaxHeight="90"/>
+                        <RowDefinition Height="Auto" MinHeight="100"/>
+                        <RowDefinition Height="Auto" MinHeight="60" MaxHeight="80"/>
+                    </Grid.RowDefinitions>
+                    <Border Background="SteelBlue" Grid.Row="0"/>
+                    <TextBlock Foreground="Gold" Text="Listing d'évènements" FontFamily="Impact" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0"/>
+                
+                    <ListView ItemsSource="{Binding EventsList, Mode=TwoWay}" MinWidth="360" MaxWidth="360" Grid.Row="1" SelectedItem="{Binding SelectedEvent,Mode=TwoWay}">
+                    
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderThickness="10" BorderBrush="White">
+                                    <Grid Background="Gold">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*" MinHeight="40" MaxHeight="50"/>
+                                            <RowDefinition Height="*" MinHeight="40" MaxHeight="50"/>
+                                            <RowDefinition Height="*" MinHeight="40" MaxHeight="50"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="4*" MinWidth="290"/>
+                                            <ColumnDefinition Width="*" MinWidth="70"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="{Binding Title}" FontFamily="Impact" FontSize="14" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" MinHeight="35" MaxHeight="45"/>
+                                        <TextBlock Text="{Binding Adress}" FontFamily="Impact" FontSize="14" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" MinHeight="35" MaxHeight="45"/>
+                                        <TextBlock Text="{Binding Date}" FontFamily="Impact" FontSize="14" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" MinHeight="35" MaxHeight="45"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    
+                </ListView>
+           
+            <Button Grid.Row="2" Background="Gold" Foreground="Black" Content="Details de l'évènement" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="18" FontFamily="Impact" Command="{Binding GoToDescriptionOfEventCommand}"/>
+                </Grid>
+            </ScrollViewer>
 
-            </Grid>
         </SplitView.Content>
     </SplitView>
     

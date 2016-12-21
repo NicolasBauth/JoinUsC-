@@ -35,9 +35,53 @@
             </StackPanel>
         </SplitView.Pane>
         <SplitView.Content>
-            <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+            <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Visible">
+                <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition MinHeight="80" MaxHeight="80" Height="2*"/>
+                        <RowDefinition Height="*" MinHeight="40" MaxHeight="50"/>
+                        <RowDefinition Height="*" MinHeight="40" MaxHeight="50"/>
+                        <RowDefinition Height="2*" MinHeight="40" MaxHeight="50"/>
+                        <RowDefinition Height="Auto" MinHeight="60"/>
+                        <RowDefinition Height="2*" MinHeight="40"/>
+                        <RowDefinition Height="*" MinHeight="40"/>
+                        <RowDefinition Height="*" MinHeight="40"/>
+                        <RowDefinition Height="*" MinHeight="40"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" MinWidth="70"/>
+                        <ColumnDefinition Width="*" MinWidth="70"/>
+                        <ColumnDefinition Width="*" MinWidth="70"/>
+                        <ColumnDefinition Width="*" MinWidth="70"/>
+                        <ColumnDefinition Width="*" MinWidth="70"/>
+                    </Grid.ColumnDefinitions>
+                    <Border Background="SteelBlue" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5"/>
+                    <TextBlock Text="{Binding Title}" Foreground="Gold" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Impact" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5"/>
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="5">
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="17" FontFamily="Impact" Text="{Binding Adress}"/>
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="17" FontFamily="Impact" Text="{Binding EventDate}"/>
+                    </StackPanel>
+                    <TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="5" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding Description}" FontSize="15" FontFamily="Impact" TextWrapping="Wrap" MaxWidth="300"/>
+                    <RelativePanel MaxWidth="330" MaxHeight="150" Grid.Column="0" Grid.ColumnSpan="5" HorizontalAlignment="Left" Grid.Row="5" VerticalAlignment="Center">
+                        <Image Source="{Binding FirstCategoryImagePath}" Stretch="Uniform" Grid.Column="0" Grid.Row="5" MaxHeight="100" MaxWidth="100" Name="CategoryImage"/>
+                        <TextBlock Text="{Binding TagsString}" TextWrapping="Wrap" FontFamily="Impact" FontSize="15" MaxWidth="230" Name="Tags" RelativePanel.RightOf="CategoryImage"/>
+                    </RelativePanel>
+                    <RelativePanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="5" MaxWidth="330" MaxHeight="150" HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <Image x:Name="AllParticipantsImage" Source="Assets/usersIcon.jpg" MinWidth ="90" MinHeight="90" MaxWidth="100" MaxHeight="100"/>
+                        <TextBlock x:Name="ParticipantCount" TextWrapping="Wrap" FontFamily="Impact" FontSize="15" MaxWidth="230" RelativePanel.RightOf="AllParticipantsImage" Text="{Binding NumberOfParticipantsString}"/>
+                    </RelativePanel>
+                    <RelativePanel Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="5" MaxWidth="330" MaxHeight="150" HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <Image x:Name="UserImage" Source="Assets/userIcon.jpg" MinWidth="90" MinHeight="90" MaxHeight="100" MaxWidth="100"/>
+                        <TextBlock x:Name="UserText" TextWrapping="Wrap" FontFamily="Impact" FontSize="15" MaxWidth="230" RelativePanel.RightOf="UserImage" Text="{Binding CreatorString}"/>
+                    </RelativePanel>
 
-            </Grid>
+                    <StackPanel Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="5" MaxWidth="330" MaxHeight="150" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Button Content="{Binding ParticipateButtonText}" HorizontalAlignment="Center" VerticalAlignment="Top" FontFamily="Impact" FontSize="18" Background="SteelBlue" Foreground="Gold" Command="{Binding ParticipateCommand}"/>
+                        <Button Content="Evènement Facebook" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Impact" FontSize="18" Background="SteelBlue" Foreground="Gold" Command="{Binding GoToFacebookCommand}" Margin="0,15,0,0"/>
+                        <Button Content="Profil du créateur" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontFamily="Impact" FontSize="18" Background="SteelBlue" Foreground="Gold" Command="{Binding GoToCreatorProfileCommand}" Margin="0,15,0,0"/>
+                    </StackPanel>
+                </Grid>
+            </ScrollViewer>
         </SplitView.Content>
     </SplitView>
     

@@ -1,8 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Views;
-using JoinUs.AppToastCenter;
-using JoinUs.DAO;
 using JoinUs.Model;
 using System;
 using System.Collections.Generic;
@@ -16,52 +14,64 @@ using Windows.UI.Xaml.Navigation;
 
 namespace JoinUs.ViewModel
 {
-    public class EditInterestsPageViewModel : ViewModelBase, INotifyPropertyChanged
+    public class ProfileFromOutsidePageViewModel: ViewModelBase, INotifyPropertyChanged
     {
-        private INavigationService _navigationService;
-        private ICommand _editInterestsCommand;
-        private ICommand _goBackCommand;
+        private string _profileImagePath;
+        private ObservableCollection<Category> _categories;
+        private string _presentationString;
+        private User _owner;
         private User _currentUser;
-        private List<Category> userInterests;
-        private List<GridCellModel> userInterestsToConvert;
-        private ObservableCollection<GridCellModel> _interestsList;
-        private List<Category> _chosenCategories;
+        private INavigationService _navigationService;
+        private ICommand _goBackCommand;
+        private ICommand _subscribeCommand;
+        
+
 
         public void OnNavigatedTo(NavigationEventArgs e)
         {
-            _currentUser = (User)e.Parameter;
-            userInterests = (List<Category>)CategoryDAO.GetAllCategories();
-            userInterestsToConvert = new List<GridCellModel>();
-            foreach (var interest in userInterests)
-            {
-                GridCellModel elementToAdd = new GridCellModel(interest);
-                userInterestsToConvert.Add(elementToAdd);
-            }
-            _interestsList = new ObservableCollection<GridCellModel>(userInterestsToConvert);
+            ProfileFromOutsidePayload payload = (ProfileFromOutsidePayload)e.Parameter;
+            Owner = payload.VisitedUser;
+            _currentUser = payload.CurrentUser;
+            Categories = new ObservableCollection<Category>(Owner.Interests);
+            PresentationString = Owner.FirstName + " " + Owner.LastName + "," + Owner.Age + " ans";
+            ProfileImagePath = Owner.ProfileImagePath;
         }
-
-        public ObservableCollection<GridCellModel> InterestsList
+        public ObservableCollection<Category> Categories
         {
-            get
-            {
-                return _interestsList;
-            }
+            get { return _categories; }
             set
             {
-                _interestsList = value;
-                RaisePropertyChanged("InterestsList");
+                _categories = value;
+                RaisePropertyChanged("Categories");
             }
         }
-        
-        public ICommand EditInterestsCommand
+        public string ProfileImagePath
         {
-            get
+            get { return _profileImagePath; }
+            set
             {
-                if(this._editInterestsCommand == null)
-                {
-                    this._editInterestsCommand = new RelayCommand(() => EditInterests());
-                }
-                return this._editInterestsCommand;
+                _profileImagePath = value;
+                RaisePropertyChanged("ProfileImagePath");
+            }
+        }
+
+        public string PresentationString
+        {
+            get { return _presentationString; }
+            set
+            {
+                _presentationString = value;
+                RaisePropertyChanged("PresentationString");
+            }
+        }
+
+        public User Owner
+        {
+            get { return _owner; }
+            set
+            {
+                _owner = value;
+                RaisePropertyChanged("Owner");
             }
         }
 
@@ -75,30 +85,32 @@ namespace JoinUs.ViewModel
                 }
                 return this._goBackCommand;
             }
+            
         }
 
         public void GoBack()
         {
-            _navigationService.NavigateTo("ProfilePage", _currentUser);
+            _navigationService.GoBack();
         }
 
-        public void EditInterests()
+        public ICommand SubscribeCommand
         {
-            _chosenCategories = new List<Category>();
-            foreach(var category in _interestsList)
+            get
             {
-                if(category.IsChecked)
+                if(this._subscribeCommand == null)
                 {
-                    _chosenCategories.Add(category.RepresentedCategory);
+                    this._subscribeCommand = new RelayCommand(() => Subscribe());
                 }
+                return this._subscribeCommand;
             }
-            CategoryDAO.UpdateUserInterests(_currentUser, _chosenCategories);
-            _navigationService.NavigateTo("ProfilePage",_currentUser);
-            ToastCenter.InformativeNotify("Intérêts édités", "Intérêts édités avec succès");
+        }
+        public void Subscribe()
+        {
+
         }
 
 
-        public EditInterestsPageViewModel(INavigationService navigationService)
+        public ProfileFromOutsidePageViewModel(INavigationService navigationService)
         {
             _navigationService = navigationService;
         }
@@ -107,10 +119,7 @@ namespace JoinUs.ViewModel
         private ICommand _goToSearchEventCommand;
         private ICommand _goToCreateEventCommand;
         private ICommand _closeOpenPaneCommand;
-        
         private bool _isPaneOpen;
-
-       
 
         public bool IsPaneOpen
         {
@@ -174,33 +183,22 @@ namespace JoinUs.ViewModel
 
         public void GoToProfile()
         {
-            _navigationService.NavigateTo("ProfilePage",_currentUser);
+            _navigationService.NavigateTo("ProfilePage", Owner);
         }
 
         public void GoToSearchEvent()
         {
-            _navigationService.NavigateTo("SearchEventPage",_currentUser);
+            _navigationService.NavigateTo("SearchEventPage", Owner);
         }
 
         public void GoToCreateEvent()
         {
-            _navigationService.NavigateTo("CreateEventPage",_currentUser);
+            _navigationService.NavigateTo("CreateEventPage", Owner);
         }
 
         public void CloseOpenPane()
         {
             IsPaneOpen = !IsPaneOpen;
-        }
-    }
-
-    public class GridCellModel
-    {
-        public Category RepresentedCategory { get; set; }
-        public bool IsChecked { get; set; }
-        public GridCellModel(Category representedCategory)
-        {
-            RepresentedCategory = representedCategory;
-            IsChecked = true;
         }
     }
 }

@@ -35,7 +35,7 @@
             <Border Background="White" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4"/>
             <Border Background="LightCyan" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="4"/>
             <Border Background="White" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="4"/>
-            <TextBlock FontSize="30" FontFamily="Segoe UI Light Italic" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" Text="Joy'n Us!" Grid.ColumnSpan="4"/>
+            <TextBlock FontSize="30" FontFamily="Segoe UI Light Italic" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" Text="Joy'n Us!" Grid.ColumnSpan="4" Foreground="Gold"/>
             <TextBlock FontFamily="Segoe UI Light Italic" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" Text="Prénom" FontSize="20"/>
             <TextBox HorizontalAlignment="Center" VerticalAlignment="Center" MinHeight="40" MinWidth="120" Grid.Column="1" Grid.ColumnSpan="3"  Grid.Row="1" Text="{Binding FirstName, Mode=TwoWay}"/>
             <TextBlock FontFamily="Segoe UI Light Italic" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" Text="Nom" FontSize="20"/>
@@ -50,8 +50,8 @@
             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" MinHeight="40" Grid.Column="0" Grid.Row="7" Text="Confirmez le Mot de passe" FontSize="20"/>
             <PasswordBox BorderBrush="LightGray" Password="{Binding Password,Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Center" MinHeight="40" MinWidth="120" Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="3"/>
             <PasswordBox BorderBrush="LightGray" Password="{Binding PasswordConfirmed, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Center" MinHeight="40" MinWidth="120" Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="3"/>
-            <Button Background="#FF30DABB" Content="Retour" Command="{Binding GoBackCommand}" Grid.Row="8" Grid.Column="0"  HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="80" MinHeight="30" FontSize="18"/>
-            <Button Background="#FF30DABB" Content="S'inscrire" Command="{Binding CommitCommand}" Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="80" MinHeight="30" FontSize="18"/>
+            <Button Background="SteelBlue" Foreground="Gold" Content="Retour" Command="{Binding GoBackCommand}" Grid.Row="8" Grid.Column="0"  HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="80" MinHeight="30" FontSize="18"/>
+            <Button Background="SteelBlue" Foreground ="Gold" Content="S'inscrire" Command="{Binding CommitCommand}" Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="80" MinHeight="30" FontSize="18"/>
             
         </Grid>
     </ScrollViewer>

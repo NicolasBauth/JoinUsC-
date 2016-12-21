@@ -47,24 +47,34 @@
                 <RowDefinition MinHeight="30" Height="2*"/>
                 <RowDefinition MinHeight="30" Height="2*"/>
                 <RowDefinition MinHeight="30" Height="2*"/>
-                <RowDefinition MinHeight="20" Height="*"/>
+                <RowDefinition MinHeight="40" Height="*"/>
                 <RowDefinition MinHeight="20" Height="Auto"/>
-            </Grid.RowDefinitions>
+                        <RowDefinition MinHeight="30" Height="2*"/>
+                    </Grid.RowDefinitions>
                     <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Background="SteelBlue"></Border>
                     <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Background="Honeydew"></Border>
                     <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Background="SkyBlue"></Border>
                     <Border Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Background="Honeydew"></Border>
                     <Border Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Background="SkyBlue"></Border>
-                    <Border Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Background="SkyBlue"></Border>
-            <TextBlock Name="title" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" FontFamily="Segoe UI Light Italic" Text="Recherche d'events" FontSize="40" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Border Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Background="Honeydew"></Border>
+                    <Border Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" Background="Honeydew"></Border>
+            <TextBlock Name="title" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" FontFamily="Segoe UI Light Italic" Text="Recherche d'events" FontSize="40" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Gold"/>
             <TextBlock Grid.Row="1" Grid.Column="0" FontFamily="Segoe UI Light Italic" HorizontalAlignment="Center" VerticalAlignment="Center" Name="textTag" Text="Tags"/>
-            <TextBox FontFamily="Impact" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Name="tagInput" MinWidth="175" MinHeight="25"/>
+            <TextBox FontFamily="Impact" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Name="tagInput" MinWidth="175" MinHeight="25" Text="{Binding Tags,Mode=TwoWay}"/>
             <TextBlock Grid.Row="2" Grid.Column="0" FontFamily="Segoe UI Light Italic" HorizontalAlignment="Center" VerticalAlignment="Center" Name="textVille" Text="Ville"/>
-            <TextBox FontFamily="Impact" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Name="townInput" MinWidth="175" MinHeight="25"/>
+            <TextBox FontFamily="Impact" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Name="townInput" MinWidth="175" MinHeight="25" Text="{Binding City,Mode=TwoWay}"/>
             <TextBlock Grid.Row="3" Grid.Column="0" FontFamily="Segoe UI Light Italic" HorizontalAlignment="Center" VerticalAlignment="Center" Name="textRayon" Text="Rayon"/>
-            <Slider Minimum="1" Maximum="30" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" MinWidth="140" VerticalAlignment="Center" Margin="20"/>
-            <TextBlock Grid.Row="4" Grid.Column="0" FontFamily="Segoe UI Light Italic" HorizontalAlignment="Center" VerticalAlignment="Center" Name="textCategorie" Text="Catégorie"/>
-        </Grid>
+            <Slider Minimum="1" Maximum="30" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" MinWidth="140" VerticalAlignment="Center" Margin="20" Value="{Binding SearchRadius,Mode=TwoWay}"/>
+            <TextBlock Grid.Row="4" Grid.Column="0" FontFamily="Segoe UI Light Italic" HorizontalAlignment="Center" VerticalAlignment="Center" Name="textCategorie" Text="Catégories"/>
+                    <ListView Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2" MaxWidth="180" ItemsSource="{Binding Categories, Mode=TwoWay}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}" Content="{Binding CategoryName}"/>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <Button Grid.Row="5" Grid.Column="1" Background="SteelBlue" Foreground="Gold" Content="Chercher!" Command="{Binding GoToFoundEventListCommand}" FontSize="15" FontFamily="Impact" HorizontalAlignment="Center" VerticalAlignment="Center" MinHeight="25" MaxHeight="30" MinWidth="50" MaxWidth="80" Margin="0,20,0,0"/>
+                </Grid>
     </ScrollViewer>
         </SplitView.Content>
     </SplitView>
