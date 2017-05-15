@@ -4,12 +4,7 @@ using GalaSoft.MvvmLight.Views;
 using JoinUs.AppToastCenter;
 using JoinUs.DAO;
 using JoinUs.Model;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace JoinUs.ViewModel
@@ -26,29 +21,31 @@ namespace JoinUs.ViewModel
         public string Password
         {
             get { return _password; }
-            set {        
-                    _password = value;
-                    RaisePropertyChanged("Password");
+            set
+            {
+                _password = value;
+                RaisePropertyChanged("Password");
             }
         }
         public string Login
         {
             get { return _login; }
-            set {
-                    _login = value;
-                    RaisePropertyChanged("Login");
-                    }
-                
+            set
+            {
+                _login = value;
+                RaisePropertyChanged("Login");
+            }
+
         }
 
         public LoginPageViewModel(INavigationService navigationService)
         {
             _navigationService = navigationService;
         }
-        
+
         public bool CanExecuteLoginCommand()
         {
-            if(Password!=null && Login!=null)
+            if (Password != null && Login != null)
             {
                 return true;
             }
@@ -59,7 +56,7 @@ namespace JoinUs.ViewModel
         {
             get
             {
-                if(this._loginCommand == null)
+                if (this._loginCommand == null)
                 {
                     this._loginCommand = new RelayCommand(() => CommitLogin());
                 }
@@ -97,7 +94,7 @@ namespace JoinUs.ViewModel
         {
             get
             {
-                if(this._registerCommand == null)
+                if (this._registerCommand == null)
                 {
                     this._registerCommand = new RelayCommand(() => Register());
                 }

@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Views;
+using JoinUs.AppToastCenter;
 using JoinUs.Model;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.Devices.Geolocation;
+using Windows.Devices.Geolocation.Geofencing;
 using Windows.UI.Xaml.Navigation;
 
 namespace JoinUs.ViewModel
@@ -35,6 +37,34 @@ namespace JoinUs.ViewModel
         public void OnNavigatedTo(NavigationEventArgs e)
         {
             _currentUser = (User)e.Parameter;
+            /*var accessStatus = await Geolocator.RequestAccessAsync();
+            switch (accessStatus)
+            {
+                case GeolocationAccessStatus.Allowed:
+                    geofences = GeofenceMonitor.Current.Geofences;
+
+                    FillRegisteredGeofenceListBoxWithExistingGeofences();
+                    FillEventListBoxWithExistingEvents();
+
+                    // Register for state change events.
+                    GeofenceMonitor.Current.GeofenceStateChanged += OnGeofenceStateChanged;
+                    GeofenceMonitor.Current.StatusChanged += OnGeofenceStatusChanged;
+                    break;
+
+                case GeolocationAccessStatus.Denied:
+                    ToastCenter.InformativeNotify("Refus de géolocalisation", "Vous avez refusé la géolocalistation. Vous ne pourrez pas créer d'évènement.");
+
+                    break;
+
+                case GeolocationAccessStatus.Unspecified:
+                    ToastCenter.InformativeNotify("Erreur de géolocalisation", "Une erreur de géolocalisation s'est produite");
+                    break;
+            }*/
+        }
+        public void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+            //GeofenceMonitor.Current.GeofenceStateChanged -= OnGeofenceStateChanged;
+            //GeofenceMonitor.Current.StatusChanged -= OnGeofenceStatusChanged;
         }
 
         public bool IsPaneOpen

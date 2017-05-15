@@ -36,7 +36,7 @@ namespace JoinUsAPI.Migrations
                 Email = "nicolas.bauthier@hotmaiL.be",
                 Birthdate = new DateTime(),
                 LastLoc = "77,Rue Des carmes"
-               
+                
             };
             manager.Create(admin, "Abcdefg1_");
 

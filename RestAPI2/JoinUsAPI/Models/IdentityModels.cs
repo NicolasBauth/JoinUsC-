@@ -1,14 +1,13 @@
-﻿using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Identity;
+﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNet.Identity.Owin;
-using System.Data.Entity;
 using Model;
-using System.ComponentModel.DataAnnotations;
 using System;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace JoinUsAPI.Models
 {
@@ -19,10 +18,9 @@ namespace JoinUsAPI.Models
         public string FirstName { get; set; }
         [Required]
         public string LastName { get; set; }
-        
+
         [Column(TypeName = "datetime2")]
         public DateTime Birthdate { get; set; }
-        public string LastLoc { get; set; }
         public virtual ICollection<User> Followers { get; set; }
         public virtual ICollection<User> Following { get; set; }
         //lien User-Event

@@ -35,15 +35,16 @@ namespace JoinUs.DAO
             }
         }
 
-        public static bool DoesUserAlreadyExists(string userName)
+        public static bool DoesUserNameAlreadyExists(string userName)
         {
             return false;
         }
 
         public static bool RegisterUser(User userToRegister)
         {
-            if(!DoesUserAlreadyExists(userToRegister.UserName))
+            if(!DoesUserNameAlreadyExists(userToRegister.UserName))
             {
+                //vérifier aussi l'email
                 return true;
             }
             return false;
