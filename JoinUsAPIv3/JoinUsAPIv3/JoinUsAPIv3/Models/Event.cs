@@ -25,7 +25,7 @@ namespace JoinUsAPIv3.Models
         [ForeignKey("Creator")]
         public long CreatorId { get; set; }
 
-        public virtual User Creator { get; set; }
+        public User Creator { get; set; }
 
         //lien de concernance event-tag (n a n)
         public ICollection<Tag> Tags { get; set; }

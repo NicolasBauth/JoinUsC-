@@ -9,8 +9,9 @@ namespace DTOModels.EventDTOs
         public string Address { get; set; }
         public DateTime Date { get; set; }
         public string Description { get; set; }
-        public List<string> Categories { get; set; }
+        public List<long> CategoriesId { get; set; }
         public string FacebookUrl { get; set; }
-        public List<string> Tags { get; set; }
+        public List<long> TagsId { get; set; }
+        public long CreatorId { get; set; }
     }
 }

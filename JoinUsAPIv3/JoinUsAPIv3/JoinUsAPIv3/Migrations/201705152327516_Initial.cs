@@ -81,19 +81,6 @@ namespace JoinUsAPIv3.Migrations
                 .Index(t => t.Category_Id);
             
             CreateTable(
-                "dbo.UserCategories",
-                c => new
-                    {
-                        User_Id = c.Long(nullable: false),
-                        Category_Id = c.Long(nullable: false),
-                    })
-                .PrimaryKey(t => new { t.User_Id, t.Category_Id })
-                .ForeignKey("dbo.Users", t => t.User_Id, cascadeDelete: true)
-                .ForeignKey("dbo.Categories", t => t.Category_Id, cascadeDelete: true)
-                .Index(t => t.User_Id)
-                .Index(t => t.Category_Id);
-            
-            CreateTable(
                 "dbo.UserUsers",
                 c => new
                     {
@@ -105,6 +92,19 @@ namespace JoinUsAPIv3.Migrations
                 .ForeignKey("dbo.Users", t => t.User_Id1)
                 .Index(t => t.User_Id)
                 .Index(t => t.User_Id1);
+            
+            CreateTable(
+                "dbo.UserCategories",
+                c => new
+                    {
+                        User_Id = c.Long(nullable: false),
+                        Category_Id = c.Long(nullable: false),
+                    })
+                .PrimaryKey(t => new { t.User_Id, t.Category_Id })
+                .ForeignKey("dbo.Users", t => t.User_Id, cascadeDelete: true)
+                .ForeignKey("dbo.Categories", t => t.Category_Id, cascadeDelete: true)
+                .Index(t => t.User_Id)
+                .Index(t => t.Category_Id);
             
             CreateTable(
                 "dbo.TagEvents",
@@ -128,19 +128,19 @@ namespace JoinUsAPIv3.Migrations
             DropForeignKey("dbo.Users", "Event_Id", "dbo.Events");
             DropForeignKey("dbo.Events", "CreatorId", "dbo.Users");
             DropForeignKey("dbo.Events", "User_Id1", "dbo.Users");
+            DropForeignKey("dbo.UserCategories", "Category_Id", "dbo.Categories");
+            DropForeignKey("dbo.UserCategories", "User_Id", "dbo.Users");
             DropForeignKey("dbo.UserUsers", "User_Id1", "dbo.Users");
             DropForeignKey("dbo.UserUsers", "User_Id", "dbo.Users");
             DropForeignKey("dbo.Events", "User_Id", "dbo.Users");
-            DropForeignKey("dbo.UserCategories", "Category_Id", "dbo.Categories");
-            DropForeignKey("dbo.UserCategories", "User_Id", "dbo.Users");
             DropForeignKey("dbo.EventCategories", "Category_Id", "dbo.Categories");
             DropForeignKey("dbo.EventCategories", "Event_Id", "dbo.Events");
             DropIndex("dbo.TagEvents", new[] { "Event_Id" });
             DropIndex("dbo.TagEvents", new[] { "Tag_Id" });
-            DropIndex("dbo.UserUsers", new[] { "User_Id1" });
-            DropIndex("dbo.UserUsers", new[] { "User_Id" });
             DropIndex("dbo.UserCategories", new[] { "Category_Id" });
             DropIndex("dbo.UserCategories", new[] { "User_Id" });
+            DropIndex("dbo.UserUsers", new[] { "User_Id1" });
+            DropIndex("dbo.UserUsers", new[] { "User_Id" });
             DropIndex("dbo.EventCategories", new[] { "Category_Id" });
             DropIndex("dbo.EventCategories", new[] { "Event_Id" });
             DropIndex("dbo.Users", new[] { "Event_Id" });
@@ -148,8 +148,8 @@ namespace JoinUsAPIv3.Migrations
             DropIndex("dbo.Events", new[] { "User_Id" });
             DropIndex("dbo.Events", new[] { "CreatorId" });
             DropTable("dbo.TagEvents");
-            DropTable("dbo.UserUsers");
             DropTable("dbo.UserCategories");
+            DropTable("dbo.UserUsers");
             DropTable("dbo.EventCategories");
             DropTable("dbo.Tags");
             DropTable("dbo.Users");

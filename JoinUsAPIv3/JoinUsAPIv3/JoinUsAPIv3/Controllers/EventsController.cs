@@ -2,9 +2,12 @@
 using DTOModels.EventDTOs;
 using JoinUsAPIv3.Models;
 using JoinUsAPIv3.Utility;
+using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
+using System.Linq.Dynamic;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -20,9 +23,9 @@ namespace JoinUsAPIv3.Controllers
         [HttpGet]
         //this method returns all the events from the database, formatted as EventPresentationDTO.
         //call: api/Events
-        public IQueryable<EventPresentationDTO> GetEvents()
+        public IEnumerable<EventPresentationDTO> GetEvents()
         {
-            var events = from e in db.Events.Include(b => b.Creator).Include(b =>b.Participants).Include(b =>b.Categories)
+            var events = from e in db.Events.Include(b => b.Creator).Include(b => b.Participants).Include(b => b.Categories).ToList()
 
                          select new EventPresentationDTO
                          {
@@ -35,12 +38,24 @@ namespace JoinUsAPIv3.Controllers
                              UrlFacebook = e.UrlFacebook,
                              Id = e.Id,
                              UserCount = e.Participants.Count,
-                             //Cette ligne pose problème.
-                             //CategoriesNames = UtilityMethods.ParseCategoryListToCategoryNamesList(e.Categories)
+                             CategoriesNames = UtilityMethods.ParseCategoryListToCategoryNamesList(e.Categories.ToList())
                          };
 
             return events;
 
+        }
+        [Route("GetEventsOfCategory")]
+        public IEnumerable<EventShortDTO> GetEventsOfCategory(long categoryId)
+        {
+            var events = from e in db.Events.Include(b => b.Categories)
+                         select new EventShortDTO
+                         {
+                             Address = e.Address,
+                             Date = e.Date,
+                             Id = e.Id,
+                             Title = e.Title
+                         };
+            return events;
         }
         //This method returns all the database events in the "EventShortDTO" format.
         //call: api/Events/GetEventsShort
@@ -48,6 +63,7 @@ namespace JoinUsAPIv3.Controllers
         public IQueryable<EventShortDTO> GetEventsShort()
         {
             var eventsShorts = from e in db.Events
+                               where (DateTime.Compare(e.Date,DateTime.Now)>=0)
                                select new EventShortDTO
                                {
                                    Address = e.Address,
@@ -58,27 +74,25 @@ namespace JoinUsAPIv3.Controllers
             return eventsShorts;
         }
 
-        //call:api/Events/GetEventById?id=5
         //returns a raw event entity corresponding to the id provided as parameter
         //call:api/Events/GetEventById?id=5
         [Route("GetEventById")]
-        [ResponseType(typeof(Event))]
+        [ResponseType(typeof(EventPresentationDTO))]
         public async Task<IHttpActionResult> GetEvent(long id)
         {
             //FindAsync not available here because it's a method from the DbSet type, and Include returns a DbQuery.
             //SingleOrDefaultAsync is a DbQuery method. It goes straight to the database
             //and doesn't look first in the context to see if the entity exists.           
-            Event @event = await db.Events.Include("Creator").SingleOrDefaultAsync(i => i.Id == id);
+            Event @event = await db.Events.Include(b => b.Creator).Include(b=>b.Categories).Include(b =>b.Participants).SingleOrDefaultAsync(i => i.Id == id);
             if (@event == null)
             {
                 return NotFound();
             }
-
-            return Ok(@event);
+            EventPresentationDTO foundEvent= UtilityMethods.EventToEventPresentation(@event);
+            return Ok(foundEvent);
         }
 
-
-
+        
         // PUT: api/Events/5
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutEvent(long id, Event @event)
@@ -115,18 +129,69 @@ namespace JoinUsAPIv3.Controllers
         }
 
         // POST: api/Events
+        [HttpPost]
         [ResponseType(typeof(Event))]
-        public async Task<IHttpActionResult> PostEvent(Event @event)
+        [Route("PostEvent")]
+        public async Task<IHttpActionResult> PostEvent(EventCreationDTO eventToAdd)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
-            db.Events.Add(@event);
+            Event createdDbEvent = new Event
+            {
+                Address = eventToAdd.Address,
+                CreatorId = eventToAdd.CreatorId,
+                Date = eventToAdd.Date,
+                Description = eventToAdd.Description,
+                Title = eventToAdd.Title,
+                UrlFacebook = eventToAdd.FacebookUrl
+            };
+            string categorySearchCondition="";
+            int count = 0;
+            foreach(var categoryId in eventToAdd.CategoriesId)
+            {
+                if(count != 0)
+                {
+                    categorySearchCondition += "||";
+                }
+                categorySearchCondition += "Id ==" + categoryId;
+                count++;
+            }
+            //using string as a condition for Where is allowed by the dynamic LINQ library
+            var foundCategories = from c in db.Categories.Where(categorySearchCondition) select c;
+            //Any() is a method that returns a bool telling whether the IQueryable list is empty or not.
+            if (foundCategories.Any())
+            {
+                foreach (var cat in foundCategories)
+                {
+                    createdDbEvent.Categories.Add(cat);
+                }
+            }
+            string tagSearchCondition = "";
+            count = 0;
+            foreach(var tagId in eventToAdd.TagsId)
+            {
+                if (count != 0) tagSearchCondition += "||";
+                tagSearchCondition += "Id ==" + tagId;
+                count++;
+            }
+            var foundTags = from t in db.Tags.Where(tagSearchCondition) select t;
+            if(foundTags.Any())
+            {
+                foreach(var tag in foundTags)
+                {
+                    createdDbEvent.Tags.Add(tag);
+                }
+            }
+            var firstParticipant = await db.Users.FindAsync(eventToAdd.CreatorId);
+            createdDbEvent.Participants.Add(firstParticipant);
+            //require testing for an unexisting category or tag
+            db.Events.Add(createdDbEvent);
             await db.SaveChangesAsync();
 
-            return CreatedAtRoute("DefaultApi", new { id = @event.Id }, @event);
+            //return CreatedAtRoute("DefaultApi", new { id = createdDbEvent.Id }, createdDbEvent);
+            return Ok(eventToAdd);
         }
 
         // DELETE: api/Events/5

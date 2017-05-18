@@ -28,7 +28,7 @@ namespace JoinUsAPIv3.Models
         public virtual ICollection<Event> CreatedEvents { get; set; }
         public virtual ICollection<Event> JoinedEvents { get; set; }
         //lien User-Categorie
-        public virtual ICollection<Category> Categories { get; set; }
+        public virtual ICollection<Category> Interests { get; set; }
         [Timestamp]
         public byte[] RowVersion { get; set; }
         public User()
@@ -37,7 +37,7 @@ namespace JoinUsAPIv3.Models
             this.Following = new HashSet<User>();
             this.CreatedEvents = new HashSet<Event>();
             this.JoinedEvents = new HashSet<Event>();
-            this.Categories = new HashSet<Category>();
+            this.Interests = new HashSet<Category>();
         }
     }
 }

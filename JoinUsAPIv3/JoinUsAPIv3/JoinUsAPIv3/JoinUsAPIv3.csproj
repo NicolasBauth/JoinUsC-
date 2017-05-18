@@ -80,6 +80,10 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Linq.Dynamic, Version=1.0.6132.35681, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Linq.Dynamic.1.0.7\lib\net40\System.Linq.Dynamic.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -242,9 +246,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201705141426461_Initial.cs" />
-    <Compile Include="Migrations\201705141426461_Initial.Designer.cs">
-      <DependentUpon>201705141426461_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201705152327516_Initial.cs" />
+    <Compile Include="Migrations\201705152327516_Initial.Designer.cs">
+      <DependentUpon>201705152327516_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
@@ -337,8 +341,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201705141426461_Initial.resx">
-      <DependentUpon>201705141426461_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201705152327516_Initial.resx">
+      <DependentUpon>201705152327516_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

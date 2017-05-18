@@ -64,6 +64,7 @@ namespace JoinUsAPIv3.Migrations
                 userRelthar,
                 userBrodylive
                 );
+
             var eventLG = new Event() { Id = 1, Title = "Soirée Loup-garou aux 3D", Address = "Place Abbé Joseph, 11, 5000 Namur", CreatorId = 1, Date = new DateTime(2017, 9, 14), Description = "Notre café vous invite une fois encore à disputer une partie des \"Loups-Garou de Thiercellieux\". Venez nombreux!" };
             eventLG.Categories.Add(boardGamesCategory);
             eventLG.Tags.Add(tagLG);
@@ -92,7 +93,7 @@ namespace JoinUsAPIv3.Migrations
             var eventResto = new Event() { Id = 8, Title = "Petite sortie resto chinois", Address = "Rue Borget, 8, 5000 Namur", CreatorId = 2, Date = new DateTime(2017, 11, 26), Description = "Je souhaite rencontrer des gens sur Namur. Je vous attends nombreux au restaurant \"Chez Chen\"!" };
             eventResto.Categories.Add(dinnerCategory);
             eventResto.Tags.Add(tagResto);
-            var eventConcert = new Event() { Id = 9, Title = "Concert de Metallica", Address = "Rue des Carmes, 77, 5000 Namur", CreatorId = 1, Date = new DateTime(2017, 12, 18), Description = "Je cherche des gens qui seraient intéressés à venir avec moi au concert de Metallica du 18 décembre." };
+            var eventConcert = new Event() { Id = 9, Title = "Concert de Metallica", Address = "Rue des Carmes, 77, 5000 Namur", CreatorId = 1, Date = new DateTime(2016, 12, 18), Description = "Je cherche des gens qui seraient intéressés à venir avec moi au concert de Metallica du 18 décembre." };
             eventConcert.Categories.Add(partyCategory);
             eventConcert.Categories.Add(musicCategory);
             eventConcert.Tags.Add(tagMetallica);
