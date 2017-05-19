@@ -15,12 +15,11 @@ namespace JoinUsAPIv3.Models
         public string FirstName { get; set; }
         [Required]
         public string LastName { get; set; }
-        [Required]
-        public string UserName { get; set; }
-        [Required]
-        public string Email { get; set; }
         [Column(TypeName = "datetime2")]
         public DateTime Birthdate { get; set; }
+        //[ForeignKey("ReferencedApplicationUser")]
+        //public string ReferencedApplicationUserId { get; set; }
+        public virtual ICollection<ApplicationUser> ReferencedApplicationUser { get; set; } 
         //lien recursif follower-followed
         public virtual ICollection<User> Followers { get; set; }
         public virtual ICollection<User> Following { get; set; }

@@ -16,6 +16,7 @@ using System.Web.Http.Description;
 namespace JoinUsAPIv3.Controllers
 {
     [RoutePrefix("api/Events")]
+    [Authorize]
     public class EventsController : ApiController
     {
 
@@ -184,7 +185,7 @@ namespace JoinUsAPIv3.Controllers
                     createdDbEvent.Tags.Add(tag);
                 }
             }
-            var firstParticipant = await db.Users.FindAsync(eventToAdd.CreatorId);
+            var firstParticipant = await db.UserProfiles.FindAsync(eventToAdd.CreatorId);
             createdDbEvent.Participants.Add(firstParticipant);
             //require testing for an unexisting category or tag
             db.Events.Add(createdDbEvent);

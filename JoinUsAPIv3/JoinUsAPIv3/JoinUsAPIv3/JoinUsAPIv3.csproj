@@ -246,9 +246,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201705152327516_Initial.cs" />
-    <Compile Include="Migrations\201705152327516_Initial.Designer.cs">
-      <DependentUpon>201705152327516_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201705181708251_Initial.cs" />
+    <Compile Include="Migrations\201705181708251_Initial.Designer.cs">
+      <DependentUpon>201705181708251_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
@@ -256,7 +256,6 @@
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\Event.cs" />
     <Compile Include="Models\IdentityModels.cs" />
-    <Compile Include="Models\JoinUsAPIv3Context.cs" />
     <Compile Include="Models\Tag.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -341,8 +340,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201705152327516_Initial.resx">
-      <DependentUpon>201705152327516_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201705181708251_Initial.resx">
+      <DependentUpon>201705181708251_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

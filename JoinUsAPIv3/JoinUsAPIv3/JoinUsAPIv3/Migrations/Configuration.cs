@@ -58,9 +58,9 @@ namespace JoinUsAPIv3.Migrations
                 tagContest,
                 tagExpo
                 );
-            var userRelthar = new User() { Id = 1, FirstName = "Nicolas", LastName = "Bauthier", Birthdate = new DateTime(1995, 2, 19), Email = "nicolas.bauthier@hotmail.be", UserName = "Relthar" };
-            var userBrodylive = new User() { Id = 2, FirstName = "Jennifer", LastName = "Denis", Birthdate = new DateTime(1994, 11, 4), Email = "nicolas.bauthier@hotmail.be", UserName = "Brodylive" };
-            context.Users.AddOrUpdate(x => x.Id,
+            var userRelthar = new User() { Id = 1, FirstName = "Nicolas", LastName = "Bauthier", Birthdate = new DateTime(1995, 2, 19)};
+            var userBrodylive = new User() { Id = 2, FirstName = "Jennifer", LastName = "Denis", Birthdate = new DateTime(1994, 11, 4)};
+            context.UserProfiles.AddOrUpdate(x => x.Id,
                 userRelthar,
                 userBrodylive
                 );

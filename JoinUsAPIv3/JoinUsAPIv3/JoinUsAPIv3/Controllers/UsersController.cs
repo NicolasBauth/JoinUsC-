@@ -13,21 +13,21 @@ using JoinUsAPIv3.Models;
 
 namespace JoinUsAPIv3.Controllers
 {
-    public class UsersController : ApiController
+    public class UserProfilesController : ApiController
     {
         private JoinUsAPIv3Context db = new JoinUsAPIv3Context();
 
         // GET: api/Users
         public IQueryable<User> GetUsers()
         {
-            return db.Users;
+            return db.UserProfiles;
         }
 
         // GET: api/Users/5
         [ResponseType(typeof(User))]
         public async Task<IHttpActionResult> GetUser(long id)
         {
-            User user = await db.Users.FindAsync(id);
+            User user = await db.UserProfiles.FindAsync(id);
             if (user == null)
             {
                 return NotFound();
@@ -80,7 +80,7 @@ namespace JoinUsAPIv3.Controllers
                 return BadRequest(ModelState);
             }
 
-            db.Users.Add(user);
+            db.UserProfiles.Add(user);
             await db.SaveChangesAsync();
 
             return CreatedAtRoute("DefaultApi", new { id = user.Id }, user);
@@ -90,13 +90,13 @@ namespace JoinUsAPIv3.Controllers
         [ResponseType(typeof(User))]
         public async Task<IHttpActionResult> DeleteUser(long id)
         {
-            User user = await db.Users.FindAsync(id);
+            User user = await db.UserProfiles.FindAsync(id);
             if (user == null)
             {
                 return NotFound();
             }
 
-            db.Users.Remove(user);
+            db.UserProfiles.Remove(user);
             await db.SaveChangesAsync();
 
             return Ok(user);
@@ -113,7 +113,7 @@ namespace JoinUsAPIv3.Controllers
 
         private bool UserExists(long id)
         {
-            return db.Users.Count(e => e.Id == id) > 0;
+            return db.UserProfiles.Count(e => e.Id == id) > 0;
         }
     }
 }

@@ -329,6 +329,7 @@ namespace JoinUsAPIv3.Controllers
             }
 
             var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
+            user.UserProfileId = 1;
 
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
 
