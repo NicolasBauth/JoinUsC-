@@ -25,7 +25,7 @@ namespace JoinUsAPIv3.Controllers
     {
         private const string LocalLoginProvider = "Local";
         private ApplicationUserManager _userManager;
-
+        private JoinUsAPIv3Context context = new JoinUsAPIv3Context();
         public AccountController()
         {
         }
@@ -329,10 +329,12 @@ namespace JoinUsAPIv3.Controllers
             }
 
             var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
+            var userProfile = new User { Id = 1, Birthdate = model.Birthdate, FirstName = model.FirstName, LastName = model.LastName };
             user.UserProfileId = 1;
-
+            
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
-
+            context.UserProfiles.Add(userProfile);
+            context.SaveChanges();
             if (!result.Succeeded)
             {
                 return GetErrorResult(result);

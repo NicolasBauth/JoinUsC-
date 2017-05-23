@@ -34,5 +34,24 @@ namespace JoinUsAPIv3.Utility
             };
             return parsedEvent;
         }
+        public static List<string> ParseEventListToEventNamesList(ICollection<Event> eventList)
+        {
+            List<string> parsedList = new List<string>();
+            foreach(var e in eventList)
+            {
+                parsedList.Add(e.Title);
+            }
+            return parsedList;
+        }
+
+        public static List<string> ParseUserListtoUserNamesList(ICollection<User> userList)
+        {
+            List<string> parsedList = new List<string>();
+            foreach(var user in userList)
+            {
+                parsedList.Add(user.FirstName + " " + user.LastName);
+            }
+            return parsedList;
+        }
     }
 }

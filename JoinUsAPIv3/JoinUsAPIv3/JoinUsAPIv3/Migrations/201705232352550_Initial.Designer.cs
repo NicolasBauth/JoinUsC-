@@ -13,7 +13,7 @@ namespace JoinUsAPIv3.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201705181708251_Initial"; }
+            get { return "201705232352550_Initial"; }
         }
         
         string IMigrationMetadata.Source

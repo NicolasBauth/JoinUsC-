@@ -27,18 +27,12 @@ namespace JoinUsAPIv3.Migrations
                         Address = c.String(nullable: false),
                         UrlFacebook = c.String(),
                         Date = c.DateTime(nullable: false, precision: 7, storeType: "datetime2"),
-                        CreatorId = c.Long(nullable: false),
+                        CreatorId = c.Long(),
                         RowVersion = c.Binary(nullable: false, fixedLength: true, timestamp: true, storeType: "rowversion"),
-                        User_Id = c.Long(),
-                        User_Id1 = c.Long(),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Users", t => t.User_Id)
-                .ForeignKey("dbo.Users", t => t.User_Id1)
-                .ForeignKey("dbo.Users", t => t.CreatorId, cascadeDelete: true)
-                .Index(t => t.CreatorId)
-                .Index(t => t.User_Id)
-                .Index(t => t.User_Id1);
+                .ForeignKey("dbo.Users", t => t.CreatorId)
+                .Index(t => t.CreatorId);
             
             CreateTable(
                 "dbo.Users",
@@ -49,11 +43,8 @@ namespace JoinUsAPIv3.Migrations
                         LastName = c.String(nullable: false),
                         Birthdate = c.DateTime(nullable: false, precision: 7, storeType: "datetime2"),
                         RowVersion = c.Binary(nullable: false, fixedLength: true, timestamp: true, storeType: "rowversion"),
-                        Event_Id = c.Long(),
                     })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Events", t => t.Event_Id)
-                .Index(t => t.Event_Id);
+                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.AspNetUsers",
@@ -176,6 +167,19 @@ namespace JoinUsAPIv3.Migrations
                 .Index(t => t.Category_Id);
             
             CreateTable(
+                "dbo.UserEvents",
+                c => new
+                    {
+                        User_Id = c.Long(nullable: false),
+                        Event_Id = c.Long(nullable: false),
+                    })
+                .PrimaryKey(t => new { t.User_Id, t.Event_Id })
+                .ForeignKey("dbo.Users", t => t.User_Id, cascadeDelete: true)
+                .ForeignKey("dbo.Events", t => t.Event_Id, cascadeDelete: true)
+                .Index(t => t.User_Id)
+                .Index(t => t.Event_Id);
+            
+            CreateTable(
                 "dbo.TagEvents",
                 c => new
                     {
@@ -195,22 +199,23 @@ namespace JoinUsAPIv3.Migrations
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
             DropForeignKey("dbo.TagEvents", "Event_Id", "dbo.Events");
             DropForeignKey("dbo.TagEvents", "Tag_Id", "dbo.Tags");
-            DropForeignKey("dbo.Users", "Event_Id", "dbo.Events");
             DropForeignKey("dbo.Events", "CreatorId", "dbo.Users");
             DropForeignKey("dbo.AspNetUsers", "UserProfileId", "dbo.Users");
             DropForeignKey("dbo.AspNetUserRoles", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
-            DropForeignKey("dbo.Events", "User_Id1", "dbo.Users");
+            DropForeignKey("dbo.UserEvents", "Event_Id", "dbo.Events");
+            DropForeignKey("dbo.UserEvents", "User_Id", "dbo.Users");
             DropForeignKey("dbo.UserCategories", "Category_Id", "dbo.Categories");
             DropForeignKey("dbo.UserCategories", "User_Id", "dbo.Users");
             DropForeignKey("dbo.UserUsers", "User_Id1", "dbo.Users");
             DropForeignKey("dbo.UserUsers", "User_Id", "dbo.Users");
-            DropForeignKey("dbo.Events", "User_Id", "dbo.Users");
             DropForeignKey("dbo.EventCategories", "Category_Id", "dbo.Categories");
             DropForeignKey("dbo.EventCategories", "Event_Id", "dbo.Events");
             DropIndex("dbo.TagEvents", new[] { "Event_Id" });
             DropIndex("dbo.TagEvents", new[] { "Tag_Id" });
+            DropIndex("dbo.UserEvents", new[] { "Event_Id" });
+            DropIndex("dbo.UserEvents", new[] { "User_Id" });
             DropIndex("dbo.UserCategories", new[] { "Category_Id" });
             DropIndex("dbo.UserCategories", new[] { "User_Id" });
             DropIndex("dbo.UserUsers", new[] { "User_Id1" });
@@ -224,11 +229,9 @@ namespace JoinUsAPIv3.Migrations
             DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
             DropIndex("dbo.AspNetUsers", "UserNameIndex");
             DropIndex("dbo.AspNetUsers", new[] { "UserProfileId" });
-            DropIndex("dbo.Users", new[] { "Event_Id" });
-            DropIndex("dbo.Events", new[] { "User_Id1" });
-            DropIndex("dbo.Events", new[] { "User_Id" });
             DropIndex("dbo.Events", new[] { "CreatorId" });
             DropTable("dbo.TagEvents");
+            DropTable("dbo.UserEvents");
             DropTable("dbo.UserCategories");
             DropTable("dbo.UserUsers");
             DropTable("dbo.EventCategories");

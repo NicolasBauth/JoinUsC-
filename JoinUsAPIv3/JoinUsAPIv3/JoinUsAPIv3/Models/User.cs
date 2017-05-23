@@ -21,10 +21,13 @@ namespace JoinUsAPIv3.Models
         //public string ReferencedApplicationUserId { get; set; }
         public virtual ICollection<ApplicationUser> ReferencedApplicationUser { get; set; } 
         //lien recursif follower-followed
+        [InverseProperty("Following")]
         public virtual ICollection<User> Followers { get; set; }
+        [InverseProperty("Followers")]
         public virtual ICollection<User> Following { get; set; }
         //lien User-Event
         public virtual ICollection<Event> CreatedEvents { get; set; }
+        [InverseProperty("Participants")]
         public virtual ICollection<Event> JoinedEvents { get; set; }
         //lien User-Categorie
         public virtual ICollection<Category> Interests { get; set; }

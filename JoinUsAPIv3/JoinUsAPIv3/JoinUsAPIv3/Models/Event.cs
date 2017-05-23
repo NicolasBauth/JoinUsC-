@@ -23,8 +23,8 @@ namespace JoinUsAPIv3.Models
         //lien d'appartenance évènement-catégorie
         public virtual ICollection<Category> Categories { get; set; }
         [ForeignKey("Creator")]
-        public long CreatorId { get; set; }
-
+        public long? CreatorId { get; set; }
+        
         public User Creator { get; set; }
 
         //lien de concernance event-tag (n a n)

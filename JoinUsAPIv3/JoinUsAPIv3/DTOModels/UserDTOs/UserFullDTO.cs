@@ -7,8 +7,6 @@ namespace DTOModels.UserDTOs
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string UserName { get; set; }
-        public string Email { get; set; }
         public DateTime Birthdate { get; set; }
         //lien recursif follower-followed
         public List<string> FollowerNames { get; set; }

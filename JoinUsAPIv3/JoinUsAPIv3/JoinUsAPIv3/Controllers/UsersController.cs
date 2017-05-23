@@ -10,21 +10,24 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using JoinUsAPIv3.Models;
+using DTOModels.UserDTOs;
+using JoinUsAPIv3.Utility;
 
 namespace JoinUsAPIv3.Controllers
 {
+    [RoutePrefix("api/UserProfiles")]
     public class UserProfilesController : ApiController
     {
         private JoinUsAPIv3Context db = new JoinUsAPIv3Context();
 
         // GET: api/Users
-        public IQueryable<User> GetUsers()
+        /*public IQueryable<User> GetUsers()
         {
             return db.UserProfiles;
-        }
+        }*/
 
         // GET: api/Users/5
-        [ResponseType(typeof(User))]
+        /*[ResponseType(typeof(User))]
         public async Task<IHttpActionResult> GetUser(long id)
         {
             User user = await db.UserProfiles.FindAsync(id);
@@ -34,7 +37,25 @@ namespace JoinUsAPIv3.Controllers
             }
 
             return Ok(user);
+        }*/
+        [HttpGet]
+        public IEnumerable<UserFullDTO> GetUsers()
+        {
+            var profiles = from e in db.UserProfiles.Include(b => b.CreatedEvents).Include(b => b.Followers).Include(b => b.Following).Include(b => b.Interests).Include(b => b.JoinedEvents).ToList()
+                           select new UserFullDTO
+                           {
+                               Birthdate = e.Birthdate,
+                               FirstName = e.FirstName,
+                               LastName = e.LastName,
+                               Interests = UtilityMethods.ParseCategoryListToCategoryNamesList(e.Interests.ToList()),
+                               CreatedEvents = UtilityMethods.ParseEventListToEventNamesList(e.CreatedEvents.ToList()),
+                               JoinedEvents = UtilityMethods.ParseEventListToEventNamesList(e.JoinedEvents.ToList()),
+                               FollowerNames = UtilityMethods.ParseUserListtoUserNamesList(e.Followers.ToList()),
+                               FollowingNames = UtilityMethods.ParseUserListtoUserNamesList(e.Following.ToList())
+                           };
+            return profiles;
         }
+
 
         // PUT: api/Users/5
         [ResponseType(typeof(void))]
