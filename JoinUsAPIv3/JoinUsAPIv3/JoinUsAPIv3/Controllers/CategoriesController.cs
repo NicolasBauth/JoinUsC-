@@ -10,21 +10,31 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using JoinUsAPIv3.Models;
+using DTOModels.CategoryDTOs;
 
 namespace JoinUsAPIv3.Controllers
 {
+    [RoutePrefix("api/Categories")]
     public class CategoriesController : ApiController
     {
         private JoinUsAPIv3Context db = new JoinUsAPIv3Context();
 
         // GET: api/Categories
-        public IQueryable<Category> GetCategories()
+        /*public IQueryable<Category> GetCategories()
         {
             return db.Categories;
+        }*/
+        [HttpGet]
+        public IEnumerable<CategoryDTO> GetCategories()
+        {
+            var categoriesDTO = from e in db.Categories select new CategoryDTO { Id = e.Id, Title = e.Name };
+            return categoriesDTO;
         }
-
+            
+           
         // GET: api/Categories/5
-        [ResponseType(typeof(Category))]
+        [Route("GetCategoryById")]
+        [ResponseType(typeof(CategoryDTO))]
         public async Task<IHttpActionResult> GetCategory(long id)
         {
             Category category = await db.Categories.FindAsync(id);
@@ -32,8 +42,8 @@ namespace JoinUsAPIv3.Controllers
             {
                 return NotFound();
             }
-
-            return Ok(category);
+            CategoryDTO categoryDTO = new CategoryDTO { Id = category.Id, Title = category.Name };
+            return Ok(categoryDTO);
         }
 
         // PUT: api/Categories/5

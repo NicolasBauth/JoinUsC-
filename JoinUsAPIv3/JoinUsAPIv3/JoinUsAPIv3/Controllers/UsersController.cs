@@ -55,7 +55,19 @@ namespace JoinUsAPIv3.Controllers
                            };
             return profiles;
         }
-
+        [Route("UserProfileById")]
+        [ResponseType(typeof(UserProfileDTO))]
+        public async Task<IHttpActionResult> GetUserProfileById(long id)
+        {
+            User user = await db.UserProfiles.Include(b => b.Interests).SingleOrDefaultAsync(i => i.Id == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            List<string> interestNames = UtilityMethods.ParseCategoryListToCategoryNamesList(user.Interests);
+            UserProfileDTO userProfile = new UserProfileDTO { BirthDate = user.Birthdate, FirstName = user.FirstName, LastName = user.LastName, Interests = interestNames };
+            return Ok(userProfile);
+        }
 
         // PUT: api/Users/5
         [ResponseType(typeof(void))]

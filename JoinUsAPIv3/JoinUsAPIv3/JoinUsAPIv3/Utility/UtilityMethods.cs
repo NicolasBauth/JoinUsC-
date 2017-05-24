@@ -53,5 +53,20 @@ namespace JoinUsAPIv3.Utility
             }
             return parsedList;
         }
+
+        public static List<EventShortDTO> EventListToEventShortDTOList(ICollection<Event> eventList)
+        {
+            List<EventShortDTO> parsedList = new List<EventShortDTO>();
+            foreach(var eventToParse in eventList)
+            {
+                parsedList.Add(EventToEventShort(eventToParse));
+            }
+            return parsedList;
+        }
+        public static EventShortDTO EventToEventShort(Event eventToParse)
+        {
+            EventShortDTO parsedEvent = new EventShortDTO {Id = eventToParse.Id, Address = eventToParse.Address, Date = eventToParse.Date, Title = eventToParse.Title };
+            return parsedEvent;
+        }
     }
 }

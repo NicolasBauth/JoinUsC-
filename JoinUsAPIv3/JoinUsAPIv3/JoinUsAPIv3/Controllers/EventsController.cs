@@ -92,6 +92,32 @@ namespace JoinUsAPIv3.Controllers
             return Ok(foundEvent);
         }
 
+        [Route("GetEventsCreatedByUser")]
+        [ResponseType(typeof(IEnumerable<EventShortDTO>))]
+        public async Task<IHttpActionResult> GetEventsCreatedByUser(long userId)
+        {
+            var foundUser = await db.UserProfiles.Include(b => b.CreatedEvents).SingleOrDefaultAsync(i => i.Id == userId);
+            if (foundUser == null)
+            {
+                return NotFound();
+            }
+            List<EventShortDTO> createdEvents = UtilityMethods.EventListToEventShortDTOList(foundUser.CreatedEvents);
+            return Ok(createdEvents);
+        }
+        [Route("GetEventsUserParticipates")]
+        [ResponseType(typeof(IEnumerable<EventShortDTO>))]
+        public async Task<IHttpActionResult> GetEventsUserParticipates(long userId)
+        {
+            //needs testing.
+            var foundUser = await db.UserProfiles.Include(b => b.JoinedEvents).SingleOrDefaultAsync(i => i.Id == userId);
+            if(foundUser == null)
+            {
+                return NotFound();
+            }
+            List<EventShortDTO> joinedEvents = UtilityMethods.EventListToEventShortDTOList(foundUser.JoinedEvents);
+            return Ok(joinedEvents);
+        }
+
         
         // PUT: api/Events/5
         [ResponseType(typeof(void))]
