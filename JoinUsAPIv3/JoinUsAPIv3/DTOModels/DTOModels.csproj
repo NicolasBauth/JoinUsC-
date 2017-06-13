@@ -43,6 +43,7 @@
     <Compile Include="CategoryDTOs\CategoryDTO.cs" />
     <Compile Include="EventDTOs\EventCreationDTO.cs" />
     <Compile Include="EventDTOs\EventPresentationDTO.cs" />
+    <Compile Include="EventDTOs\EventScanDTO.cs" />
     <Compile Include="EventDTOs\EventSearchDTO.cs" />
     <Compile Include="EventDTOs\EventShortDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

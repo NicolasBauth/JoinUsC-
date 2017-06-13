@@ -1,6 +1,7 @@
 ﻿
 using DTOModels.EventDTOs;
 using JoinUsAPIv3.Models;
+using System;
 using System.Collections.Generic;
 
 namespace JoinUsAPIv3.Utility
@@ -13,6 +14,15 @@ namespace JoinUsAPIv3.Utility
             foreach (var category in categoryList)
             {
                 parsedList.Add(category.Name);
+            }
+            return parsedList;
+        }
+        public static List<string> ParseTagsListToTagsNamesList(ICollection<Tag> tagsList)
+        {
+            List<string> parsedList = new List<string>();
+            foreach (var tag in tagsList)
+            {
+                parsedList.Add(tag.Name);
             }
             return parsedList;
         }
@@ -67,6 +77,26 @@ namespace JoinUsAPIv3.Utility
         {
             EventShortDTO parsedEvent = new EventShortDTO {Id = eventToParse.Id, Address = eventToParse.Address, Date = eventToParse.Date, Title = eventToParse.Title };
             return parsedEvent;
+        }
+
+        public static double degreesToRadians(double degrees)
+        {
+            return degrees * Math.PI / 180;
+        }
+
+        public static double distanceInKmBetweenEarthCoordinates(double lat1,double lon1,double lat2,double lon2)
+        {
+            int earthRadiusKm = 6371;
+
+            double dLat = degreesToRadians(lat2 - lat1);
+            double dLon = degreesToRadians(lon2 - lon1);
+
+            lat1 = degreesToRadians(lat1);
+            lat2 = degreesToRadians(lat2);
+
+            var a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) + Math.Sin(dLon / 2) * Math.Sin(dLon / 2) * Math.Cos(lat1) * Math.Cos(lat2);
+            var c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+            return earthRadiusKm * c;
         }
     }
 }

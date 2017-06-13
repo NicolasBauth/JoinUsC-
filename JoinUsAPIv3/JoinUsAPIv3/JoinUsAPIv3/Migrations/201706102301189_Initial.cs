@@ -24,6 +24,8 @@ namespace JoinUsAPIv3.Migrations
                         Id = c.Long(nullable: false, identity: true),
                         Title = c.String(nullable: false),
                         Description = c.String(),
+                        Latitude = c.Double(nullable: false),
+                        Longitude = c.Double(nullable: false),
                         Address = c.String(nullable: false),
                         UrlFacebook = c.String(),
                         Date = c.DateTime(nullable: false, precision: 7, storeType: "datetime2"),

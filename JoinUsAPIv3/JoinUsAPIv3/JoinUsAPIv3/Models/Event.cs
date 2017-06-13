@@ -15,6 +15,10 @@ namespace JoinUsAPIv3.Models
         public string Title { get; set; }
         public string Description { get; set; }
         [Required]
+        public double Latitude { get; set; }
+        [Required]
+        public double Longitude { get; set; }
+        [Required]
         public string Address { get; set; }
         public string UrlFacebook { get; set; }
         [Required]

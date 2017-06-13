@@ -118,7 +118,41 @@ namespace JoinUsAPIv3.Controllers
             return Ok(joinedEvents);
         }
 
-        
+        [HttpPost]
+        [Route("GetEventsAroundPoint")]
+        public IEnumerable<EventScanDTO> GetEventsAroundPoint(EventSearchDTO form)
+        {
+            
+            var foundEvents = from e in db.Events.Include(b => b.Categories).Include(b => b.Tags).ToList()
+                              where ((UtilityMethods.distanceInKmBetweenEarthCoordinates(form.CenterLatitude, form.CenterLongitude, e.Latitude, e.Longitude) <= form.Radius)
+                                    && (DateTime.Compare(e.Date, DateTime.Now) >= 0))
+                              select new EventScanDTO
+                              {
+                                  Address = e.Address,                           
+                                  Date = e.Date,
+                                  Title = e.Title,
+                                  Id = e.Id,
+                                  CategoriesNames = UtilityMethods.ParseCategoryListToCategoryNamesList(e.Categories.ToList()),
+                                  TagsNames = UtilityMethods.ParseTagsListToTagsNamesList(e.Tags.ToList())
+                              }; 
+
+            /*List < EventShortDTO > matchingEvents = new List<EventShortDTO>();
+            foreach(var foundEvent in foundEvents)
+            {
+                var categoryNames = UtilityMethods.ParseCategoryListToCategoryNamesList(foundEvent.Categories);
+                foreach(var categoryName in categoryNames)
+                {
+                    if(form.CategoriesNamesList.Contains(categoryName))
+                    {
+                        matchingEvents.Add(UtilityMethods.EventToEventShort(foundEvent));
+                        break;
+                    }
+                }
+            }*/
+            //return matchingEvents;
+            return foundEvents;
+        }
+
         // PUT: api/Events/5
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutEvent(long id, Event @event)
