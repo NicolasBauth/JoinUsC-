@@ -14,6 +14,7 @@ using DTOModels.CategoryDTOs;
 
 namespace JoinUsAPIv3.Controllers
 {
+    [Authorize]
     [RoutePrefix("api/Categories")]
     public class CategoriesController : ApiController
     {

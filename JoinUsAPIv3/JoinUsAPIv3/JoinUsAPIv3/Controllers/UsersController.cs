@@ -15,6 +15,7 @@ using JoinUsAPIv3.Utility;
 
 namespace JoinUsAPIv3.Controllers
 {
+    [Authorize]
     [RoutePrefix("api/UserProfiles")]
     public class UserProfilesController : ApiController
     {

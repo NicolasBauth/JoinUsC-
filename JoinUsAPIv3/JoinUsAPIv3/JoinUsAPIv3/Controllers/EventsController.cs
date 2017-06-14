@@ -14,7 +14,7 @@ using System.Web.Http;
 using System.Web.Http.Description;
 
 namespace JoinUsAPIv3.Controllers
-{
+{   [Authorize]
     [RoutePrefix("api/Events")]
     public class EventsController : ApiController
     {

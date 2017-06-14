@@ -13,6 +13,7 @@ using JoinUsAPIv3.Models;
 
 namespace JoinUsAPIv3.Controllers
 {
+    [Authorize]
     public class TagsController : ApiController
     {
         private JoinUsAPIv3Context db = new JoinUsAPIv3Context();
