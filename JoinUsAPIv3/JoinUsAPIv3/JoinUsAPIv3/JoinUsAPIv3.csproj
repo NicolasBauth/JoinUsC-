@@ -246,9 +246,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201706102301189_Initial.cs" />
-    <Compile Include="Migrations\201706102301189_Initial.Designer.cs">
-      <DependentUpon>201706102301189_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201706192313361_AzureInitial.cs" />
+    <Compile Include="Migrations\201706192313361_AzureInitial.Designer.cs">
+      <DependentUpon>201706192313361_AzureInitial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
@@ -295,6 +295,8 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Properties\PublishProfiles\JoinUsAPIv3 - Web Deploy %282%29.pubxml" />
+    <None Include="Properties\PublishProfiles\JoinUsAPIv3 - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -306,7 +308,9 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -340,8 +344,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201706102301189_Initial.resx">
-      <DependentUpon>201706102301189_Initial.cs</DependentUpon>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201706192313361_AzureInitial.resx">
+      <DependentUpon>201706192313361_AzureInitial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

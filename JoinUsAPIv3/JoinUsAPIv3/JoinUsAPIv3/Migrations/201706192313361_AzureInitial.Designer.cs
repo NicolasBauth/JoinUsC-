@@ -7,13 +7,13 @@ namespace JoinUsAPIv3.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class Initial : IMigrationMetadata
+    public sealed partial class AzureInitial : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Initial));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AzureInitial));
         
         string IMigrationMetadata.Id
         {
-            get { return "201706102301189_Initial"; }
+            get { return "201706192313361_AzureInitial"; }
         }
         
         string IMigrationMetadata.Source
