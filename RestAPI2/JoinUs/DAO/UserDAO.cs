@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,45 +10,15 @@ namespace JoinUs.DAO
 {
     public static class UserDAO
     {
-        public static User GetCurrentUser()
+        public static async Task<User> AuthenticateUser(string requestedLogin, string requestedPassword)
         {
-            User currentUser = new User("Nicolas", "Bauthier", "nicolas.bauthier@hotmail.be", new DateTime(1995, 02, 19), "77, Rue des carmes", "Assets/PhotoProfilNicolas.jpg","Relthar","henachallenge");
-            currentUser.Interests = CategoryDAO.GetInterestsOfUserByUserName(currentUser.UserName);
-
-            return currentUser;
-        }
-
-        public static User GetUserByUserName(string userName)
-        {
-            User foundUser = new User("Nicolas", "Bauthier", "nicolas.bauthier@hotmail.be", new DateTime(1995, 02, 19), "77, Rue des carmes", "Assets/PhotoProfilNicolas.jpg","Relthar","henachallenge");
-            return foundUser;
-        }
-
-        public static bool AuthenticateUser(string login, string password)
-        {
-            if(login == "Relthar" && password == "henachallenge")
+            HttpClient client = HttpClientSingleton.Client;
+            var formContent = new FormUrlEncodedContent(new[]
             {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        public static bool DoesUserNameAlreadyExists(string userName)
-        {
-            return false;
-        }
-
-        public static bool RegisterUser(User userToRegister)
-        {
-            if(!DoesUserNameAlreadyExists(userToRegister.UserName))
-            {
-                //vérifier aussi l'email
-                return true;
-            }
-            return false;
+                new KeyValuePair<string,string>("Username",requestedLogin),
+                new KeyValuePair<string, string>("Password", requestedPassword)
+            });
+            var response = await client.PostAsync("token",formContent);
         }
     }
 }

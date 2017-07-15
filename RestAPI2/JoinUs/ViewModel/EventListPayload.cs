@@ -9,13 +9,13 @@ namespace JoinUs.ViewModel
 {
     public class EventListPayload
     {
-        public User CurrentUser { get; set; }
+        /*public User CurrentUser { get; set; }
         public List<Event> EventsToDisplay { get; set; }
 
         public EventListPayload(User currentUser, List<Event> eventsToDisplay)
         {
             CurrentUser = currentUser;
             EventsToDisplay = eventsToDisplay;
-        }
+        }*/
     }
 }

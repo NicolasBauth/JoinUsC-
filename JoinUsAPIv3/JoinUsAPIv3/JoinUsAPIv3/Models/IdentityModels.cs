@@ -24,7 +24,7 @@ namespace JoinUsAPIv3.Models
     public class JoinUsAPIv3Context : IdentityDbContext<ApplicationUser>
     {
         public JoinUsAPIv3Context()
-            : base("AzureWebApp", throwIfV1Schema: false)
+            : base("JoinUsAPIv3Context", throwIfV1Schema: false)
         {
         }
 

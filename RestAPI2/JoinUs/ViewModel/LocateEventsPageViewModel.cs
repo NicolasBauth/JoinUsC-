@@ -18,6 +18,7 @@ namespace JoinUs.ViewModel
 {
     public class LocateEventsPageViewModel : ViewModelBase, INotifyPropertyChanged
     {
+        /*
         private INavigationService _navigationService;
 
         public LocateEventsPageViewModel(INavigationService navigationService)
@@ -37,34 +38,11 @@ namespace JoinUs.ViewModel
         public void OnNavigatedTo(NavigationEventArgs e)
         {
             _currentUser = (User)e.Parameter;
-            /*var accessStatus = await Geolocator.RequestAccessAsync();
-            switch (accessStatus)
-            {
-                case GeolocationAccessStatus.Allowed:
-                    geofences = GeofenceMonitor.Current.Geofences;
-
-                    FillRegisteredGeofenceListBoxWithExistingGeofences();
-                    FillEventListBoxWithExistingEvents();
-
-                    // Register for state change events.
-                    GeofenceMonitor.Current.GeofenceStateChanged += OnGeofenceStateChanged;
-                    GeofenceMonitor.Current.StatusChanged += OnGeofenceStatusChanged;
-                    break;
-
-                case GeolocationAccessStatus.Denied:
-                    ToastCenter.InformativeNotify("Refus de géolocalisation", "Vous avez refusé la géolocalistation. Vous ne pourrez pas créer d'évènement.");
-
-                    break;
-
-                case GeolocationAccessStatus.Unspecified:
-                    ToastCenter.InformativeNotify("Erreur de géolocalisation", "Une erreur de géolocalisation s'est produite");
-                    break;
-            }*/
+            
         }
         public void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
-            //GeofenceMonitor.Current.GeofenceStateChanged -= OnGeofenceStateChanged;
-            //GeofenceMonitor.Current.StatusChanged -= OnGeofenceStatusChanged;
+            
         }
 
         public bool IsPaneOpen
@@ -146,5 +124,6 @@ namespace JoinUs.ViewModel
         {
             IsPaneOpen = !IsPaneOpen;
         }
+        */
     }
 }

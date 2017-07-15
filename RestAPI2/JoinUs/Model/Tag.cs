@@ -9,9 +9,10 @@ namespace JoinUs.Model
     public class Tag
     {
         public string Name { get; set; }
-
-        public Tag(string name)
+        public long DbId { get; set; }
+        public Tag(long dbId,string name)
         {
+            DbId = dbId;
             Name = name;
         }
     }

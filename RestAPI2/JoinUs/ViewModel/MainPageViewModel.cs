@@ -15,7 +15,7 @@ namespace JoinUs.ViewModel
 {
     public class MainPageViewModel : ViewModelBase,INotifyPropertyChanged
     {
-        private INavigationService _navigationService;
+        /*private INavigationService _navigationService;
         private ICommand _goToProfileCommand;
         private ICommand _goToSearchEventCommand;
         private ICommand _goToCreateEventCommand;
@@ -111,5 +111,6 @@ namespace JoinUs.ViewModel
         {
             IsPaneOpen = !IsPaneOpen;
         }
+        */
     }
 }

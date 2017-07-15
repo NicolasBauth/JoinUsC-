@@ -10,9 +10,9 @@ namespace JoinUs.Model
     {
         private int _age;
         private DateTime _birthDate;
+        public long DbId;
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string Email { get; set; }
         public DateTime Birthdate
         {
             get
@@ -31,7 +31,6 @@ namespace JoinUs.Model
                 Age = _age;
             }
         }
-        public string LastLoc { get; set; }
         public string ProfileImagePath { get; set; }
         public int Age
         {
@@ -45,16 +44,12 @@ namespace JoinUs.Model
             }
         }
         
-        public string UserName { get; set; }
-        public string Password { get; set; }
-        public IEnumerable<Category> Interests { get; set; }
-        public User(string fN, string lN, string eM, DateTime birthDate, string lL, string path, string userName, string password)
+        public IEnumerable<string> Interests { get; set; }
+        public User(long dbId,string fN, string lN, string eM, DateTime birthDate, string path, string userName, string password)
         {
             FirstName = fN;
             LastName = lN;
-            Email = eM;
             Birthdate = birthDate;
-            LastLoc = lL;
             ProfileImagePath = path;
             DateTime now = DateTime.Now;
             int age = now.Year - birthDate.Year;
@@ -63,13 +58,12 @@ namespace JoinUs.Model
                 age--;
             }
             Age = age;
-            Interests = new List<Category>();
-            UserName = userName;
-            Password = password;
+            Interests = new List<string>();
+            DbId = dbId;
         }
         public User()
         {
-            Interests = new List<Category>();
+            Interests = new List<string>();
         }
     }
 }

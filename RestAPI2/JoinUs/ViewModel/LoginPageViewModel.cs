@@ -11,7 +11,7 @@ namespace JoinUs.ViewModel
 {
     public class LoginPageViewModel : ViewModelBase, INotifyPropertyChanged
     {
-
+        
         private string _password;
         private string _login;
         private INavigationService _navigationService;
@@ -70,8 +70,6 @@ namespace JoinUs.ViewModel
             {
                 if (UserDAO.AuthenticateUser(Login, Password))
                 {
-                    User currentUser = UserDAO.GetUserByUserName(Login);
-                    currentUser.Interests = CategoryDAO.GetInterestsOfUserByUserName(currentUser.UserName);
                     _navigationService.NavigateTo("MainPage", currentUser);
 
                 }
@@ -106,5 +104,6 @@ namespace JoinUs.ViewModel
         {
             _navigationService.NavigateTo("RegisterPage");
         }
+        
     }
 }

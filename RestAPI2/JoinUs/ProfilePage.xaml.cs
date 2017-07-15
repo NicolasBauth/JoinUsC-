@@ -30,7 +30,7 @@ namespace JoinUs
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            ((ProfilePageViewModel)DataContext).OnNavigatedTo(e);
+            //((ProfilePageViewModel)DataContext).OnNavigatedTo(e);
         }
     }
 }

@@ -17,7 +17,7 @@ namespace JoinUs.ViewModel
 {
     public class EventListPageViewModel : ViewModelBase, INotifyPropertyChanged
     {
-        private INavigationService _navigationService;
+        /*private INavigationService _navigationService;
 
         public EventListPageViewModel(INavigationService navigationService)
         {
@@ -172,5 +172,6 @@ namespace JoinUs.ViewModel
         {
             IsPaneOpen = !IsPaneOpen;
         }
+        */
     }
 }

@@ -102,6 +102,7 @@
     </Compile>
     <Compile Include="DAO\CategoryDAO.cs" />
     <Compile Include="DAO\EventDAO.cs" />
+    <Compile Include="DAO\HttpClientSingleton.cs" />
     <Compile Include="DAO\UserDAO.cs" />
     <Compile Include="EditInterestsPage.xaml.cs">
       <DependentUpon>EditInterestsPage.xaml</DependentUpon>
@@ -140,6 +141,7 @@
       <DependentUpon>SearchPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="AppToastCenter\ToastCenter.cs" />
+    <Compile Include="StaticServices\CategoryService.cs" />
     <Compile Include="ViewModel\CreateEventPageViewModel.cs" />
     <Compile Include="ViewModel\EditInterestsPageViewModel.cs" />
     <Compile Include="ViewModel\EventDescriptionPageViewModel.cs" />
@@ -167,8 +169,13 @@
     <Content Include="Assets\Culture.jpg" />
     <Content Include="Assets\Dinner.png" />
     <Content Include="Assets\Joynus.png" />
+    <Content Include="Assets\languages.jpg" />
+    <Content Include="Assets\music.jpg" />
     <Content Include="Assets\Party.jpg" />
     <Content Include="Assets\PhotoProfilNicolas.jpg" />
+    <Content Include="Assets\questionMark.jpg" />
+    <Content Include="Assets\sports.jpg" />
+    <Content Include="Assets\study.jpg" />
     <Content Include="Assets\userIcon.jpg" />
     <Content Include="Assets\usersIcon.jpg" />
     <Content Include="Assets\VideoGame.jpg" />

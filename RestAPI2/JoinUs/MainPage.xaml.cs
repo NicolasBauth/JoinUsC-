@@ -31,7 +31,7 @@ namespace JoinUs
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            ((MainPageViewModel)DataContext).OnNavigatedTo(e);
+            //((MainPageViewModel)DataContext).OnNavigatedTo(e);
         }
 
 

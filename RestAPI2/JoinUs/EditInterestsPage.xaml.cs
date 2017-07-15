@@ -29,7 +29,7 @@ namespace JoinUs
         }
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            ((EditInterestsPageViewModel)DataContext).OnNavigatedTo(e);
+            //((EditInterestsPageViewModel)DataContext).OnNavigatedTo(e);
         }
     }
 }

@@ -30,12 +30,12 @@ namespace JoinUs
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            ((LocateEventsPageViewModel)DataContext).OnNavigatedTo(e);
+            //((LocateEventsPageViewModel)DataContext).OnNavigatedTo(e);
         }
 
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
-            ((LocateEventsPageViewModel)DataContext).OnNavigatingFrom(e);
+            //((LocateEventsPageViewModel)DataContext).OnNavigatingFrom(e);
             base.OnNavigatingFrom(e);
         }
     }

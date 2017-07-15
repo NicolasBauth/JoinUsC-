@@ -4,6 +4,7 @@ using GalaSoft.MvvmLight.Views;
 using JoinUs.AppToastCenter;
 using JoinUs.DAO;
 using JoinUs.Model;
+using JoinUs.StaticServices;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -18,7 +19,7 @@ namespace JoinUs.ViewModel
 {
     public class CreateEventPageViewModel : ViewModelBase, INotifyPropertyChanged
     {
-        private string _nameText;
+        /*private string _nameText;
         private string _locationText;
         private DateTimeOffset _date;
         private TimeSpan _time;
@@ -37,7 +38,7 @@ namespace JoinUs.ViewModel
             List<CategoriesCheckBoxListViewModel> categories = new List<CategoriesCheckBoxListViewModel>();
             foreach (var category in userInterests)
             {
-                categories.Add(new CategoriesCheckBoxListViewModel(category.Name));
+                categories.Add(new CategoriesCheckBoxListViewModel(category.Title));
             }
             Interests = new ObservableCollection<CategoriesCheckBoxListViewModel>(categories);
         }
@@ -165,14 +166,14 @@ namespace JoinUs.ViewModel
                 }
                     if (selectedCategories.Count() == 0)
                     {
-                    categoriesToCommit.Add(new Category("Autres"));
+                        categoriesToCommit.Add(new Category("Autres",CategoryService.getIdOfCategoryName("Autres")));
                     }
                 else
                 {
                     int index = 0;
                     foreach (var categoryName in selectedCategories)
                     {
-                        categoriesToCommit.Add(new Category(selectedCategories.ElementAt(index)));
+                        categoriesToCommit.Add(new Category(selectedCategories.ElementAt(index),CategoryService.getIdOfCategoryName(selectedCategories.ElementAt(index))));
                         index++;
                     }
                 }
@@ -281,21 +282,22 @@ namespace JoinUs.ViewModel
         public void CloseOpenPane()
         {
             IsPaneOpen = !IsPaneOpen;
-        }
+        }*/
 
     }
    public class CategoriesCheckBoxListViewModel
     {
-        public string CategoryName { get; set; }
+        /*public string CategoryName { get; set; }
         public bool IsChecked { get; set; }
 
         public CategoriesCheckBoxListViewModel(string categoryName)
         {
             CategoryName = categoryName;
             IsChecked = false;
-        }
+        }*/
         
     }
+    
 }
 
 

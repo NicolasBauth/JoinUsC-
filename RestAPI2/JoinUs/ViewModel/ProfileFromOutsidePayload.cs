@@ -9,13 +9,13 @@ namespace JoinUs.ViewModel
 {
     public class ProfileFromOutsidePayload
     {
-        public User CurrentUser { get; set; }
+        /*public User CurrentUser { get; set; }
         public User VisitedUser { get; set; }
 
         public ProfileFromOutsidePayload(User currentUser, User visitedUser)
         {
             CurrentUser = currentUser;
             VisitedUser = visitedUser;
-        }
+        }*/
     }
 }

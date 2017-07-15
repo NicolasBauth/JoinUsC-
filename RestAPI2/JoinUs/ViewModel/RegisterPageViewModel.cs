@@ -17,7 +17,7 @@ namespace JoinUs.ViewModel
 {
     public class RegisterPageViewModel : ViewModelBase, INotifyPropertyChanged
     {
-        private INavigationService _navigationService;
+        /*private INavigationService _navigationService;
         private ICommand _commitCommand;
         private ICommand _goBackCommand;
         private string _firstName;
@@ -203,5 +203,6 @@ namespace JoinUs.ViewModel
         {
             _navigationService.GoBack();
         }
+        */
     }
 }

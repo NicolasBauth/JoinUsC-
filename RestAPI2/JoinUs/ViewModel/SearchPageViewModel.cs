@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Views;
 using JoinUs.DAO;
 using JoinUs.Model;
+using JoinUs.StaticServices;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,7 +18,7 @@ namespace JoinUs.ViewModel
 {
     public class SearchPageViewModel : ViewModelBase, INotifyPropertyChanged
     {
-        private INavigationService _navigationService;
+        /*private INavigationService _navigationService;
 
         public SearchPageViewModel(INavigationService navigationService)
         {
@@ -42,7 +43,7 @@ namespace JoinUs.ViewModel
             List<CategoriesCheckBoxListViewModel> categories = new List<CategoriesCheckBoxListViewModel>();
             foreach (var category in userInterests)
             {
-                categories.Add(new CategoriesCheckBoxListViewModel(category.Name));
+                categories.Add(new CategoriesCheckBoxListViewModel(category.Title));
             }
             Categories = new ObservableCollection<CategoriesCheckBoxListViewModel>(categories);
         }
@@ -122,7 +123,7 @@ namespace JoinUs.ViewModel
             List<Category> categoriesToSearch = new List<Category>();
             foreach(var categoryName in categoriesNameToSearch)
             {
-                categoriesToSearch.Add(new Category(categoryName));
+                categoriesToSearch.Add(new Category(categoryName,CategoryService.getIdOfCategoryName(categoryName)));
             }
             List<Event> matchingEvents = EventDAO.GetEventsAround(SearchRadius, categoriesToSearch);
             EventListPayload payloadToSend = new EventListPayload(_currentUser, matchingEvents);
@@ -210,5 +211,6 @@ namespace JoinUs.ViewModel
         {
             IsPaneOpen = !IsPaneOpen;
         }
+        */
     }
 }

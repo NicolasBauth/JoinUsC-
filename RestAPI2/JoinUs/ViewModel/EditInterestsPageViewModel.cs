@@ -18,7 +18,7 @@ namespace JoinUs.ViewModel
 {
     public class EditInterestsPageViewModel : ViewModelBase, INotifyPropertyChanged
     {
-        private INavigationService _navigationService;
+        /*private INavigationService _navigationService;
         private ICommand _editInterestsCommand;
         private ICommand _goBackCommand;
         private User _currentUser;
@@ -191,16 +191,17 @@ namespace JoinUs.ViewModel
         {
             IsPaneOpen = !IsPaneOpen;
         }
+        */
     }
 
     public class GridCellModel
     {
-        public Category RepresentedCategory { get; set; }
+        /*public Category RepresentedCategory { get; set; }
         public bool IsChecked { get; set; }
         public GridCellModel(Category representedCategory)
         {
             RepresentedCategory = representedCategory;
             IsChecked = true;
-        }
+        }*/
     }
 }

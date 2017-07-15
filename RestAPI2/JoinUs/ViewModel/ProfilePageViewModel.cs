@@ -18,7 +18,7 @@ namespace JoinUs.ViewModel
 {
     public class ProfilePageViewModel : ViewModelBase, INotifyPropertyChanged
     {
-        private string _profileImagePath;
+        /*private string _profileImagePath;
         private ObservableCollection<Category> _categories;
         private string _presentationString;
         private User _owner;
@@ -207,5 +207,6 @@ namespace JoinUs.ViewModel
         {
             IsPaneOpen = !IsPaneOpen;
         }
+        */
     }
 }
