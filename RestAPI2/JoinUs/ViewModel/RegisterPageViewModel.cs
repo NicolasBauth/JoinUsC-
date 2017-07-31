@@ -3,27 +3,22 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Views;
 using JoinUs.AppToastCenter;
 using JoinUs.DAO;
-using JoinUs.Model;
+using JoinUs.Model.UserDTOs;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Windows.UI.Xaml;
 
 namespace JoinUs.ViewModel
 {
     public class RegisterPageViewModel : ViewModelBase, INotifyPropertyChanged
     {
-        /*private INavigationService _navigationService;
+        private INavigationService _navigationService;
         private ICommand _commitCommand;
         private ICommand _goBackCommand;
         private string _firstName;
         private string _lastName;
         private string _eMail;
-        private string _userName;
         private DateTimeOffset _birthdate;
         private string _password;
         private string _passwordConfirmed;
@@ -93,19 +88,6 @@ namespace JoinUs.ViewModel
             }
         }
 
-        public string UserName
-        {
-            get
-            {
-                return _userName;
-            }
-            set
-            {
-                _userName = value;
-                RaisePropertyChanged("UserName");
-            }
-
-        }
 
         public DateTimeOffset BirthDate
         {
@@ -120,9 +102,9 @@ namespace JoinUs.ViewModel
             }
 
         }
-        
 
-        
+
+
 
 
         public RegisterPageViewModel(INavigationService navigationService)
@@ -134,40 +116,39 @@ namespace JoinUs.ViewModel
         {
             get
             {
-                if(this._commitCommand == null)
+                if (this._commitCommand == null)
                 {
-                    _commitCommand = new RelayCommand(() => Commit());
+                    _commitCommand = new RelayCommand(async () => await Commit());
                 }
                 return _commitCommand;
             }
         }
 
-        public void Commit()
+        public async Task Commit()
         {
             if (CanTryToCommit())
             {
-                User userToRegister = new User();
+                RegisterFormDTO userToRegister = new RegisterFormDTO();
                 userToRegister.Birthdate = BirthDate.Date;
                 userToRegister.Email = EMail;
                 userToRegister.FirstName = FirstName;
                 userToRegister.LastName = LastName;
-                userToRegister.UserName = UserName;
                 userToRegister.Password = PasswordConfirmed;
-                if (!UserDAO.RegisterUser(userToRegister))
+                userToRegister.ConfirmPassword = PasswordConfirmed;
+                bool formConfirmation = await UserDAO.RegisterUser(userToRegister);
+                if (!formConfirmation)
                 {
-                    
+
                     string toastTitle = "Utilisateur déjà existant";
                     string toastDescription = "Le pseudo que vous avez rentré existe déjà. Veuillez en choisir un autre.";
                     ToastCenter.InformativeNotify(toastTitle, toastDescription);
                 }
                 else
                 {
-                    UserDAO.RegisterUser(userToRegister);
                     _navigationService.NavigateTo("LoginPage");
                     string toastTitle = "Inscription réussie";
                     string toastDescription = "Vous avez bien été inscrit! Félicitations! Veuillez maintenant vous connecter.";
                     ToastCenter.InformativeNotify(toastTitle, toastDescription);
-                    
                 }
             }
             else
@@ -175,14 +156,14 @@ namespace JoinUs.ViewModel
                 string toastTitle = "Formulaire incorrect";
                 string toastDescription = "Tous les champs doivent être remplis. Vérifiez que les deux mots de passe entrés sont identiques.";
                 ToastCenter.InformativeNotify(toastTitle, toastDescription);
-            }           
+            }
         }
 
         public bool CanTryToCommit()
         {
-            if( FirstName!=null && LastName!=null && EMail!=null && BirthDate!=null && UserName!=null && Password!=null && PasswordConfirmed!=null && Password == PasswordConfirmed)
+            if (FirstName != null && LastName != null && EMail != null && BirthDate != null && Password != null && PasswordConfirmed != null && Password == PasswordConfirmed)
             {
-                return true;
+
             }
             return false;
         }
@@ -191,7 +172,7 @@ namespace JoinUs.ViewModel
         {
             get
             {
-                if(this._goBackCommand == null)
+                if (this._goBackCommand == null)
                 {
                     _goBackCommand = new RelayCommand(() => GoBack());
                 }
@@ -203,6 +184,6 @@ namespace JoinUs.ViewModel
         {
             _navigationService.GoBack();
         }
-        */
+
     }
 }

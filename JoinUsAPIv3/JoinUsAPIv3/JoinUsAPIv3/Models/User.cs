@@ -17,9 +17,8 @@ namespace JoinUsAPIv3.Models
         public string LastName { get; set; }
         [Column(TypeName = "datetime2")]
         public DateTime Birthdate { get; set; }
-        //[ForeignKey("ReferencedApplicationUser")]
-        //public string ReferencedApplicationUserId { get; set; }
-        public virtual ICollection<ApplicationUser> ReferencedApplicationUser { get; set; } 
+
+        public ApplicationUser ReferencedApplicationUser { get; set; }
         //lien recursif follower-followed
         [InverseProperty("Following")]
         public virtual ICollection<User> Followers { get; set; }

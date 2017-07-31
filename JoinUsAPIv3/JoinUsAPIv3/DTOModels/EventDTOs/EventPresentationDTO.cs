@@ -15,7 +15,8 @@ namespace DTOModels.EventDTOs
         public string CreatorLastName { get; set; }
         public string Description { get; set; }
         public string UrlFacebook { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
 
-        
     }
 }

@@ -1,4 +1,13 @@
-﻿using System;
+﻿using JoinUsAPIv3.Models;
+using JoinUsAPIv3.Providers;
+using JoinUsAPIv3.Results;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.Cookies;
+using Microsoft.Owin.Security.OAuth;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Security.Claims;
@@ -6,16 +15,6 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
-using System.Web.Http.ModelBinding;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.Cookies;
-using Microsoft.Owin.Security.OAuth;
-using JoinUsAPIv3.Models;
-using JoinUsAPIv3.Providers;
-using JoinUsAPIv3.Results;
 
 namespace JoinUsAPIv3.Controllers
 {
@@ -125,7 +124,7 @@ namespace JoinUsAPIv3.Controllers
 
             IdentityResult result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword,
                 model.NewPassword);
-            
+
             if (!result.Succeeded)
             {
                 return GetErrorResult(result);
@@ -258,9 +257,9 @@ namespace JoinUsAPIv3.Controllers
             if (hasRegistered)
             {
                 Authentication.SignOut(DefaultAuthenticationTypes.ExternalCookie);
-                
-                 ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(UserManager,
-                    OAuthDefaults.AuthenticationType);
+
+                ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(UserManager,
+                   OAuthDefaults.AuthenticationType);
                 ClaimsIdentity cookieIdentity = await user.GenerateUserIdentityAsync(UserManager,
                     CookieAuthenticationDefaults.AuthenticationType);
 
@@ -330,11 +329,16 @@ namespace JoinUsAPIv3.Controllers
 
             var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
             var userProfile = new User { Id = 1, Birthdate = model.Birthdate, FirstName = model.FirstName, LastName = model.LastName };
-            user.UserProfileId = 1;
-            
-            IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+
+
+            user.UserProfile = userProfile;
+            userProfile.ReferencedApplicationUser = user;
             context.UserProfiles.Add(userProfile);
-            context.SaveChanges();
+
+
+            IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+            //context.SaveChanges();
+
             if (!result.Succeeded)
             {
                 return GetErrorResult(result);
@@ -371,7 +375,7 @@ namespace JoinUsAPIv3.Controllers
             result = await UserManager.AddLoginAsync(user.Id, info.Login);
             if (!result.Succeeded)
             {
-                return GetErrorResult(result); 
+                return GetErrorResult(result);
             }
             return Ok();
         }

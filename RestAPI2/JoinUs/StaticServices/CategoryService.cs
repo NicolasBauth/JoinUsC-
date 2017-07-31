@@ -1,8 +1,5 @@
-﻿using System;
+﻿using JoinUs.Model;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace JoinUs.StaticServices
 {
@@ -12,7 +9,7 @@ namespace JoinUs.StaticServices
         public static long getIdOfCategoryName(string categoryName)
         {
             long idToReturn;
-            switch(categoryName)
+            switch (categoryName)
             {
                 case "Etude":
                     idToReturn = 1;
@@ -41,10 +38,21 @@ namespace JoinUs.StaticServices
                 case "Jeux de société":
                     idToReturn = 9;
                     break;
-                default: idToReturn = 10;
+                default:
+                    idToReturn = 10;
                     break;
             }
             return idToReturn;
+        }
+        public static List<Category> parseCategoryNameListToCategoryList(List<string> categoriesNames)
+        {
+            List<Category> parsedCategoryList = new List<Category>();
+            foreach (string categoryName in categoriesNames)
+            {
+                Category parsedCategory = new Category(categoryName);
+                parsedCategoryList.Add(parsedCategory);
+            }
+            return parsedCategoryList;
         }
     }
 }

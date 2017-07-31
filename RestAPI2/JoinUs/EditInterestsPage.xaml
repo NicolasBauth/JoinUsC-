@@ -44,7 +44,7 @@
                     </Grid.RowDefinitions>
                     <Border Background="SteelBlue" Grid.Row="0"/>
                     <TextBlock FontSize="30" Foreground="Gold" FontFamily="Impact" Text="Editer les intérêts" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                    <GridView Grid.Row="1"  ItemsSource="{Binding InterestsList,Mode=TwoWay}"  MaxWidth="450" BorderBrush="SteelBlue" BorderThickness="3" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,80,0,40">
+                    <GridView Grid.Row="1"  ItemsSource="{Binding AllCategoriesVisibleGrid,Mode=TwoWay}"  MaxWidth="450" BorderBrush="SteelBlue" BorderThickness="3" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,80,0,40">
                         <GridView.ItemTemplate>
                             <DataTemplate>
                                 <RelativePanel  MaxHeight="120" MaxWidth="115">
@@ -55,7 +55,7 @@
                                             
                                         </Grid.RowDefinitions>
                                         <Image Source="{Binding RepresentedCategory.ImagePath}" Stretch="Uniform" Grid.Row="0"/>
-                                        <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}" Content="{Binding RepresentedCategory.Name}" FontFamily="Impact" FontSize="16" Grid.Row="2" MinHeight="50"/>
+                                        <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}" Content="{Binding RepresentedCategory.Title}" FontFamily="Impact" FontSize="16" Grid.Row="2" MinHeight="50"/>
                                     </Grid>
                                 </RelativePanel>
 

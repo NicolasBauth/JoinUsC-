@@ -1,30 +1,22 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Views;
-using JoinUs.AppToastCenter;
 using JoinUs.Model;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using Windows.Devices.Geolocation;
-using Windows.Devices.Geolocation.Geofencing;
 using Windows.UI.Xaml.Navigation;
 
 namespace JoinUs.ViewModel
 {
     public class LocateEventsPageViewModel : ViewModelBase, INotifyPropertyChanged
     {
-        /*
+
         private INavigationService _navigationService;
 
         public LocateEventsPageViewModel(INavigationService navigationService)
         {
             _navigationService = navigationService;
-            
+
         }
 
 
@@ -33,16 +25,19 @@ namespace JoinUs.ViewModel
         private ICommand _goToCreateEventCommand;
         private ICommand _closeOpenPaneCommand;
         private bool _isPaneOpen;
-        private User _currentUser;
+        private AuthenticatedUser _currentUser;
+        private string _eventAddress;
+        private string _eventLongitude;
+        private string _eventLatitude;
 
         public void OnNavigatedTo(NavigationEventArgs e)
         {
-            _currentUser = (User)e.Parameter;
-            
+            _currentUser = (AuthenticatedUser)e.Parameter;
+
         }
         public void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
-            
+
         }
 
         public bool IsPaneOpen
@@ -117,13 +112,13 @@ namespace JoinUs.ViewModel
 
         public void GoToCreateEvent()
         {
-            _navigationService.NavigateTo("CreateEventPage",_currentUser);
+            _navigationService.NavigateTo("CreateEventPage", _currentUser);
         }
 
         public void CloseOpenPane()
         {
             IsPaneOpen = !IsPaneOpen;
         }
-        */
+
     }
 }

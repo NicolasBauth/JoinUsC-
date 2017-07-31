@@ -69,7 +69,7 @@
                     <TextBox FontFamily="Impact" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="150" MinHeight="25" Grid.Column="1" Grid.Row="1" Name="nameInput" Text="{Binding NameText, Mode=TwoWay}" />
                     <TextBlock  Grid.Row="1" Grid.Column="0" Name="textNom" Text="Nom"
                    FontFamily="Segoe UI Light Italic"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    <TextBox FontFamily="Impact" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="150" MinHeight="25" Grid.Column="1" Grid.Row="2" Name="locationInput" Text="{Binding LocationText, Mode=TwoWay}" />
+                    <Button FontFamily="Impact" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="150" MinHeight="25" Grid.Column="1" Grid.Row="2" Name="locationInput" Content ="Localisez!" Command="{Binding LocateEventCommand}" />
                     <TextBlock Grid.Row="2" Grid.Column="0" Name="textLieu" Text="Lieu" FontFamily="Segoe UI Light Italic" 
                    HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     <CalendarDatePicker FontFamily="Impact" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="150" MinHeight="25" Grid.Column="1" Grid.Row="3" Name="dateInput" Date="{Binding Date, Mode=TwoWay}" />

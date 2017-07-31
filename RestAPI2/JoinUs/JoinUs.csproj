@@ -17,6 +17,9 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <PackageCertificateKeyFile>JoinUs_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxBundle>Always</AppxBundle>
+    <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -123,10 +126,25 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\AuthenticatedUser.cs" />
     <Compile Include="Model\Category.cs" />
+    <Compile Include="Model\CategoryDTOs\CategoryDTO.cs" />
+    <Compile Include="Model\CategoryDTOs\UpdateUserInterestForm.cs" />
     <Compile Include="Model\Event.cs" />
+    <Compile Include="Model\EventDTOs\EventCreationDTO.cs" />
+    <Compile Include="Model\EventDTOs\EventPresentationDTO.cs" />
+    <Compile Include="Model\EventDTOs\EventScanDTO.cs" />
+    <Compile Include="Model\EventDTOs\EventSearchDTO.cs" />
+    <Compile Include="Model\EventDTOs\EventShortDTO.cs" />
     <Compile Include="Model\Tag.cs" />
+    <Compile Include="Model\TagDTOs\TagNameDTO.cs" />
     <Compile Include="Model\User.cs" />
+    <Compile Include="Model\UserDTOs\RegisterFormDTO.cs" />
+    <Compile Include="Model\UserDTOs\TokenPackage.cs" />
+    <Compile Include="Model\UserDTOs\UserCredentialsDTO.cs" />
+    <Compile Include="Model\UserDTOs\UserFullDTO.cs" />
+    <Compile Include="Model\UserDTOs\UserProfileDTO.cs" />
+    <Compile Include="Model\UserDTOs\UserShortDTO.cs" />
     <Compile Include="ProfileFromOutsidePage.xaml.cs">
       <DependentUpon>ProfileFromOutsidePage.xaml</DependentUpon>
     </Compile>
@@ -142,7 +160,9 @@
     </Compile>
     <Compile Include="AppToastCenter\ToastCenter.cs" />
     <Compile Include="StaticServices\CategoryService.cs" />
+    <Compile Include="StaticServices\UserService.cs" />
     <Compile Include="ViewModel\CreateEventPageViewModel.cs" />
+    <Compile Include="ViewModel\EditInterestPayload.cs" />
     <Compile Include="ViewModel\EditInterestsPageViewModel.cs" />
     <Compile Include="ViewModel\EventDescriptionPageViewModel.cs" />
     <Compile Include="ViewModel\EventDescriptionPayload.cs" />
@@ -238,7 +258,9 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="ExceptionManagement\" />
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

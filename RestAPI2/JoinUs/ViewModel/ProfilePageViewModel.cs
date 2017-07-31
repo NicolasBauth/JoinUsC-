@@ -1,15 +1,11 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Views;
-using JoinUs.AppToastCenter;
 using JoinUs.DAO;
 using JoinUs.Model;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.UI.Xaml.Navigation;
@@ -18,10 +14,10 @@ namespace JoinUs.ViewModel
 {
     public class ProfilePageViewModel : ViewModelBase, INotifyPropertyChanged
     {
-        /*private string _profileImagePath;
+        private string _profileImagePath;
         private ObservableCollection<Category> _categories;
         private string _presentationString;
-        private User _owner;
+        private AuthenticatedUser _owner;
         private INavigationService _navigationService;
         private ICommand _goToEditInterestsCommand;
         private ICommand _browseEventsCommand;
@@ -30,7 +26,7 @@ namespace JoinUs.ViewModel
         {
             get
             {
-                if(_browseEventsCommand == null)
+                if (_browseEventsCommand == null)
                 {
                     _browseEventsCommand = new RelayCommand(() => BrowseEvents());
                 }
@@ -40,6 +36,7 @@ namespace JoinUs.ViewModel
 
         public void BrowseEvents()
         {
+            /*
             if (EventDAO.GetAllEventsOfUser(Owner) != null)
             {
                 if (EventDAO.GetAllEventsOfUser(Owner).Count != 0)
@@ -53,30 +50,34 @@ namespace JoinUs.ViewModel
                     ToastCenter.InformativeNotify("Pas d'évènements", "L'utilisateur n'a aucun évènement à afficher");
                 }
             }
-            
+            */
         }
 
         public ICommand GoToEditInterestsCommand
         {
             get
             {
-                if(_goToEditInterestsCommand == null)
+                if (_goToEditInterestsCommand == null)
                 {
-                    _goToEditInterestsCommand = new RelayCommand(() => GoToEditInterests());
+                    _goToEditInterestsCommand = new RelayCommand(async () => await GoToEditInterests());
                 }
                 return _goToEditInterestsCommand;
             }
         }
 
-        public void GoToEditInterests()
+        public async Task GoToEditInterests()
         {
-            _navigationService.NavigateTo("EditInterestsPage", _owner);
+            List<Category> allCategories = await CategoryDAO.GetAllCategories();
+            EditInterestPayload payload = new EditInterestPayload();
+            payload.AllCategories = allCategories;
+            payload.CurrentUser = _owner;
+            _navigationService.NavigateTo("EditInterestsPage", payload);
         }
 
 
         public void OnNavigatedTo(NavigationEventArgs e)
         {
-            Owner = (User)e.Parameter;
+            Owner = (AuthenticatedUser)e.Parameter;
             Categories = new ObservableCollection<Category>(Owner.Interests);
             PresentationString = Owner.FirstName + " " + Owner.LastName + "," + Owner.Age + " ans";
             ProfileImagePath = Owner.ProfileImagePath;
@@ -84,14 +85,18 @@ namespace JoinUs.ViewModel
         public ObservableCollection<Category> Categories
         {
             get { return _categories; }
-            set { _categories = value;
+            set
+            {
+                _categories = value;
                 RaisePropertyChanged("Categories");
             }
         }
         public string ProfileImagePath
         {
             get { return _profileImagePath; }
-            set { _profileImagePath = value;
+            set
+            {
+                _profileImagePath = value;
                 RaisePropertyChanged("ProfileImagePath");
             }
         }
@@ -99,13 +104,14 @@ namespace JoinUs.ViewModel
         public string PresentationString
         {
             get { return _presentationString; }
-            set {
+            set
+            {
                 _presentationString = value;
                 RaisePropertyChanged("PresentationString");
-                    }
+            }
         }
 
-        public User Owner
+        public AuthenticatedUser Owner
         {
             get { return _owner; }
             set
@@ -115,10 +121,10 @@ namespace JoinUs.ViewModel
             }
         }
 
-        
+
 
         public ProfilePageViewModel(INavigationService navigationService)
-        { 
+        {
             _navigationService = navigationService;
         }
 
@@ -190,23 +196,23 @@ namespace JoinUs.ViewModel
 
         public void GoToProfile()
         {
-            _navigationService.NavigateTo("ProfilePage",Owner);
+            _navigationService.NavigateTo("ProfilePage", Owner);
         }
 
         public void GoToSearchEvent()
         {
-            _navigationService.NavigateTo("SearchEventPage",Owner);
+            _navigationService.NavigateTo("SearchEventPage", Owner);
         }
 
         public void GoToCreateEvent()
         {
-            _navigationService.NavigateTo("CreateEventPage",Owner);
+            _navigationService.NavigateTo("CreateEventPage", Owner);
         }
 
         public void CloseOpenPane()
         {
             IsPaneOpen = !IsPaneOpen;
         }
-        */
+
     }
 }

@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net.Http.Headers;
 
 namespace JoinUs.DAO
 {
@@ -21,7 +18,10 @@ namespace JoinUs.DAO
                 if (_client == null)
                 {
                     _client = new HttpClient();
-                    _client.BaseAddress = new Uri("http://joinusapiv3.azurewebsites.net/");
+                    _client.BaseAddress = new Uri("http://apijoynus.azurewebsites.net");
+                    _client.DefaultRequestHeaders.Accept.Clear();
+                    _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    //_client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(" x-www-form-urlencoded"));
                 }
                 return _client;
             }

@@ -1,17 +1,15 @@
-﻿using System;
+﻿using DTOModels.UserDTOs;
+using JoinUsAPIv3.Models;
+using JoinUsAPIv3.Utility;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
-using JoinUsAPIv3.Models;
-using DTOModels.UserDTOs;
-using JoinUsAPIv3.Utility;
 
 namespace JoinUsAPIv3.Controllers
 {
@@ -74,10 +72,74 @@ namespace JoinUsAPIv3.Controllers
         [ResponseType(typeof(UserProfileDTO))]
         public async Task<IHttpActionResult> GetUserProfileByUsername(string username)
         {
-            User user = await db.UserProfiles.SingleOrDefaultAsync(i => i.ReferencedApplicationUser.ElementAt(0).UserName == username);
+            User user = await db.UserProfiles.SingleOrDefaultAsync(i => i.ReferencedApplicationUser.UserName == username);
+            if (user == null)
+            {
+                return NotFound();
+            }
             List<string> interestNames = UtilityMethods.ParseCategoryListToCategoryNamesList(user.Interests);
             UserProfileDTO userProfile = new UserProfileDTO { BirthDate = user.Birthdate, FirstName = user.FirstName, LastName = user.LastName, Interests = interestNames };
             return Ok(userProfile);
+        }
+
+        [HttpPut]
+        [Route("UpdateUserInterests")]
+        [ResponseType(typeof(UserProfileDTO))]
+        public async Task<IHttpActionResult> UpdateUserProfile(UpdateUserInterestForm updateForm)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            User user = await db.UserProfiles.SingleOrDefaultAsync(i => i.ReferencedApplicationUser.UserName == updateForm.Username);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            List<Category> oldUserInterests = user.Interests.ToList();
+            foreach (var interest in oldUserInterests)
+            {
+                interest.Users.Remove(user);
+            }
+            List<Category> newUserInterests = new List<Category>();
+            foreach (var categoryId in updateForm.NewInterestsIds)
+            {
+                Category foundCategory = await db.Categories.SingleOrDefaultAsync(i => i.Id == categoryId);
+                if (foundCategory == null)
+                {
+                    return NotFound();
+                }
+                foundCategory.Users.Add(user);
+                newUserInterests.Add(foundCategory);
+            }
+
+            foreach (var interest in newUserInterests)
+            {
+                interest.Users.Add(user);
+                db.Entry(interest).State = EntityState.Modified;
+            }
+
+            user.Interests = newUserInterests;
+            db.Entry(user).State = EntityState.Modified;
+            try
+            {
+                await db.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException e)
+            {
+                return BadRequest(e.Message);
+            }
+            List<string> updatedProfileInterestNames = new List<string>();
+            foreach (var interest in user.Interests)
+            {
+                updatedProfileInterestNames.Add(interest.Name);
+            }
+            UserProfileDTO updatedProfile = new UserProfileDTO();
+            updatedProfile.BirthDate = user.Birthdate;
+            updatedProfile.FirstName = user.FirstName;
+            updatedProfile.LastName = user.LastName;
+            updatedProfile.Interests = updatedProfileInterestNames;
+            return Ok(updatedProfile);
         }
         // PUT: api/Users/5
         [ResponseType(typeof(void))]

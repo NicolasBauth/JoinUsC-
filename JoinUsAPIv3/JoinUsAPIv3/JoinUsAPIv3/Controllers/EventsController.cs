@@ -14,7 +14,8 @@ using System.Web.Http;
 using System.Web.Http.Description;
 
 namespace JoinUsAPIv3.Controllers
-{   [Authorize]
+{
+    [Authorize]
     [RoutePrefix("api/Events")]
     public class EventsController : ApiController
     {
@@ -38,7 +39,9 @@ namespace JoinUsAPIv3.Controllers
                              UrlFacebook = e.UrlFacebook,
                              Id = e.Id,
                              UserCount = e.Participants.Count,
-                             CategoriesNames = UtilityMethods.ParseCategoryListToCategoryNamesList(e.Categories.ToList())
+                             CategoriesNames = UtilityMethods.ParseCategoryListToCategoryNamesList(e.Categories.ToList()),
+                             Latitude = e.Latitude,
+                             Longitude = e.Longitude
                          };
 
             return events;
@@ -63,7 +66,7 @@ namespace JoinUsAPIv3.Controllers
         public IQueryable<EventShortDTO> GetEventsShort()
         {
             var eventsShorts = from e in db.Events
-                               where (DateTime.Compare(e.Date,DateTime.Now)>=0)
+                               where (DateTime.Compare(e.Date, DateTime.Now) >= 0)
                                select new EventShortDTO
                                {
                                    Address = e.Address,
@@ -83,12 +86,12 @@ namespace JoinUsAPIv3.Controllers
             //FindAsync not available here because it's a method from the DbSet type, and Include returns a DbQuery.
             //SingleOrDefaultAsync is a DbQuery method. It goes straight to the database
             //and doesn't look first in the context to see if the entity exists.           
-            Event @event = await db.Events.Include(b => b.Creator).Include(b=>b.Categories).Include(b =>b.Participants).SingleOrDefaultAsync(i => i.Id == id);
+            Event @event = await db.Events.Include(b => b.Creator).Include(b => b.Categories).Include(b => b.Participants).SingleOrDefaultAsync(i => i.Id == id);
             if (@event == null)
             {
                 return NotFound();
             }
-            EventPresentationDTO foundEvent= UtilityMethods.EventToEventPresentation(@event);
+            EventPresentationDTO foundEvent = UtilityMethods.EventToEventPresentation(@event);
             return Ok(foundEvent);
         }
 
@@ -110,7 +113,7 @@ namespace JoinUsAPIv3.Controllers
         {
             //needs testing.
             var foundUser = await db.UserProfiles.Include(b => b.JoinedEvents).SingleOrDefaultAsync(i => i.Id == userId);
-            if(foundUser == null)
+            if (foundUser == null)
             {
                 return NotFound();
             }
@@ -122,19 +125,19 @@ namespace JoinUsAPIv3.Controllers
         [Route("GetEventsAroundPoint")]
         public IEnumerable<EventScanDTO> GetEventsAroundPoint(EventSearchDTO form)
         {
-            
+
             var foundEvents = from e in db.Events.Include(b => b.Categories).Include(b => b.Tags).ToList()
                               where ((UtilityMethods.distanceInKmBetweenEarthCoordinates(form.CenterLatitude, form.CenterLongitude, e.Latitude, e.Longitude) <= form.Radius)
                                     && (DateTime.Compare(e.Date, DateTime.Now) >= 0))
                               select new EventScanDTO
                               {
-                                  Address = e.Address,                           
+                                  Address = e.Address,
                                   Date = e.Date,
                                   Title = e.Title,
                                   Id = e.Id,
                                   CategoriesNames = UtilityMethods.ParseCategoryListToCategoryNamesList(e.Categories.ToList()),
                                   TagsNames = UtilityMethods.ParseTagsListToTagsNamesList(e.Tags.ToList())
-                              }; 
+                              };
 
             /*List < EventShortDTO > matchingEvents = new List<EventShortDTO>();
             foreach(var foundEvent in foundEvents)
@@ -198,20 +201,27 @@ namespace JoinUsAPIv3.Controllers
             {
                 return BadRequest(ModelState);
             }
+            User user = await db.UserProfiles.SingleOrDefaultAsync(i => i.ReferencedApplicationUser.UserName == eventToAdd.CreatorUsername);
+            if (user == null)
+            {
+                return NotFound();
+            }
             Event createdDbEvent = new Event
             {
                 Address = eventToAdd.Address,
-                CreatorId = eventToAdd.CreatorId,
+                CreatorId = user.Id,
                 Date = eventToAdd.Date,
                 Description = eventToAdd.Description,
                 Title = eventToAdd.Title,
-                UrlFacebook = eventToAdd.FacebookUrl
+                UrlFacebook = eventToAdd.FacebookUrl,
+                Latitude = eventToAdd.Latitude,
+                Longitude = eventToAdd.Longitude
             };
-            string categorySearchCondition="";
+            string categorySearchCondition = "";
             int count = 0;
-            foreach(var categoryId in eventToAdd.CategoriesId)
+            foreach (var categoryId in eventToAdd.CategoriesId)
             {
-                if(count != 0)
+                if (count != 0)
                 {
                     categorySearchCondition += "||";
                 }
@@ -230,21 +240,21 @@ namespace JoinUsAPIv3.Controllers
             }
             string tagSearchCondition = "";
             count = 0;
-            foreach(var tagId in eventToAdd.TagsId)
+            foreach (var tagId in eventToAdd.TagsId)
             {
                 if (count != 0) tagSearchCondition += "||";
                 tagSearchCondition += "Id ==" + tagId;
                 count++;
             }
             var foundTags = from t in db.Tags.Where(tagSearchCondition) select t;
-            if(foundTags.Any())
+            if (foundTags.Any())
             {
-                foreach(var tag in foundTags)
+                foreach (var tag in foundTags)
                 {
                     createdDbEvent.Tags.Add(tag);
                 }
             }
-            var firstParticipant = await db.UserProfiles.FindAsync(eventToAdd.CreatorId);
+            var firstParticipant = await db.UserProfiles.FindAsync(user.Id);
             createdDbEvent.Participants.Add(firstParticipant);
             //require testing for an unexisting category or tag
             db.Events.Add(createdDbEvent);

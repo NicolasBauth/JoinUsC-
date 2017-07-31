@@ -20,7 +20,6 @@
                 <RowDefinition Height="*" MinHeight="40"/>
                 <RowDefinition Height="*" MinHeight="40"/>
                 <RowDefinition Height="*" MinHeight="40"/>
-                <RowDefinition Height="*" MinHeight="40"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*" MinWidth="100"/>
@@ -37,21 +36,19 @@
             <Border Background="White" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="4"/>
             <TextBlock FontSize="30" FontFamily="Segoe UI Light Italic" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" Text="Joy'n Us!" Grid.ColumnSpan="4" Foreground="Gold"/>
             <TextBlock FontFamily="Segoe UI Light Italic" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" Text="Prénom" FontSize="20"/>
-            <TextBox HorizontalAlignment="Center" VerticalAlignment="Center" MinHeight="40" MinWidth="120" Grid.Column="1" Grid.ColumnSpan="3"  Grid.Row="1" Text="{Binding FirstName, Mode=TwoWay}"/>
+            <TextBox HorizontalAlignment="Center" VerticalAlignment="Center" MinHeight="40" MinWidth="120" Grid.Column="1" Grid.ColumnSpan="3"  Grid.Row="1" Text="{Binding FirstName, Mode=TwoWay}" IsSpellCheckEnabled="False"/>
             <TextBlock FontFamily="Segoe UI Light Italic" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" Text="Nom" FontSize="20"/>
-            <TextBox HorizontalAlignment="Center" VerticalAlignment="Center" MinHeight="40" MinWidth="120" Grid.Column="1" Grid.ColumnSpan="3"  Grid.Row="2" Text="{Binding LastName, Mode=TwoWay}"/>
+            <TextBox HorizontalAlignment="Center" VerticalAlignment="Center" MinHeight="40" MinWidth="120" Grid.Column="1" Grid.ColumnSpan="3"  Grid.Row="2" Text="{Binding LastName, Mode=TwoWay}" IsSpellCheckEnabled="False"/>
             <TextBlock FontFamily="Segoe UI Light Italic" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Grid.Row="3" Text="Date de naissance" FontSize="20"/>
             <DatePicker MinHeight="40" MinWidth="140" FontSize="16" FontFamily="Impact" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Date="{Binding BirthDate, Mode=TwoWay}"/>
             <TextBlock FontFamily="Segoe UI Light Italic" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Grid.Row="4" Text="Adresse Mail" FontSize="20"/>
-            <TextBox HorizontalAlignment="Center" VerticalAlignment="Center" MinHeight="40" MinWidth="120" Grid.Column="1" Grid.ColumnSpan="3"  Grid.Row="4" Text="{Binding EMail, Mode=TwoWay}"/>
-            <TextBlock FontFamily="Segoe UI Light Italic" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Grid.Row="5" Text="Pseudo" FontSize="20"/>
-            <TextBox HorizontalAlignment="Center" VerticalAlignment="Center" MinHeight="40" MinWidth="120" Grid.Column="1" Grid.ColumnSpan="3"  Grid.Row="5" Text="{Binding UserName, Mode=TwoWay}"/>
-            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" MinHeight="40" Grid.Column="0" Grid.Row="6" Text="Mot de passe" FontSize="20"/>
-            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" MinHeight="40" Grid.Column="0" Grid.Row="7" Text="Confirmez le Mot de passe" FontSize="20"/>
-            <PasswordBox BorderBrush="LightGray" Password="{Binding Password,Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Center" MinHeight="40" MinWidth="120" Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="3"/>
-            <PasswordBox BorderBrush="LightGray" Password="{Binding PasswordConfirmed, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Center" MinHeight="40" MinWidth="120" Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="3"/>
-            <Button Background="SteelBlue" Foreground="Gold" Content="Retour" Command="{Binding GoBackCommand}" Grid.Row="8" Grid.Column="0"  HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="80" MinHeight="30" FontSize="18"/>
-            <Button Background="SteelBlue" Foreground ="Gold" Content="S'inscrire" Command="{Binding CommitCommand}" Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="80" MinHeight="30" FontSize="18"/>
+            <TextBox HorizontalAlignment="Center" VerticalAlignment="Center" MinHeight="40" MinWidth="120" Grid.Column="1" Grid.ColumnSpan="3"  Grid.Row="4" Text="{Binding EMail, Mode=TwoWay}" IsSpellCheckEnabled="False" InputScope="EmailNameOrAddress"/>
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" MinHeight="40" Grid.Column="0" Grid.Row="5" Text="Mot de passe" FontSize="20"/>
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" MinHeight="40" Grid.Column="0" Grid.Row="6" Text="Confirmez le Mot de passe" FontSize="20"/>
+            <PasswordBox BorderBrush="LightGray" Password="{Binding Password,Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Center" MinHeight="40" MinWidth="120" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3"/>
+            <PasswordBox BorderBrush="LightGray" Password="{Binding PasswordConfirmed, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Center" MinHeight="40" MinWidth="120" Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="3"/>
+            <Button Background="SteelBlue" Foreground="Gold" Content="Retour" Command="{Binding GoBackCommand}" Grid.Row="7" Grid.Column="0"  HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="80" MinHeight="30" FontSize="18"/>
+            <Button Background="SteelBlue" Foreground ="Gold" Content="S'inscrire" Command="{Binding CommitCommand}" Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="80" MinHeight="30" FontSize="18"/>
             
         </Grid>
     </ScrollViewer>

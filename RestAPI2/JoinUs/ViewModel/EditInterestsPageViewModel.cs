@@ -4,12 +4,9 @@ using GalaSoft.MvvmLight.Views;
 using JoinUs.AppToastCenter;
 using JoinUs.DAO;
 using JoinUs.Model;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.UI.Xaml.Navigation;
@@ -18,48 +15,63 @@ namespace JoinUs.ViewModel
 {
     public class EditInterestsPageViewModel : ViewModelBase, INotifyPropertyChanged
     {
-        /*private INavigationService _navigationService;
+        private INavigationService _navigationService;
         private ICommand _editInterestsCommand;
         private ICommand _goBackCommand;
-        private User _currentUser;
+        private AuthenticatedUser _currentUser;
         private List<Category> userInterests;
-        private List<GridCellModel> userInterestsToConvert;
-        private ObservableCollection<GridCellModel> _interestsList;
+        private List<Category> allCategories;
+        private List<GridCellModel> allCategoriesGrid;
+        private ObservableCollection<GridCellModel> allCategoriesVisibleGrid;
         private List<Category> _chosenCategories;
 
         public void OnNavigatedTo(NavigationEventArgs e)
         {
-            _currentUser = (User)e.Parameter;
-            userInterests = (List<Category>)CategoryDAO.GetAllCategories();
-            userInterestsToConvert = new List<GridCellModel>();
+            EditInterestPayload payload = (EditInterestPayload)e.Parameter;
+            allCategories = payload.AllCategories;
+            _currentUser = payload.CurrentUser;
+            userInterests = _currentUser.Interests;
+
+            allCategoriesGrid = new List<GridCellModel>();
+            foreach (var category in allCategories)
+            {
+                GridCellModel elementToAdd = new GridCellModel(category);
+                allCategoriesGrid.Add(elementToAdd);
+            }
             foreach (var interest in userInterests)
             {
-                GridCellModel elementToAdd = new GridCellModel(interest);
-                userInterestsToConvert.Add(elementToAdd);
+                foreach (var category in allCategoriesGrid)
+                {
+                    if (interest.Title == category.RepresentedCategory.Title)
+                    {
+                        category.IsChecked = true;
+                        break;
+                    }
+                }
             }
-            _interestsList = new ObservableCollection<GridCellModel>(userInterestsToConvert);
+            allCategoriesVisibleGrid = new ObservableCollection<GridCellModel>(allCategoriesGrid);
         }
 
-        public ObservableCollection<GridCellModel> InterestsList
+        public ObservableCollection<GridCellModel> AllCategoriesVisibleGrid
         {
             get
             {
-                return _interestsList;
+                return allCategoriesVisibleGrid;
             }
             set
             {
-                _interestsList = value;
-                RaisePropertyChanged("InterestsList");
+                allCategoriesVisibleGrid = value;
+                RaisePropertyChanged("AllCategoriesVisibleGrid");
             }
         }
-        
+
         public ICommand EditInterestsCommand
         {
             get
             {
-                if(this._editInterestsCommand == null)
+                if (this._editInterestsCommand == null)
                 {
-                    this._editInterestsCommand = new RelayCommand(() => EditInterests());
+                    this._editInterestsCommand = new RelayCommand(async () => await EditInterests());
                 }
                 return this._editInterestsCommand;
             }
@@ -69,7 +81,7 @@ namespace JoinUs.ViewModel
         {
             get
             {
-                if(this._goBackCommand == null)
+                if (this._goBackCommand == null)
                 {
                     this._goBackCommand = new RelayCommand(() => GoBack());
                 }
@@ -82,18 +94,18 @@ namespace JoinUs.ViewModel
             _navigationService.NavigateTo("ProfilePage", _currentUser);
         }
 
-        public void EditInterests()
+        public async Task EditInterests()
         {
             _chosenCategories = new List<Category>();
-            foreach(var category in _interestsList)
+            foreach (var category in AllCategoriesVisibleGrid)
             {
-                if(category.IsChecked)
+                if (category.IsChecked)
                 {
                     _chosenCategories.Add(category.RepresentedCategory);
                 }
             }
-            CategoryDAO.UpdateUserInterests(_currentUser, _chosenCategories);
-            _navigationService.NavigateTo("ProfilePage",_currentUser);
+            _currentUser = await CategoryDAO.UpdateUserInterests(_currentUser, _chosenCategories);
+            _navigationService.NavigateTo("ProfilePage", _currentUser);
             ToastCenter.InformativeNotify("Intérêts édités", "Intérêts édités avec succès");
         }
 
@@ -107,10 +119,10 @@ namespace JoinUs.ViewModel
         private ICommand _goToSearchEventCommand;
         private ICommand _goToCreateEventCommand;
         private ICommand _closeOpenPaneCommand;
-        
+
         private bool _isPaneOpen;
 
-       
+
 
         public bool IsPaneOpen
         {
@@ -174,34 +186,34 @@ namespace JoinUs.ViewModel
 
         public void GoToProfile()
         {
-            _navigationService.NavigateTo("ProfilePage",_currentUser);
+            _navigationService.NavigateTo("ProfilePage", _currentUser);
         }
 
         public void GoToSearchEvent()
         {
-            _navigationService.NavigateTo("SearchEventPage",_currentUser);
+            _navigationService.NavigateTo("SearchEventPage", _currentUser);
         }
 
         public void GoToCreateEvent()
         {
-            _navigationService.NavigateTo("CreateEventPage",_currentUser);
+            _navigationService.NavigateTo("CreateEventPage", _currentUser);
         }
 
         public void CloseOpenPane()
         {
             IsPaneOpen = !IsPaneOpen;
         }
-        */
+
     }
 
     public class GridCellModel
     {
-        /*public Category RepresentedCategory { get; set; }
+        public Category RepresentedCategory { get; set; }
         public bool IsChecked { get; set; }
         public GridCellModel(Category representedCategory)
         {
             RepresentedCategory = representedCategory;
-            IsChecked = true;
-        }*/
+            IsChecked = false;
+        }
     }
 }

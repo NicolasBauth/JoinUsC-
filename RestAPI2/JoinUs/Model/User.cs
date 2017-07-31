@@ -1,8 +1,6 @@
-﻿using System;
+﻿using JoinUs.StaticServices;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace JoinUs.Model
 {
@@ -22,13 +20,7 @@ namespace JoinUs.Model
             set
             {
                 _birthDate = value;
-                DateTime now = DateTime.Now;
-                _age = now.Year - _birthDate.Year;
-                if (now.Month < _birthDate.Month || (now.Month == _birthDate.Month && now.Day < _birthDate.Day))
-                {
-                    _age--;
-                }
-                Age = _age;
+                _age = UserService.CalculateAge(value);
             }
         }
         public string ProfileImagePath { get; set; }
@@ -38,26 +30,15 @@ namespace JoinUs.Model
             {
                 return _age;
             }
-            set
-            {
-                _age = value;
-            }
         }
-        
+
         public IEnumerable<string> Interests { get; set; }
-        public User(long dbId,string fN, string lN, string eM, DateTime birthDate, string path, string userName, string password)
+        public User(long dbId, string fN, string lN, string eM, DateTime birthDate, string path, string userName, string password)
         {
             FirstName = fN;
             LastName = lN;
             Birthdate = birthDate;
             ProfileImagePath = path;
-            DateTime now = DateTime.Now;
-            int age = now.Year - birthDate.Year;
-            if(now.Month < birthDate.Month || (now.Month == birthDate.Month && now.Day < birthDate.Day))
-            {
-                age--;
-            }
-            Age = age;
             Interests = new List<string>();
             DbId = dbId;
         }

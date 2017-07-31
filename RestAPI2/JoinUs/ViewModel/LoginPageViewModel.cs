@@ -5,13 +5,14 @@ using JoinUs.AppToastCenter;
 using JoinUs.DAO;
 using JoinUs.Model;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace JoinUs.ViewModel
 {
     public class LoginPageViewModel : ViewModelBase, INotifyPropertyChanged
     {
-        
+
         private string _password;
         private string _login;
         private INavigationService _navigationService;
@@ -58,33 +59,36 @@ namespace JoinUs.ViewModel
             {
                 if (this._loginCommand == null)
                 {
-                    this._loginCommand = new RelayCommand(() => CommitLogin());
+                    this._loginCommand = new RelayCommand(async () => await CommitLogin());
                 }
                 return _loginCommand;
             }
         }
 
-        public void CommitLogin()
+        public async Task CommitLogin()
         {
             if (CanExecuteLoginCommand())
             {
-                if (UserDAO.AuthenticateUser(Login, Password))
+                string tryToastTitle = "Tentative de Connexion...";
+                string tryToastText = "Tentative de Connexion pour l'utilisateur " + Login;
+                ToastCenter.InformativeNotify(tryToastTitle, tryToastText);
+                AuthenticatedUser currentUser = await UserDAO.AuthenticateUser(Login, Password);
+                if (currentUser != null)
                 {
                     _navigationService.NavigateTo("MainPage", currentUser);
-
                 }
                 else
                 {
-                    string toastTitle = "Erreur de Login";
-                    string toastText = "Mauvaise combinaison de mot de passe/nom d'utilisateur";
-                    ToastCenter.InformativeNotify(toastTitle, toastText);
+                    string errorToastTitle = "Erreur de Login";
+                    string errorToastText = "Mauvaise combinaison de mot de passe/nom d'utilisateur";
+                    ToastCenter.InformativeNotify(errorToastTitle, errorToastText);
                 }
             }
             else
             {
-                string toastTitle = "Erreur de Login";
-                string toastText = "Veuillez renseigner votre Login et votre mot de passe";
-                ToastCenter.InformativeNotify(toastTitle, toastText);
+                string errorToastTitle = "Erreur de Login";
+                string errorToastText = "Veuillez renseigner votre Login et votre mot de passe";
+                ToastCenter.InformativeNotify(errorToastTitle, errorToastText);
             }
         }
 
@@ -104,6 +108,6 @@ namespace JoinUs.ViewModel
         {
             _navigationService.NavigateTo("RegisterPage");
         }
-        
+
     }
 }

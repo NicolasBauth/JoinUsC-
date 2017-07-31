@@ -246,9 +246,13 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201706192313361_AzureInitial.cs" />
-    <Compile Include="Migrations\201706192313361_AzureInitial.Designer.cs">
-      <DependentUpon>201706192313361_AzureInitial.cs</DependentUpon>
+    <Compile Include="Migrations\201707212124430_Initial.cs" />
+    <Compile Include="Migrations\201707212124430_Initial.Designer.cs">
+      <DependentUpon>201707212124430_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707271519041_Fix2.cs" />
+    <Compile Include="Migrations\201707271519041_Fix2.Designer.cs">
+      <DependentUpon>201707271519041_Fix2.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
@@ -295,6 +299,7 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Properties\PublishProfiles\APIJoynus - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\JoinUsAPIv3 - Web Deploy %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\JoinUsAPIv3 - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
@@ -347,8 +352,11 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201706192313361_AzureInitial.resx">
-      <DependentUpon>201706192313361_AzureInitial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201707212124430_Initial.resx">
+      <DependentUpon>201707212124430_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707271519041_Fix2.resx">
+      <DependentUpon>201707271519041_Fix2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

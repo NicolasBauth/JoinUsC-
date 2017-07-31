@@ -4,13 +4,11 @@ using GalaSoft.MvvmLight.Views;
 using JoinUs.AppToastCenter;
 using JoinUs.DAO;
 using JoinUs.Model;
-using JoinUs.StaticServices;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.UI.Xaml.Navigation;
@@ -19,8 +17,7 @@ namespace JoinUs.ViewModel
 {
     public class CreateEventPageViewModel : ViewModelBase, INotifyPropertyChanged
     {
-        /*private string _nameText;
-        private string _locationText;
+        private string _nameText;
         private DateTimeOffset _date;
         private TimeSpan _time;
         private string _descriptionText;
@@ -28,12 +25,13 @@ namespace JoinUs.ViewModel
         private string _facebookLink;
         private string _tagsText;
         private ICommand _createCommand;
+        private ICommand _locateEventCommand;
         private INavigationService _navigationService;
-        private User _currentUser;
+        private AuthenticatedUser _currentUser;
 
-        public void OnNavigatedTo( NavigationEventArgs e)
+        public void OnNavigatedTo(NavigationEventArgs e)
         {
-            _currentUser = (User)e.Parameter;
+            _currentUser = (AuthenticatedUser)e.Parameter;
             List<Category> userInterests = (List<Category>)_currentUser.Interests;
             List<CategoriesCheckBoxListViewModel> categories = new List<CategoriesCheckBoxListViewModel>();
             foreach (var category in userInterests)
@@ -42,7 +40,7 @@ namespace JoinUs.ViewModel
             }
             Interests = new ObservableCollection<CategoriesCheckBoxListViewModel>(categories);
         }
-        
+
         public string NameText
         {
             get { return _nameText; }
@@ -53,15 +51,7 @@ namespace JoinUs.ViewModel
             }
         }
 
-        public string LocationText
-        {
-            get { return _locationText; }
-            set
-            {
-                _locationText = value;
-                RaisePropertyChanged("LocationText");
-            }
-        }
+
 
         public DateTimeOffset Date
         {
@@ -129,55 +119,69 @@ namespace JoinUs.ViewModel
             {
                 if (this._createCommand == null)
                 {
-                    this._createCommand = new RelayCommand(() => CreateEvent());
+                    this._createCommand = new RelayCommand(async () => await CreateEvent());
+                }
+                return this._createCommand;
+            }
+        }
+
+        public ICommand LocateEventCommand
+        {
+            get
+            {
+                if (this._locateEventCommand == null)
+                {
+                    this._createCommand = new RelayCommand(() => LocateEvent());
                 }
                 return this._createCommand;
             }
         }
         public CreateEventPageViewModel(INavigationService navigationService)
         {
-            
+
             _navigationService = navigationService;
         }
 
         private bool CanExecute()
         {
-            if (NameText != null && LocationText != null && Date != null && Time != null
+            if (NameText != null && Date != null && Time != null
                 && DescriptionText != null)
             {
                 return true;
             }
             return false;
         }
-        private void CreateEvent()
+        private async Task CreateEvent()
         {
-            Event eventToCreate = new Event(); 
-            
-            if(CanExecute())
+            Event eventToCreate = new Event();
+
+            if (CanExecute())
             {
                 List<string> selectedCategories = new List<string>();
                 List<Category> categoriesToCommit = new List<Category>();
                 foreach (var categoryCheckBox in Interests)
                 {
-                    if(categoryCheckBox.IsChecked)
+                    if (categoryCheckBox.IsChecked)
                     {
                         selectedCategories.Add(categoryCheckBox.CategoryName);
                     }
                 }
-                    if (selectedCategories.Count() == 0)
-                    {
-                        categoriesToCommit.Add(new Category("Autres",CategoryService.getIdOfCategoryName("Autres")));
-                    }
+                if (selectedCategories.Count() == 0)
+                {
+                    categoriesToCommit.Add(new Category("Autres"));
+                }
                 else
                 {
                     int index = 0;
                     foreach (var categoryName in selectedCategories)
                     {
-                        categoriesToCommit.Add(new Category(selectedCategories.ElementAt(index),CategoryService.getIdOfCategoryName(selectedCategories.ElementAt(index))));
+                        categoriesToCommit.Add(new Category(selectedCategories.ElementAt(index)));
                         index++;
                     }
                 }
-                eventToCreate.Adress = LocationText;
+                eventToCreate.Address = "77,Rue des Carmes, Namur";
+                eventToCreate.Latitude = 50.467521;
+                eventToCreate.Longitude = 4.863455;
                 eventToCreate.Categories = categoriesToCommit;
                 eventToCreate.Description = DescriptionText;
                 eventToCreate.Title = NameText;
@@ -187,15 +191,26 @@ namespace JoinUs.ViewModel
                 TimeSpan timeOfEvent = Time;
                 dateAndTimeOfEvent = dateOfEvent.Add(Time);
                 eventToCreate.Date = dateAndTimeOfEvent;
-
-                _navigationService.NavigateTo("MainPage",_currentUser);
-                ToastCenter.InformativeNotify("Evènement créé!", "Votre évènement a été créé avec succès!");
+                bool result = await EventDAO.CreateEventAsync(eventToCreate, _currentUser);
+                if (result)
+                {
+                    _navigationService.NavigateTo("MainPage", _currentUser);
+                    ToastCenter.InformativeNotify("Succès de l'enregistrement!", "L'évènement a été créé avec succès!");
+                }
+                else
+                {
+                    ToastCenter.InformativeNotify("Oups!", "Quelque chose s'est mal passé lors de la tentative de création de l'évènement. Vérifiez votre connexion internet et l'exactitude du formulaire.");
+                }
             }
             else
             {
                 ToastCenter.InformativeNotify("Mauvais formulaire", "Des champs obligatoires ne sont pas remplis. Seuls les tags, le lien facebook et les catégories sont optionnels.");
             }
 
+        }
+        public void LocateEvent()
+        {
+            _navigationService.NavigateTo("LocateEventPage", _currentUser);
         }
 
         private ICommand _goToProfileCommand;
@@ -266,38 +281,38 @@ namespace JoinUs.ViewModel
 
         public void GoToProfile()
         {
-            _navigationService.NavigateTo("ProfilePage",_currentUser);
+            _navigationService.NavigateTo("ProfilePage", _currentUser);
         }
 
         public void GoToSearchEvent()
         {
-            _navigationService.NavigateTo("SearchEventPage",_currentUser);
+            _navigationService.NavigateTo("SearchEventPage", _currentUser);
         }
 
         public void GoToCreateEvent()
         {
-            _navigationService.NavigateTo("CreateEventPage",_currentUser);
+            _navigationService.NavigateTo("CreateEventPage", _currentUser);
         }
 
         public void CloseOpenPane()
         {
             IsPaneOpen = !IsPaneOpen;
-        }*/
+        }
 
     }
-   public class CategoriesCheckBoxListViewModel
+    public class CategoriesCheckBoxListViewModel
     {
-        /*public string CategoryName { get; set; }
+        public string CategoryName { get; set; }
         public bool IsChecked { get; set; }
 
         public CategoriesCheckBoxListViewModel(string categoryName)
         {
             CategoryName = categoryName;
             IsChecked = false;
-        }*/
-        
+        }
+
     }
-    
+
 }
 
 

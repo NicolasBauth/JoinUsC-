@@ -63,7 +63,7 @@
                                     <RowDefinition Height="2*"/>
                                 </Grid.RowDefinitions>
                                 <Image Source="{Binding ImagePath}" Stretch="Uniform" Grid.Row="0"/>
-                                <TextBlock Text="{Binding Name}" Grid.Row="1"/>
+                                <TextBlock Text="{Binding Title}" Grid.Row="1"/>
                             </Grid>
                             </RelativePanel>
 

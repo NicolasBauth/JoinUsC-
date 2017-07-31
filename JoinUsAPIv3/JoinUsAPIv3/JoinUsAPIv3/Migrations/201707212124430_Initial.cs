@@ -3,7 +3,7 @@ namespace JoinUsAPIv3.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class AzureInitial : DbMigration
+    public partial class Initial : DbMigration
     {
         public override void Up()
         {
@@ -45,15 +45,17 @@ namespace JoinUsAPIv3.Migrations
                         LastName = c.String(nullable: false),
                         Birthdate = c.DateTime(nullable: false, precision: 7, storeType: "datetime2"),
                         RowVersion = c.Binary(nullable: false, fixedLength: true, timestamp: true, storeType: "rowversion"),
+                        UserId = c.String(nullable: false, maxLength: 128),
                     })
-                .PrimaryKey(t => t.Id);
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.AspNetUsers", t => t.UserId)
+                .Index(t => t.UserId);
             
             CreateTable(
                 "dbo.AspNetUsers",
                 c => new
                     {
                         Id = c.String(nullable: false, maxLength: 128),
-                        UserProfileId = c.Long(nullable: false),
                         Email = c.String(maxLength: 256),
                         EmailConfirmed = c.Boolean(nullable: false),
                         PasswordHash = c.String(),
@@ -67,8 +69,6 @@ namespace JoinUsAPIv3.Migrations
                         UserName = c.String(nullable: false, maxLength: 256),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Users", t => t.UserProfileId, cascadeDelete: true)
-                .Index(t => t.UserProfileId)
                 .Index(t => t.UserName, unique: true, name: "UserNameIndex");
             
             CreateTable(
@@ -202,7 +202,7 @@ namespace JoinUsAPIv3.Migrations
             DropForeignKey("dbo.TagEvents", "Event_Id", "dbo.Events");
             DropForeignKey("dbo.TagEvents", "Tag_Id", "dbo.Tags");
             DropForeignKey("dbo.Events", "CreatorId", "dbo.Users");
-            DropForeignKey("dbo.AspNetUsers", "UserProfileId", "dbo.Users");
+            DropForeignKey("dbo.Users", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserRoles", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
@@ -230,7 +230,7 @@ namespace JoinUsAPIv3.Migrations
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
             DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
             DropIndex("dbo.AspNetUsers", "UserNameIndex");
-            DropIndex("dbo.AspNetUsers", new[] { "UserProfileId" });
+            DropIndex("dbo.Users", new[] { "UserId" });
             DropIndex("dbo.Events", new[] { "CreatorId" });
             DropTable("dbo.TagEvents");
             DropTable("dbo.UserEvents");
