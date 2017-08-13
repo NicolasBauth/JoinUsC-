@@ -1,5 +1,6 @@
 ﻿
 using DTOModels.EventDTOs;
+using DTOModels.UserDTOs;
 using JoinUsAPIv3.Models;
 using JoinUsAPIv3.Utility;
 using System;
@@ -92,14 +93,16 @@ namespace JoinUsAPIv3.Controllers
                 return NotFound();
             }
             EventPresentationDTO foundEvent = UtilityMethods.EventToEventPresentation(@event);
+            User creatorProfile = await db.UserProfiles.Include(b => b.ReferencedApplicationUser).SingleOrDefaultAsync(i => i.Id == @event.CreatorId);
+            foundEvent.CreatorUsername = creatorProfile.ReferencedApplicationUser.UserName;
             return Ok(foundEvent);
         }
 
         [Route("GetEventsCreatedByUser")]
         [ResponseType(typeof(IEnumerable<EventShortDTO>))]
-        public async Task<IHttpActionResult> GetEventsCreatedByUser(long userId)
+        public async Task<IHttpActionResult> GetEventsCreatedByUser(string username)
         {
-            var foundUser = await db.UserProfiles.Include(b => b.CreatedEvents).SingleOrDefaultAsync(i => i.Id == userId);
+            User foundUser = await db.UserProfiles.SingleOrDefaultAsync(i => i.ReferencedApplicationUser.UserName == username);
             if (foundUser == null)
             {
                 return NotFound();
@@ -109,10 +112,10 @@ namespace JoinUsAPIv3.Controllers
         }
         [Route("GetEventsUserParticipates")]
         [ResponseType(typeof(IEnumerable<EventShortDTO>))]
-        public async Task<IHttpActionResult> GetEventsUserParticipates(long userId)
+        public async Task<IHttpActionResult> GetEventsUserParticipates(string username)
         {
-            //needs testing.
-            var foundUser = await db.UserProfiles.Include(b => b.JoinedEvents).SingleOrDefaultAsync(i => i.Id == userId);
+            
+            User foundUser = await db.UserProfiles.SingleOrDefaultAsync(i => i.ReferencedApplicationUser.UserName == username);
             if (foundUser == null)
             {
                 return NotFound();
@@ -138,22 +141,108 @@ namespace JoinUsAPIv3.Controllers
                                   CategoriesNames = UtilityMethods.ParseCategoryListToCategoryNamesList(e.Categories.ToList()),
                                   TagsNames = UtilityMethods.ParseTagsListToTagsNamesList(e.Tags.ToList())
                               };
-
-            /*List < EventShortDTO > matchingEvents = new List<EventShortDTO>();
-            foreach(var foundEvent in foundEvents)
-            {
-                var categoryNames = UtilityMethods.ParseCategoryListToCategoryNamesList(foundEvent.Categories);
-                foreach(var categoryName in categoryNames)
-                {
-                    if(form.CategoriesNamesList.Contains(categoryName))
-                    {
-                        matchingEvents.Add(UtilityMethods.EventToEventShort(foundEvent));
-                        break;
-                    }
-                }
-            }*/
-            //return matchingEvents;
             return foundEvents;
+        }
+        [Route("ParticipateToEvent")]
+        [ResponseType(typeof(void))]
+        [HttpPut]
+        public async Task<IHttpActionResult> ParticipateToEvent(EventParticipationForm form)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            Event foundEvent = await db.Events.Include(b => b.Participants).SingleOrDefaultAsync(i => i.Id == form.EventId);
+            if(foundEvent == null)
+            {
+                return NotFound();
+            }
+            User user = await db.UserProfiles.SingleOrDefaultAsync(i => i.ReferencedApplicationUser.UserName == form.Username);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            if(user.JoinedEvents.Contains(foundEvent) || foundEvent.Participants.Contains(user))
+            {
+                return BadRequest("User already participates");
+            }
+            user.JoinedEvents.Add(foundEvent);
+            foundEvent.Participants.Add(user);
+            db.Entry(user).State = EntityState.Modified;
+            db.Entry(foundEvent).State = EntityState.Modified;
+            try
+            {
+                await db.SaveChangesAsync();
+            }
+            catch(DbUpdateConcurrencyException e)
+            {
+                return BadRequest(e.Message);
+            }
+            return Ok();
+
+        }
+        [ResponseType(typeof(void))]
+        [Route("CancelParticipationToEvent")]
+        [HttpPut]
+        public async Task<IHttpActionResult> CancelParticipationToEvent(EventParticipationForm form)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            Event foundEvent = await db.Events.Include(b => b.Participants).SingleOrDefaultAsync(i => i.Id == form.EventId);
+            if (foundEvent == null)
+            {
+                return NotFound();
+            }
+            User user = await db.UserProfiles.SingleOrDefaultAsync(i => i.ReferencedApplicationUser.UserName == form.Username);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            if ((!user.JoinedEvents.Contains(foundEvent)) || (!foundEvent.Participants.Contains(user)))
+            {
+                return BadRequest("User doesnt participate to event");
+            }
+            user.JoinedEvents.Remove(foundEvent);
+            foundEvent.Participants.Remove(user);
+            db.Entry(user).State = EntityState.Modified;
+            db.Entry(foundEvent).State = EntityState.Modified;
+            try
+            {
+                await db.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException e)
+            {
+                return BadRequest(e.Message);
+            }
+            return Ok();
+        }
+        [Route("IsUserParticipatingToEvent")]
+        [ResponseType(typeof(bool))]
+        [HttpPut]
+        public async Task<IHttpActionResult> IsUserParticipatingToEvent (EventParticipationForm form)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            Event foundEvent = await db.Events.Include(b => b.Participants).SingleOrDefaultAsync(i => i.Id == form.EventId);
+            if (foundEvent == null)
+            {
+                return NotFound();
+            }
+            User user = await db.UserProfiles.SingleOrDefaultAsync(i => i.ReferencedApplicationUser.UserName == form.Username);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            if (user.JoinedEvents.Contains(foundEvent) || foundEvent.Participants.Contains(user))
+            {
+                return Ok(true);
+            }
+            return Ok(false);
+
         }
 
         // PUT: api/Events/5
@@ -263,8 +352,7 @@ namespace JoinUsAPIv3.Controllers
             //return CreatedAtRoute("DefaultApi", new { id = createdDbEvent.Id }, createdDbEvent);
             return Ok(eventToAdd);
         }
-
-        // DELETE: api/Events/5
+        [Route("DeleteEvent")]
         [ResponseType(typeof(Event))]
         public async Task<IHttpActionResult> DeleteEvent(long id)
         {

@@ -11,6 +11,7 @@ namespace JoinUs.Model
         public long DbId;
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string UserName { get; set; }
         public DateTime Birthdate
         {
             get
@@ -32,19 +33,11 @@ namespace JoinUs.Model
             }
         }
 
-        public IEnumerable<string> Interests { get; set; }
-        public User(long dbId, string fN, string lN, string eM, DateTime birthDate, string path, string userName, string password)
-        {
-            FirstName = fN;
-            LastName = lN;
-            Birthdate = birthDate;
-            ProfileImagePath = path;
-            Interests = new List<string>();
-            DbId = dbId;
-        }
+        public List<Category> Interests { get; set; }
+        
         public User()
         {
-            Interests = new List<string>();
+            Interests = new List<Category>();
         }
     }
 }

@@ -69,10 +69,10 @@
                     <TextBox FontFamily="Impact" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="150" MinHeight="25" Grid.Column="1" Grid.Row="1" Name="nameInput" Text="{Binding NameText, Mode=TwoWay}" />
                     <TextBlock  Grid.Row="1" Grid.Column="0" Name="textNom" Text="Nom"
                    FontFamily="Segoe UI Light Italic"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    <Button FontFamily="Impact" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="150" MinHeight="25" Grid.Column="1" Grid.Row="2" Name="locationInput" Content ="Localisez!" Command="{Binding LocateEventCommand}" />
+                    <Button FontFamily="Impact" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="150" MinHeight="25" Grid.Column="1" Grid.Row="2" Name="locationInput" Content ="{Binding LocateButtonText}" Command="{Binding LocateEventCommand}" />
                     <TextBlock Grid.Row="2" Grid.Column="0" Name="textLieu" Text="Lieu" FontFamily="Segoe UI Light Italic" 
                    HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    <CalendarDatePicker FontFamily="Impact" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="150" MinHeight="25" Grid.Column="1" Grid.Row="3" Name="dateInput" Date="{Binding Date, Mode=TwoWay}" />
+                    <CalendarDatePicker FontFamily="Impact" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="150" MinHeight="25" Grid.Column="1" Grid.Row="3" Name="dateInput" Date="{Binding Date, Mode=TwoWay}"  />
 
                     <TextBlock Grid.Row="3" Grid.Column="0" Name="textDate" FontFamily="Segoe UI Light Italic" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Date" />
 
@@ -80,7 +80,7 @@
 
                     <TextBlock Grid.Row="4" Grid.Column="0" Name="textHeure" FontFamily="Segoe UI Light Italic" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Heure"/>
 
-                    <TextBox FontFamily="Impact" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="150" MinHeight="80" Grid.Column="1" Grid.Row="5" Name="descriptionInput" Text="{Binding DescriptionText, Mode=TwoWay}" />
+                    <TextBox FontFamily="Impact" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="150" MinHeight="80" Grid.Column="1" Grid.Row="5" Name="descriptionInput" Text="{Binding DescriptionText, Mode=TwoWay}" TextWrapping="Wrap" AcceptsReturn="True" />
 
                     <TextBlock Grid.Row="5" Grid.Column="0" Name="textDescription" FontFamily="Segoe UI Light Italic" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Descr."/>
 
@@ -99,10 +99,8 @@
                     <TextBox FontFamily="Impact" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="150" MinHeight="25" Grid.Column="1" Grid.Row="7" Name="facebookInput" Text="{Binding FacebookLink, Mode=TwoWay}" />
 
                     <TextBlock Grid.Row="7" Grid.Column="0" Name="textLienFb" FontFamily="Segoe UI Light Italic" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Lien Fb"/>
-
-                    <TextBox FontFamily="Impact" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="150" MinHeight="25" Grid.Column="1" Grid.Row="8" Name="TagsInput" Text="{Binding TagsText, Mode=TwoWay}"/>
-
-                    <TextBlock Grid.Row="8" Grid.Column="0" Name="textTags" FontFamily="Segoe UI Light Italic" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Tags" />
+                    <TextBlock Grid.Row="8" Grid.Column="0" Name="textAddressCheck" FontFamily="Segoe UI Light Italic" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Vérification d'adresse"/>
+                    <TextBlock Grid.Row="8" Grid.Column="1" Name="addressdisplay" FontFamily="Segoe UI Light Italic" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding EventAddress}" />
                     <Button Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" FontFamily="Segoe UI Light Italic" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Créer l'event" FontSize="23" Background="SteelBlue" Foreground="Gold" Command="{Binding CreateCommand}" />
 
                 </Grid>

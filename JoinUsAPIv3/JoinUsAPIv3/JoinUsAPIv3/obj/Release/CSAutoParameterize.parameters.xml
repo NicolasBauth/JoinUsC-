@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="DefaultConnection-Web.config Connection String" description="DefaultConnection Connection String used in web.config by the application to access the database." defaultValue="Data Source=(LocalDb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\aspnet-JoinUsAPIv3-20170513015906.mdf;Initial Catalog=aspnet-JoinUsAPIv3-20170513015906;Integrated Security=True" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\nicol\\Desktop\\Joynus\\JoinUsC-\\JoinUsAPIv3\\JoinUsAPIv3\\JoinUsAPIv3\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='DefaultConnection']/@connectionString" />
+  </parameter>
+  <parameter name="JoinUsAPIv3Context-Web.config Connection String" description="JoinUsAPIv3Context Connection String used in web.config by the application to access the database." defaultValue="Data Source=(localdb)\MSSQLLocalDB; Initial Catalog=JoinUsAPIv3Context-20170513145236; Integrated Security=True; MultipleActiveResultSets=True; AttachDbFilename=|DataDirectory|JoinUsAPIv3Context-20170513145236.mdf" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\nicol\\Desktop\\Joynus\\JoinUsC-\\JoinUsAPIv3\\JoinUsAPIv3\\JoinUsAPIv3\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='JoinUsAPIv3Context']/@connectionString" />
+  </parameter>
+  <parameter name="AzureWebApp-Web.config Connection String" description="AzureWebApp Connection String used in web.config by the application to access the database." defaultValue="Server=tcp:webapplication120161030053921dbserver.database.windows.net,1433;Initial Catalog=BDJoinUs;Persist Security Info=False;User ID=Yenju@webapplication120161030053921dbserver;Password=PALLmall42;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\nicol\\Desktop\\Joynus\\JoinUsC-\\JoinUsAPIv3\\JoinUsAPIv3\\JoinUsAPIv3\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='AzureWebApp']/@connectionString" />
+  </parameter>
+</parameters>

@@ -51,6 +51,7 @@
     <Compile Include="EventDTOs\EventShortDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TagDTOs\TagNameDTO.cs" />
+    <Compile Include="UserDTOs\EventParticipationForm.cs" />
     <Compile Include="UserDTOs\RegisterFormDTO.cs" />
     <Compile Include="UserDTOs\UpdateUserInterestForm.cs" />
     <Compile Include="UserDTOs\UserCredentialsDTO.cs" />

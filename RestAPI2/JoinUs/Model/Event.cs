@@ -14,10 +14,12 @@ namespace JoinUs.Model
         public string UrlFacebook { get; set; }
         public DateTime Date { get; set; }
 
-        public IEnumerable<Category> Categories { get; set; }
-        public User Creator { get; set; }
+        public List<Category> Categories { get; set; }
+        public string CreatorUsername { get; set; }
+        public string CreatorFirstName { get; set; }
+        public string CreatorLastName { get; set; }
 
-        public List<User> Participants { get; set; }
+        public int ParticipantsCount { get; set; }
 
         public List<Tag> Tags { get; set; }
 
@@ -25,25 +27,8 @@ namespace JoinUs.Model
         {
 
         }
-        public Event(long dbId, string title, string description, string address, string facebookLink, DateTime date, IEnumerable<Category> categories)
-        {
-            Title = title;
-            Description = description;
-            Address = address;
-            UrlFacebook = facebookLink;
-            Date = date;
-            Categories = categories;
-            DbId = dbId;
-        }
-        public Event(long dbId, string title, string description, string address, DateTime date, IEnumerable<Category> categories)
-        {
-            Title = title;
-            Description = description;
-            Address = address;
-            Date = date;
-            Categories = categories;
-            DbId = dbId;
-        }
+        
+       
 
     }
 }

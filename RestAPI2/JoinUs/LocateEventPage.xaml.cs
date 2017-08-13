@@ -4,10 +4,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.Devices.Geolocation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Services.Maps;
+using Windows.Storage.Streams;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Maps;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
@@ -30,9 +34,13 @@ namespace JoinUs
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            //((LocateEventsPageViewModel)DataContext).OnNavigatedTo(e);
+            ((LocateEventsPageViewModel)DataContext).OnNavigatedTo(e);
         }
 
+        private async void LocateEventMapControl1_MapTapped(Windows.UI.Xaml.Controls.Maps.MapControl sender, Windows.UI.Xaml.Controls.Maps.MapInputEventArgs args)
+        {
+            await ((LocateEventsPageViewModel)DataContext).LocateEventMapControl1_MapTapped(sender,args);
+        }
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
             //((LocateEventsPageViewModel)DataContext).OnNavigatingFrom(e);

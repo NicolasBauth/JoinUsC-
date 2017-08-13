@@ -1,4 +1,5 @@
 ﻿using JoinUs.Model;
+using JoinUs.Model.EventDTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,13 +10,20 @@ namespace JoinUs.ViewModel
 {
     public class EventDescriptionPayload
     {
-        /*public User CurrentUser { get; set; }
+        public AuthenticatedUser CurrentUser { get; set; }
         public Event EventToDisplay { get; set; }
+        public bool IsCurrentUserParticipating { get; set; }
 
-        public EventDescriptionPayload(User currentUser,Event eventToDisplay)
+        public EventDescriptionPayload(AuthenticatedUser currentUser,Event eventToDisplay, bool isCurrentUserParticipating)
         {
             CurrentUser = currentUser;
             EventToDisplay = eventToDisplay;
-        }*/
+            IsCurrentUserParticipating = isCurrentUserParticipating;
+        }
+
+        public EventDescriptionPayload()
+        {
+
+        }
     }
 }

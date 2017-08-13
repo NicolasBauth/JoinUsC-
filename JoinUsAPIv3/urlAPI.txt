@@ -1,7 +1,0 @@
-JoinUsAPIv3.azurewebsites.net
-
-
-
-nom du serveur sur Azure: JoinUs
-Nom d'utilisateur de base de données: Relthar
-mdp: Henachallenge12

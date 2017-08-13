@@ -1,0 +1,313 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Roots >
+  <Roots.PropertyPathNames>
+    <RootPropertyPathName Name="CreateEvent" />
+    <RootPropertyPathName Name="IsPaneOpen" />
+    <RootPropertyPathName Name="GoToCreateEventCommand" />
+    <RootPropertyPathName Name="GoToSearchEventCommand" />
+    <RootPropertyPathName Name="GoToProfileCommand" />
+    <RootPropertyPathName Name="CloseOpenPaneCommand" />
+    <RootPropertyPathName Name="CreateCommand" />
+    <RootPropertyPathName Name="EventAddress" />
+    <RootPropertyPathName Name="FacebookLink" />
+    <RootPropertyPathName Name="Interests" />
+    <RootPropertyPathName Name="IsChecked" />
+    <RootPropertyPathName Name="CategoryName" />
+    <RootPropertyPathName Name="DescriptionText" />
+    <RootPropertyPathName Name="Time" />
+    <RootPropertyPathName Name="Date" />
+    <RootPropertyPathName Name="LocateButtonText" />
+    <RootPropertyPathName Name="LocateEventCommand" />
+    <RootPropertyPathName Name="NameText" />
+    <RootPropertyPathName Name="EditInterests" />
+    <RootPropertyPathName Name="EditInterestsCommand" />
+    <RootPropertyPathName Name="GoBackCommand" />
+    <RootPropertyPathName Name="AllCategoriesVisibleGrid" />
+    <RootPropertyPathName Name="RepresentedCategory" />
+    <RootPropertyPathName Name="Title" />
+    <RootPropertyPathName Name="ImagePath" />
+    <RootPropertyPathName Name="EventDescription" />
+    <RootPropertyPathName Name="DeleteEventCommand" />
+    <RootPropertyPathName Name="AdminButtonsVisibility" />
+    <RootPropertyPathName Name="GoToCreatorProfileCommand" />
+    <RootPropertyPathName Name="GoToFacebookCommand" />
+    <RootPropertyPathName Name="ParticipateButtonText" />
+    <RootPropertyPathName Name="ParticipateCommand" />
+    <RootPropertyPathName Name="CreatorString" />
+    <RootPropertyPathName Name="NumberOfParticipantsString" />
+    <RootPropertyPathName Name="CategoriesDisplay" />
+    <RootPropertyPathName Name="Description" />
+    <RootPropertyPathName Name="ShowEventLocationCommand" />
+    <RootPropertyPathName Name="EventDate" />
+    <RootPropertyPathName Name="Address" />
+    <RootPropertyPathName Name="EventList" />
+    <RootPropertyPathName Name="GoToDescriptionOfEventCommand" />
+    <RootPropertyPathName Name="EventsList" />
+    <RootPropertyPathName Name="SelectedEvent" />
+    <RootPropertyPathName Name="EventPosition" />
+    <RootPropertyPathName Name="EventLocation" />
+    <RootPropertyPathName Name="LocateCenter" />
+    <RootPropertyPathName Name="ValidateCommand" />
+    <RootPropertyPathName Name="CancelCommand" />
+    <RootPropertyPathName Name="MapCenter" />
+    <RootPropertyPathName Name="LocateEvent" />
+    <RootPropertyPathName Name="LoginPage" />
+    <RootPropertyPathName Name="RegisterCommand" />
+    <RootPropertyPathName Name="LoginCommand" />
+    <RootPropertyPathName Name="Password" />
+    <RootPropertyPathName Name="Login" />
+    <RootPropertyPathName Name="Main" />
+    <RootPropertyPathName Name="UserProfile" />
+    <RootPropertyPathName Name="ParticipatingEventsButtonText" />
+    <RootPropertyPathName Name="BrowseEventsParticipatingCommand" />
+    <RootPropertyPathName Name="GoToEditInterestsCommand" />
+    <RootPropertyPathName Name="CreatedEventsButtonText" />
+    <RootPropertyPathName Name="BrowseEventsCreatedCommand" />
+    <RootPropertyPathName Name="Categories" />
+    <RootPropertyPathName Name="PresentationString" />
+    <RootPropertyPathName Name="ProfileImagePath" />
+    <RootPropertyPathName Name="RegisterPage" />
+    <RootPropertyPathName Name="CommitCommand" />
+    <RootPropertyPathName Name="PasswordWarning" />
+    <RootPropertyPathName Name="PasswordConfirmed" />
+    <RootPropertyPathName Name="EMail" />
+    <RootPropertyPathName Name="BirthDate" />
+    <RootPropertyPathName Name="LastName" />
+    <RootPropertyPathName Name="FirstName" />
+    <RootPropertyPathName Name="SearchEvent" />
+    <RootPropertyPathName Name="LaunchScanCommand" />
+    <RootPropertyPathName Name="LocateButtonTitle" />
+    <RootPropertyPathName Name="ScanFromGivenPositionCommand" />
+    <RootPropertyPathName Name="FeatureDescription" />
+    <RootPropertyPathName Name="SearchRadius" />
+  </Roots.PropertyPathNames>
+  <Roots.RootTypes>
+    <RootType FullName="Windows.UI.Xaml.Application">
+      <RootProperty Name="RequestedTheme" />
+      <RootProperty Name="Resources" />
+    </RootType>
+    <RootType FullName="JoinUs.ViewModel.ViewModelLocator" />
+    <RootType FullName="Windows.UI.Xaml.Controls.Page">
+      <RootProperty Name="Height" />
+      <RootProperty Name="Width" />
+      <RootProperty Name="DataContext" />
+      <RootProperty Name="Content" />
+    </RootType>
+    <RootType FullName="Windows.UI.Xaml.Data.Binding">
+      <RootProperty Name="Source" />
+      <RootProperty Name="Path" />
+      <RootProperty Name="Mode" />
+    </RootType>
+    <RootType FullName="Microsoft.Xaml.DirectUI.ProxyTypes.StaticResourceExtension" />
+    <RootType FullName="Windows.UI.Xaml.Controls.SplitView">
+      <RootProperty Name="DisplayMode" />
+      <RootProperty Name="IsPaneOpen" />
+      <RootProperty Name="CompactPaneLength" />
+      <RootProperty Name="OpenPaneLength" />
+      <RootProperty Name="Pane" />
+      <RootProperty Name="Content" />
+    </RootType>
+    <RootType FullName="Windows.UI.Xaml.Controls.StackPanel">
+      <RootProperty Name="Background" />
+      <RootProperty Name="Children" />
+      <RootProperty Name="Orientation" />
+      <RootProperty Name="HorizontalAlignment" />
+      <RootProperty Name="VerticalAlignment" />
+      <RootProperty Name="MaxWidth" />
+      <RootProperty Name="MaxHeight" />
+    </RootType>
+    <RootType FullName="Windows.UI.Xaml.Controls.Button">
+      <RootProperty Name="FontFamily" />
+      <RootProperty Name="Content" />
+      <RootProperty Name="Width" />
+      <RootProperty Name="Height" />
+      <RootProperty Name="Background" />
+      <RootProperty Name="Command" />
+      <RootProperty Name="Name" />
+      <RootProperty Name="HorizontalAlignment" />
+      <RootProperty Name="VerticalAlignment" />
+      <RootProperty Name="MinWidth" />
+      <RootProperty Name="MinHeight" />
+      <RootProperty Name="FontSize" />
+      <RootProperty Name="Foreground" />
+      <RootProperty Name="Margin" />
+      <RootProperty Name="Visibility" />
+    </RootType>
+    <RootType FullName="Windows.UI.Xaml.Controls.TextBlock">
+      <RootProperty Name="Text" />
+      <RootProperty Name="FontSize" />
+      <RootProperty Name="VerticalAlignment" />
+      <RootProperty Name="Name" />
+      <RootProperty Name="HorizontalAlignment" />
+      <RootProperty Name="Foreground" />
+      <RootProperty Name="FontFamily" />
+      <RootProperty Name="TextWrapping" />
+      <RootProperty Name="MaxWidth" />
+      <RootProperty Name="MinHeight" />
+      <RootProperty Name="MaxHeight" />
+      <RootProperty Name="TextAlignment" />
+    </RootType>
+    <RootType FullName="Windows.UI.Xaml.Controls.ScrollViewer">
+      <RootProperty Name="HorizontalScrollBarVisibility" />
+      <RootProperty Name="VerticalScrollBarVisibility" />
+      <RootProperty Name="Content" />
+    </RootType>
+    <RootType FullName="Windows.UI.Xaml.Controls.Grid">
+      <RootProperty Name="Background" />
+      <RootProperty Name="ColumnDefinitions" />
+      <RootProperty Name="RowDefinitions" />
+      <RootProperty Name="Children" />
+      <RootMethod Name="GetRow" />
+      <RootMethod Name="SetRow" />
+      <RootMethod Name="GetColumn" />
+      <RootMethod Name="SetColumn" />
+      <RootMethod Name="GetColumnSpan" />
+      <RootMethod Name="SetColumnSpan" />
+      <RootMethod Name="GetRowSpan" />
+      <RootMethod Name="SetRowSpan" />
+    </RootType>
+    <RootType FullName="Microsoft.Xaml.DirectUI.ProxyTypes.ThemeResourceExtension" />
+    <RootType FullName="Windows.UI.Xaml.Controls.ColumnDefinition">
+      <RootProperty Name="Width" />
+      <RootProperty Name="MinWidth" />
+      <RootProperty Name="MaxWidth" />
+    </RootType>
+    <RootType FullName="Windows.UI.Xaml.Controls.RowDefinition">
+      <RootProperty Name="Height" />
+      <RootProperty Name="MinHeight" />
+      <RootProperty Name="MaxHeight" />
+    </RootType>
+    <RootType FullName="Windows.UI.Xaml.Controls.Border">
+      <RootProperty Name="Background" />
+      <RootProperty Name="BorderThickness" />
+      <RootProperty Name="BorderBrush" />
+      <RootProperty Name="Child" />
+    </RootType>
+    <RootType FullName="Windows.UI.Xaml.Controls.TextBox">
+      <RootProperty Name="Name" />
+      <RootProperty Name="FontFamily" />
+      <RootProperty Name="HorizontalAlignment" />
+      <RootProperty Name="VerticalAlignment" />
+      <RootProperty Name="MinWidth" />
+      <RootProperty Name="MinHeight" />
+      <RootProperty Name="Text" />
+      <RootProperty Name="TextWrapping" />
+      <RootProperty Name="AcceptsReturn" />
+      <RootProperty Name="BorderBrush" />
+      <RootProperty Name="IsSpellCheckEnabled" />
+      <RootProperty Name="InputScope" />
+    </RootType>
+    <RootType FullName="Windows.UI.Xaml.Controls.CalendarDatePicker">
+      <RootProperty Name="Name" />
+      <RootProperty Name="FontFamily" />
+      <RootProperty Name="HorizontalAlignment" />
+      <RootProperty Name="VerticalAlignment" />
+      <RootProperty Name="MinWidth" />
+      <RootProperty Name="MinHeight" />
+      <RootProperty Name="Date" />
+    </RootType>
+    <RootType FullName="Windows.UI.Xaml.Controls.TimePicker">
+      <RootProperty Name="Name" />
+      <RootProperty Name="FontFamily" />
+      <RootProperty Name="HorizontalAlignment" />
+      <RootProperty Name="VerticalAlignment" />
+      <RootProperty Name="MinWidth" />
+      <RootProperty Name="MinHeight" />
+      <RootProperty Name="Time" />
+    </RootType>
+    <RootType FullName="Windows.UI.Xaml.Controls.ListView">
+      <RootProperty Name="MaxWidth" />
+      <RootProperty Name="ItemsSource" />
+      <RootProperty Name="ItemTemplate" />
+      <RootProperty Name="MinWidth" />
+      <RootProperty Name="SelectedItem" />
+    </RootType>
+    <RootType FullName="Windows.UI.Xaml.DataTemplate">
+      <RootProperty Name="Template" />
+    </RootType>
+    <RootType FullName="Windows.UI.Xaml.Controls.CheckBox">
+      <RootProperty Name="IsChecked" />
+      <RootProperty Name="Content" />
+      <RootProperty Name="FontFamily" />
+      <RootProperty Name="FontSize" />
+      <RootProperty Name="MinHeight" />
+    </RootType>
+    <RootType FullName="JoinUs.CreateEventPage" />
+    <RootType FullName="Windows.UI.Xaml.Controls.GridView">
+      <RootProperty Name="ItemsSource" />
+      <RootProperty Name="MaxWidth" />
+      <RootProperty Name="BorderBrush" />
+      <RootProperty Name="BorderThickness" />
+      <RootProperty Name="HorizontalAlignment" />
+      <RootProperty Name="VerticalAlignment" />
+      <RootProperty Name="Margin" />
+      <RootProperty Name="ItemTemplate" />
+      <RootProperty Name="MinWidth" />
+      <RootProperty Name="MinHeight" />
+    </RootType>
+    <RootType FullName="Windows.UI.Xaml.Controls.RelativePanel">
+      <RootProperty Name="MaxHeight" />
+      <RootProperty Name="MaxWidth" />
+      <RootProperty Name="Children" />
+      <RootProperty Name="HorizontalAlignment" />
+      <RootProperty Name="VerticalAlignment" />
+      <RootMethod Name="GetRightOf" />
+      <RootMethod Name="SetRightOf" />
+    </RootType>
+    <RootType FullName="Windows.UI.Xaml.Controls.Image">
+      <RootProperty Name="Source" />
+      <RootProperty Name="Stretch" />
+      <RootProperty Name="MinWidth" />
+      <RootProperty Name="MinHeight" />
+      <RootProperty Name="MaxHeight" />
+      <RootProperty Name="MaxWidth" />
+    </RootType>
+    <RootType FullName="JoinUs.EditInterestsPage" />
+    <RootType FullName="JoinUs.EventDescriptionPage" />
+    <RootType FullName="JoinUs.EventListPage" />
+    <RootType FullName="Windows.UI.Xaml.Controls.Maps.MapControl">
+      <RootProperty Name="MapServiceToken" />
+      <RootProperty Name="Center" />
+      <RootProperty Name="ZoomLevel" />
+      <RootEvent Name="MapTapped" />
+    </RootType>
+    <RootType FullName="JoinUs.EventPositionPage" />
+    <RootType FullName="JoinUs.LocateCenterPage" />
+    <RootType FullName="JoinUs.LocateEventPage" />
+    <RootType FullName="Windows.UI.Xaml.Controls.PasswordBox">
+      <RootProperty Name="BorderBrush" />
+      <RootProperty Name="Password" />
+      <RootProperty Name="MinHeight" />
+      <RootProperty Name="MinWidth" />
+      <RootProperty Name="HorizontalAlignment" />
+      <RootProperty Name="VerticalAlignment" />
+    </RootType>
+    <RootType FullName="JoinUs.LoginPage" />
+    <RootType FullName="Windows.UI.Xaml.Media.ImageBrush">
+      <RootProperty Name="ImageSource" />
+      <RootProperty Name="AlignmentY" />
+      <RootProperty Name="AlignmentX" />
+    </RootType>
+    <RootType FullName="JoinUs.MainPage" />
+    <RootType FullName="JoinUs.ProfilePage" />
+    <RootType FullName="Windows.UI.Xaml.Controls.DatePicker">
+      <RootProperty Name="MinHeight" />
+      <RootProperty Name="MinWidth" />
+      <RootProperty Name="FontSize" />
+      <RootProperty Name="FontFamily" />
+      <RootProperty Name="HorizontalAlignment" />
+      <RootProperty Name="VerticalAlignment" />
+      <RootProperty Name="Date" />
+    </RootType>
+    <RootType FullName="JoinUs.RegisterPage" />
+    <RootType FullName="Windows.UI.Xaml.Controls.Slider">
+      <RootProperty Name="Minimum" />
+      <RootProperty Name="Maximum" />
+      <RootProperty Name="MinWidth" />
+      <RootProperty Name="VerticalAlignment" />
+      <RootProperty Name="Margin" />
+      <RootProperty Name="Value" />
+    </RootType>
+    <RootType FullName="JoinUs.SearchPage" />
+  </Roots.RootTypes>
+</Roots>

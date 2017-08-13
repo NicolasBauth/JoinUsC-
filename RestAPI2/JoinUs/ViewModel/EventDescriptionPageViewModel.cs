@@ -4,8 +4,10 @@ using GalaSoft.MvvmLight.Views;
 using JoinUs.AppToastCenter;
 using JoinUs.DAO;
 using JoinUs.Model;
+using JoinUs.Model.UserDTOs;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -18,13 +20,11 @@ namespace JoinUs.ViewModel
 {
     public class EventDescriptionPageViewModel : ViewModelBase, INotifyPropertyChanged
     {
-        /*private INavigationService _navigationService;
+        private INavigationService _navigationService;
         private string _title;
-        private string _adress;
+        private string _address;
         private DateTime _eventDate;
         private string _description;
-        private string _tagsString;
-        private string _firstCategoryImagePath;
         private string _numberOfParticipantsString;
         private string _creatorString;
         private string _facebookUrl;
@@ -32,65 +32,70 @@ namespace JoinUs.ViewModel
         private ICommand _goToFacebookCommand;
         private ICommand _participateCommand;
         private ICommand _goToCreatorProfileCommand;
-        public EventDescriptionPageViewModel(INavigationService navigationService)
-        {
-            _navigationService = navigationService;
-        }
+        private ICommand _showEventLocationCommand;
+        private ICommand _deleteEventCommand;
 
         private ICommand _goToProfileCommand;
         private ICommand _goToSearchEventCommand;
         private ICommand _goToCreateEventCommand;
         private ICommand _closeOpenPaneCommand;
+        private ICommand _goBackCommand;
         private bool _isPaneOpen;
-        private Model.User _currentUser;
+        private AuthenticatedUser _currentUser;
         private Event _eventToDetail;
+        private bool _isCurrentUserCreator;
+        private List<Category> _categoriesOfEvent;
+        private ObservableCollection<Category> _categoriesDisplay;
+        private bool _isUserAlreadyParticipating;
 
+        public EventDescriptionPageViewModel(INavigationService navigationService)
+        {
+            _navigationService = navigationService;
+        }
         public void OnNavigatedTo(NavigationEventArgs e)
         {
             EventDescriptionPayload payload = (EventDescriptionPayload)e.Parameter;
             _currentUser = payload.CurrentUser;
             _eventToDetail = payload.EventToDisplay;
             _title = EventToDetail.Title;
-            _adress = EventToDetail.Adress;
+            _address = EventToDetail.Address;
             _eventDate = EventToDetail.Date;
             _description = EventToDetail.Description;
-            _tagsString = "";
-            if (EventToDetail.Categories != null)
-            {
-                Category firstCategory = EventToDetail.Categories.ElementAt(0);
-                _firstCategoryImagePath = firstCategory.ImagePath;
-            }
-            if (EventToDetail.Tags!=null)
-            {
-                List<Tag> tags = (List<Tag>)EventToDetail.Tags;
-
-
-                foreach (var tag in tags)
-                {
-                    _tagsString += tag.Name;
-                }
-            }
-            int numberOfParticipants = EventToDetail.Participants.Count();
-            _numberOfParticipantsString = numberOfParticipants + " personnes participent";
-            _creatorString = "Créé par " + EventToDetail.Creator.UserName;
+            _categoriesOfEvent = EventToDetail.Categories;
+            _categoriesDisplay = new ObservableCollection<Category>(_categoriesOfEvent);         
+            int numberOfParticipants = EventToDetail.ParticipantsCount;
+            _numberOfParticipantsString = numberOfParticipants + " personne(s) participe(nt)";
+            _creatorString = "Créé par " + EventToDetail.CreatorFirstName +" "+EventToDetail.CreatorLastName;
+            _isCurrentUserCreator = (EventToDetail.CreatorUsername == _currentUser.UserName);
             _facebookUrl = EventToDetail.UrlFacebook;
-            
-            
+            _isUserAlreadyParticipating = payload.IsCurrentUserParticipating;
         }
 
-        public string FirstCategoryImagePath
+        
+
+        public ObservableCollection<Category> CategoriesDisplay
         {
             get
             {
-                return _firstCategoryImagePath;
+                return _categoriesDisplay;
             }
             set
             {
-                _firstCategoryImagePath = value;
-                RaisePropertyChanged("FirstCategoryImagePath");
+                _categoriesDisplay = value;
+                RaisePropertyChanged("CategoriesDisplay");
             }
         }
-
+        public string AdminButtonsVisibility
+        {
+            get
+            {
+                if(_isCurrentUserCreator)
+                {
+                    return "Visible";
+                }
+                return "Collapsed";
+            }
+        }
         public string Title
         {
             get
@@ -104,29 +109,31 @@ namespace JoinUs.ViewModel
             }
         }
 
-        public string Adress
+        public string Address
         {
             get
             {
-                return _adress;
+                return _address;
             }
             set
             {
-                _adress = value;
+                _address = value;
                 RaisePropertyChanged("Adress");
             }
         }
-        public DateTime EventDate
+        public string EventDate
         {
             get
             {
-                return _eventDate;
+                string eventDateString="Le ";
+                eventDateString += _eventDate.Day;
+                eventDateString += " ";
+                eventDateString += GetMonthName(_eventDate.Month);
+                eventDateString += " de l'année ";
+                eventDateString += _eventDate.Year;
+                return eventDateString;
             }
-            set
-            {
-                _eventDate = value;
-                RaisePropertyChanged("EventDate");
-            }
+            
         }
         public string Description
         {
@@ -141,18 +148,6 @@ namespace JoinUs.ViewModel
             }
         }
 
-        public string TagsString
-        {
-            get
-            {
-                return _tagsString;
-            }
-            set
-            {
-                _tagsString = value;
-                RaisePropertyChanged("TagsString");
-            }
-        }
 
         public string NumberOfParticipantsString
         {
@@ -162,6 +157,7 @@ namespace JoinUs.ViewModel
             }
             set
             {
+                _numberOfParticipantsString = value;
                 RaisePropertyChanged("NumberOfParticipantsString");
             }
         }
@@ -196,21 +192,16 @@ namespace JoinUs.ViewModel
         {
             get
             {
-                if(CheckIfUserIsAlreadyParticipating())
+                if(_isUserAlreadyParticipating)
                 {
-                    _participateButtonText = "Se désinscrire";
+                    return "Se désinscrire";
                 }
                 else
                 {
-                    _participateButtonText = "S'inscrire";
+                    return "S'inscrire";
                 }
-                return _participateButtonText;
             }
-            set
-            {
-                _participateButtonText = value;
-                RaisePropertyChanged("ParticipateButtonText");
-            }
+            
         }
 
         public Event EventToDetail
@@ -264,45 +255,154 @@ namespace JoinUs.ViewModel
             {
                 if(this._participateCommand == null)
                 {
-                    _participateCommand = new RelayCommand(() => Participate());
+                    _participateCommand = new RelayCommand(async() => await Participate());
                 }
                 return _participateCommand;
             }
         }
 
-        public void Participate()
+        public async Task Participate()
         {
-            if(CheckIfUserIsAlreadyParticipating())
+            if (DateTime.Compare(_eventToDetail.Date, DateTime.Now) > 0)
             {
-                EventDAO.KickEvent(_currentUser, EventToDetail);
-                ToastCenter.InformativeNotify("Désinscription", "Vous avez été bien désinscrit de l'évènement.");
-                ParticipateButtonText = "S'inscrire";
+                bool succeeded;
+                if (_isUserAlreadyParticipating)
+                {
+                    succeeded = await UserDAO.CancelParticipationToEvent(_currentUser.UserName, _eventToDetail.DbId);
+                }
+                else
+                {
+                    succeeded = await UserDAO.ParticipateToEvent(_currentUser.UserName, _eventToDetail.DbId);
+                }
+                if (succeeded)
+                {
+                    _navigationService.GoBack();
+                }
             }
             else
             {
-                EventDAO.JoinEvent(_currentUser, EventToDetail);
-                ToastCenter.InformativeNotify("Inscription", "Vous avez bien été inscrit à l'évènement");
-                ParticipateButtonText = "Se désinscrire";
+                ToastCenter.InformativeNotify("Inscription/Désinscription impossible", "Malheureusement, il semble que vous soyez en retard à la fête... cet évènement est déjà passé!");
             }
         }
 
+        public string GetMonthName(int indiceMois)
+        {
+            string monthName = "";
+            switch(indiceMois)
+            {
+                case 1:
+                    monthName = "Janvier";
+                    break;
+                case 2:
+                    monthName = "Février";
+                    break;
+                case 3:
+                    monthName = "Mars";
+                    break;
+                case 4:
+                    monthName = "Avril";
+                    break;
+                case 5:
+                    monthName = "Mai";
+                    break;
+                case 6:
+                    monthName = "Juin";
+                    break;
+                case 7:
+                    monthName = "Juillet";
+                    break;
+                case 8:
+                    monthName = "Août";
+                    break;
+                case 9:
+                    monthName = "Septembre";
+                    break;
+                case 10:
+                    monthName = "Octobre";
+                    break;
+                case 11:
+                    monthName = "Novembre";
+                    break;
+                case 12:
+                    monthName = "Décembre";
+                    break;
+            }
+            return monthName;
+        }
         public ICommand GoToCreatorProfileCommand
         {
             get
             {
                 if(_goToCreatorProfileCommand == null)
                 {
-                    _goToCreatorProfileCommand = new RelayCommand(() => GoToCreatorProfile());
+                    _goToCreatorProfileCommand = new RelayCommand(async() =>await GoToCreatorProfile());
                 }
                 return _goToCreatorProfileCommand;
             }
             
         }
 
-        public void GoToCreatorProfile()
+        public async Task GoToCreatorProfile()
         {
-            ProfileFromOutsidePayload payloadToSend= new ProfileFromOutsidePayload(_currentUser, EventToDetail.Creator);
-            _navigationService.NavigateTo("ProfileFromOutsidePage", payloadToSend);
+            ProfilePagePayload payloadToSend= new ProfilePagePayload();
+            Model.User creatorProfile = await UserDAO.LoadUserProfileAsync(EventToDetail.CreatorUsername);
+            payloadToSend.CurrentUser = _currentUser;
+            payloadToSend.ProfileOwner = creatorProfile;
+            _navigationService.NavigateTo("ProfilePage", payloadToSend);
+        }
+
+        public ICommand ShowEventLocationCommand
+        {
+            get
+            {
+                if(this._showEventLocationCommand == null)
+                {
+                    _showEventLocationCommand = new RelayCommand(() => ShowEventLocation());
+                }
+                return _showEventLocationCommand;
+            }
+        }
+        public void ShowEventLocation()
+        {
+            EventPositionPagePayload payloadToSend = new EventPositionPagePayload();
+            payloadToSend.CurrentUser = _currentUser;
+            payloadToSend.Title = EventToDetail.Title;
+            payloadToSend.Latitude = EventToDetail.Latitude;
+            payloadToSend.Longitude = EventToDetail.Longitude;
+            _navigationService.NavigateTo("EventPositionPage", payloadToSend);
+        }
+
+        public ICommand DeleteEventCommand
+        {
+            get
+            {
+                if(this._deleteEventCommand == null)
+                {
+                    _deleteEventCommand = new RelayCommand(async() =>await DeleteEvent());
+                }
+                return _deleteEventCommand;
+            }
+        }
+        public async Task DeleteEvent()
+        {
+            if(!_isCurrentUserCreator)
+            {
+                ToastCenter.InformativeNotify("Pas les droits", "Vous ne pouvez pas supprimer un évènement dont vous n'êtes pas le créateur.");
+            }
+            else
+            {
+                bool succeeded = await EventDAO.DeleteEventAsync(EventToDetail.DbId);
+                if(succeeded)
+                {
+                    ToastCenter.InformativeNotify("Suppression réussie", "La suppression de l'évènement s'est déroulée correctement.");
+                    _navigationService.NavigateTo("MainPage", _currentUser);
+                }
+                else
+                {
+                    ToastCenter.InformativeNotify("Suppression échouée", "La suppression a échoué... tentez de rafraichir la page et vérifiez votre connexion internet.");
+                }
+
+            }
         }
         public bool IsPaneOpen
         {
@@ -314,19 +414,22 @@ namespace JoinUs.ViewModel
             }
         }
 
-        public bool CheckIfUserIsAlreadyParticipating()
+        public ICommand GoBackCommand
         {
-            foreach(var participant in EventToDetail.Participants)
+            get
             {
-                if(_currentUser.UserName == participant.UserName)
+                if(this._goBackCommand == null)
                 {
-                    return true;
+                    this._goBackCommand = new RelayCommand(() => GoBack());
                 }
+                return this._goBackCommand;
             }
-            return false;
         }
 
-
+        public void GoBack()
+        {
+            _navigationService.GoBack();
+        }
 
         public ICommand GoToProfileCommand
         {
@@ -378,23 +481,29 @@ namespace JoinUs.ViewModel
 
         public void GoToProfile()
         {
-            _navigationService.NavigateTo("ProfilePage",_currentUser);
+            ProfilePagePayload payloadToSend = new ProfilePagePayload();
+            payloadToSend.CurrentUser = _currentUser;
+            _navigationService.NavigateTo("ProfilePage", payloadToSend);
         }
 
         public void GoToSearchEvent()
         {
-            _navigationService.NavigateTo("SearchEventPage",_currentUser);
+            SearchPagePayload payloadToSend = new SearchPagePayload();
+            payloadToSend.CurrentUser = _currentUser;
+            _navigationService.NavigateTo("SearchEventPage", payloadToSend);
         }
 
         public void GoToCreateEvent()
         {
-            _navigationService.NavigateTo("CreateEventPage", _currentUser);
+            CreateEventPagePayload payload = new CreateEventPagePayload();
+            payload.CurrentUser = _currentUser;
+            _navigationService.NavigateTo("CreateEventPage", payload);
         }
 
         public void CloseOpenPane()
         {
             IsPaneOpen = !IsPaneOpen;
         }
-        */
+        
     }
 }

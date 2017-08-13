@@ -19,24 +19,7 @@ namespace JoinUsAPIv3.Controllers
     {
         private JoinUsAPIv3Context db = new JoinUsAPIv3Context();
 
-        // GET: api/Users
-        /*public IQueryable<User> GetUsers()
-        {
-            return db.UserProfiles;
-        }*/
-
-        // GET: api/Users/5
-        /*[ResponseType(typeof(User))]
-        public async Task<IHttpActionResult> GetUser(long id)
-        {
-            User user = await db.UserProfiles.FindAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(user);
-        }*/
+        
         [HttpGet]
         public IEnumerable<UserFullDTO> GetUsers()
         {

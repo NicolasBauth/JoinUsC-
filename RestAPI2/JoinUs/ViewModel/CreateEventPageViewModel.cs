@@ -11,6 +11,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.Devices.Geolocation;
+using Windows.System;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Navigation;
 
 namespace JoinUs.ViewModel
@@ -23,15 +26,28 @@ namespace JoinUs.ViewModel
         private string _descriptionText;
         private ObservableCollection<CategoriesCheckBoxListViewModel> _interests;
         private string _facebookLink;
-        private string _tagsText;
         private ICommand _createCommand;
         private ICommand _locateEventCommand;
         private INavigationService _navigationService;
         private AuthenticatedUser _currentUser;
-
+        private Geopoint _eventLocation;
+        private string _eventAddress;
         public void OnNavigatedTo(NavigationEventArgs e)
         {
-            _currentUser = (AuthenticatedUser)e.Parameter;
+            CreateEventPagePayload payload = (CreateEventPagePayload)e.Parameter;
+            _currentUser = payload.CurrentUser;
+            if(payload.EventLocation == null)
+            {
+                if(_eventLocation == null)
+                {
+                    EventAddress = "Pas d'adresse";
+                }
+            }
+            else
+            {
+                _eventLocation = payload.EventLocation.Location;
+                EventAddress = payload.EventLocation.Address;
+            }
             List<Category> userInterests = (List<Category>)_currentUser.Interests;
             List<CategoriesCheckBoxListViewModel> categories = new List<CategoriesCheckBoxListViewModel>();
             foreach (var category in userInterests)
@@ -51,18 +67,50 @@ namespace JoinUs.ViewModel
             }
         }
 
-
+        public string LocateButtonText
+        {
+            get
+            {
+                if(_eventLocation == null)
+                {
+                    return "Localisez!";
+                }
+                else
+                {
+                    return "Modifier...";
+                }
+            }
+        }
+        public string EventAddress
+        {
+            get
+            {
+                return _eventAddress;
+            }
+            set
+            {
+                _eventAddress = value;
+                RaisePropertyChanged("EventAddress");
+            }
+        }
 
         public DateTimeOffset Date
         {
-            get { return _date; }
+            get
+            {
+                if(DateTimeOffset.Compare(_date,DateTimeOffset.Now)<0)
+                {
+                    return DateTimeOffset.Now;
+                }
+                return _date;
+            }
             set
             {
                 _date = value;
                 RaisePropertyChanged("Date");
             }
         }
-
+        
         public TimeSpan Time
         {
             get { return _time; }
@@ -93,15 +141,7 @@ namespace JoinUs.ViewModel
             }
         }
 
-        public string TagsText
-        {
-            get { return _tagsText; }
-            set
-            {
-                _tagsText = value;
-                RaisePropertyChanged("TagsText");
-            }
-        }
+        
 
         public ObservableCollection<CategoriesCheckBoxListViewModel> Interests
         {
@@ -131,9 +171,9 @@ namespace JoinUs.ViewModel
             {
                 if (this._locateEventCommand == null)
                 {
-                    this._createCommand = new RelayCommand(() => LocateEvent());
+                    this._locateEventCommand = new RelayCommand(() =>LocateEvent());
                 }
-                return this._createCommand;
+                return this._locateEventCommand;
             }
         }
         public CreateEventPageViewModel(INavigationService navigationService)
@@ -144,11 +184,47 @@ namespace JoinUs.ViewModel
 
         private bool CanExecute()
         {
-            if (NameText != null && Date != null && Time != null
-                && DescriptionText != null)
+            int selectedCategoriesCount = 0;
+            foreach (var category in Interests)
             {
-                return true;
+                if(category.IsChecked)
+                {
+                    selectedCategoriesCount++;
+                }
             }
+            if (NameText != null && Date != null && Time != null
+                && DescriptionText != null && _eventLocation != null && selectedCategoriesCount != 0)
+            {
+                if (DateTimeOffset.Compare(_date, DateTimeOffset.Now) < 0)
+                {
+                    ToastCenter.InformativeNotify("Date de l'évènement dans le passé", "Il semble que la date de votre évènement soit dans le passé...");
+                    return false;
+                }
+                    if (_facebookLink != null)
+                    {
+                        Uri uriResult;
+                        bool result = Uri.TryCreate(_facebookLink, UriKind.Absolute, out uriResult) && (Uri.CheckSchemeName(uriResult.Scheme));
+                        if (result)
+                        {
+                            if (uriResult.Host == "www.facebook.com")
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                ToastCenter.InformativeNotify("URL invalide", "Le lien de l'évènement facebook spécifié n'est pas un lien facebook...");
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            ToastCenter.InformativeNotify("URL invalide", "l'URL facebook spécifiée n'est pas une URL valide.");
+                            return false;
+                        }
+                    }
+                    return true;
+            }
+            ToastCenter.InformativeNotify("Mauvais formulaire", "Des champs obligatoires ne sont pas remplis. Seuls le lien facebook est optionnel. N'oubliez pas de cocher au moins une catégorie.");
             return false;
         }
         private async Task CreateEvent()
@@ -179,9 +255,9 @@ namespace JoinUs.ViewModel
                         index++;
                     }
                 }
-                eventToCreate.Address = "77,Rue des Carmes, Namur";
-                eventToCreate.Latitude = 50.467521;
-                eventToCreate.Longitude = 4.863455;
+                eventToCreate.Address = _eventAddress;
+                eventToCreate.Latitude = _eventLocation.Position.Latitude;
+                eventToCreate.Longitude = _eventLocation.Position.Longitude;
                 eventToCreate.Categories = categoriesToCommit;
                 eventToCreate.Description = DescriptionText;
                 eventToCreate.Title = NameText;
@@ -196,21 +272,37 @@ namespace JoinUs.ViewModel
                 {
                     _navigationService.NavigateTo("MainPage", _currentUser);
                     ToastCenter.InformativeNotify("Succès de l'enregistrement!", "L'évènement a été créé avec succès!");
+                    NameText = null;
+                    DescriptionText = null;
+                    FacebookLink = null;
+
                 }
                 else
                 {
-                    ToastCenter.InformativeNotify("Oups!", "Quelque chose s'est mal passé lors de la tentative de création de l'évènement. Vérifiez votre connexion internet et l'exactitude du formulaire.");
+                    ToastCenter.InformativeNotify("Oups!", "Quelque chose s'est mal passé lors de la tentative de création de l'évènement. Vérifiez votre connexion internet.");
                 }
             }
-            else
-            {
-                ToastCenter.InformativeNotify("Mauvais formulaire", "Des champs obligatoires ne sont pas remplis. Seuls les tags, le lien facebook et les catégories sont optionnels.");
-            }
+            
 
         }
-        public void LocateEvent()
+        public async void LocateEvent()
         {
-            _navigationService.NavigateTo("LocateEventPage", _currentUser);
+            try
+            {
+                BasicGeoposition mapcenterPosition = new BasicGeoposition();
+                mapcenterPosition.Latitude = 50.40;
+                mapcenterPosition.Longitude = 4.45;
+                Geopoint mapCenter = new Geopoint(mapcenterPosition);
+                LocateEventPayload locateEventPayload = new LocateEventPayload();
+                locateEventPayload.CurrentUser = _currentUser;
+                locateEventPayload.UserCoordinates = mapCenter;
+                _navigationService.NavigateTo("LocateEventPage", locateEventPayload);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                ToastCenter.InformativeNotify("Fermeture de l'application", "Cette application nécessite d'accéder à votre position pour fonctionner correctement. Dans la fenêtre qui vient de s'ouvrir, veuillez activer la géolocalisation pour l'application JoinUs");
+                await Launcher.LaunchUriAsync(new Uri("ms-settings-location:"));
+            }
         }
 
         private ICommand _goToProfileCommand;
@@ -281,17 +373,26 @@ namespace JoinUs.ViewModel
 
         public void GoToProfile()
         {
-            _navigationService.NavigateTo("ProfilePage", _currentUser);
+            ProfilePagePayload payloadToSend = new ProfilePagePayload();
+            payloadToSend.CurrentUser = _currentUser;
+            _navigationService.NavigateTo("ProfilePage", payloadToSend);
         }
 
         public void GoToSearchEvent()
         {
-            _navigationService.NavigateTo("SearchEventPage", _currentUser);
+            SearchPagePayload payloadToSend = new SearchPagePayload();
+            payloadToSend.CurrentUser = _currentUser;
+            _navigationService.NavigateTo("SearchEventPage", payloadToSend);
         }
 
         public void GoToCreateEvent()
         {
-            _navigationService.NavigateTo("CreateEventPage", _currentUser);
+            CreateEventPagePayload payload = new CreateEventPagePayload();
+            payload.CurrentUser = _currentUser;
+            payload.EventLocation = new LocationInformation();
+            payload.EventLocation.Address = _eventAddress;
+            payload.EventLocation.Location = _eventLocation;
+            _navigationService.NavigateTo("CreateEventPage", payload);
         }
 
         public void CloseOpenPane()

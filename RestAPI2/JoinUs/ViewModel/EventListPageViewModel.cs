@@ -2,7 +2,9 @@
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Views;
 using JoinUs.AppToastCenter;
+using JoinUs.DAO;
 using JoinUs.Model;
+using JoinUs.Model.EventDTOs;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,7 +19,7 @@ namespace JoinUs.ViewModel
 {
     public class EventListPageViewModel : ViewModelBase, INotifyPropertyChanged
     {
-        /*private INavigationService _navigationService;
+        private INavigationService _navigationService;
 
         public EventListPageViewModel(INavigationService navigationService)
         {
@@ -28,10 +30,10 @@ namespace JoinUs.ViewModel
         private ICommand _goToCreateEventCommand;
         private ICommand _closeOpenPaneCommand;
         private bool _isPaneOpen;
-        private User _currentUser;
-        private List<Event> _eventsToDisplay;
-        public ObservableCollection<Event> eventsList;
-        private Event _selectedEvent;
+        private AuthenticatedUser _currentUser;
+        private List<EventShortDTO> _eventsToDisplay;
+        public ObservableCollection<EventShortDTO> eventsList;
+        private EventShortDTO _selectedEvent;
         private ICommand _goToDescriptionOfEventCommand;
 
         public void OnNavigatedTo(NavigationEventArgs e)
@@ -39,10 +41,12 @@ namespace JoinUs.ViewModel
             EventListPayload payload= (EventListPayload)e.Parameter;
             _currentUser = payload.CurrentUser;
             _eventsToDisplay = payload.EventsToDisplay;
-            eventsList = new ObservableCollection<Event>(_eventsToDisplay);
+            eventsList = new ObservableCollection<EventShortDTO>(_eventsToDisplay);
+            SelectedEvent = null;
+            
         }
 
-        public ObservableCollection<Event> EventsList
+        public ObservableCollection<EventShortDTO> EventsList
         {
             get
             {
@@ -55,7 +59,7 @@ namespace JoinUs.ViewModel
             }
         }
 
-        public Event SelectedEvent
+        public EventShortDTO SelectedEvent
         {
             get
             {
@@ -74,18 +78,29 @@ namespace JoinUs.ViewModel
             {
                 if(_goToDescriptionOfEventCommand == null)
                 {
-                    _goToDescriptionOfEventCommand = new RelayCommand(() => GoToDescriptionOfEvent());
+                    _goToDescriptionOfEventCommand = new RelayCommand(async() =>await GoToDescriptionOfEvent());
                 }
                 return _goToDescriptionOfEventCommand;
             }
         }
 
-        public void GoToDescriptionOfEvent()
+        public async Task GoToDescriptionOfEvent()
         {
             if (SelectedEvent != null)
             {
-                EventDescriptionPayload payloadToSend = new EventDescriptionPayload(_currentUser, SelectedEvent);
-                _navigationService.NavigateTo("EventDescriptionPage", payloadToSend);
+                EventDescriptionPayload payloadToSend = new EventDescriptionPayload();
+                Event describedEvent = await EventDAO.GetFullEventDescription(_selectedEvent.Id);
+                if (describedEvent == null)
+                {
+                    ToastCenter.InformativeNotify("Erreur: évènement non existant", "Nous éprouvons des difficultés à charger les détails de l'évènement. L'évènement a peut-être été supprimé, ou votre connexion internet a été interrompue. Tentez de recharger la page.");
+                }
+                else
+                {
+                    payloadToSend.CurrentUser = _currentUser;
+                    payloadToSend.EventToDisplay = describedEvent;
+                    payloadToSend.IsCurrentUserParticipating = await UserDAO.IsUserParticipating(_currentUser.UserName, SelectedEvent.Id);
+                    _navigationService.NavigateTo("EventDescriptionPage", payloadToSend);
+                }
             }
             else
             {
@@ -155,23 +170,29 @@ namespace JoinUs.ViewModel
 
         public void GoToProfile()
         {
-            _navigationService.NavigateTo("ProfilePage",_currentUser);
+            ProfilePagePayload payloadToSend = new ProfilePagePayload();
+            payloadToSend.CurrentUser = _currentUser;
+            _navigationService.NavigateTo("ProfilePage", payloadToSend);
         }
 
         public void GoToSearchEvent()
         {
-            _navigationService.NavigateTo("SearchEventPage",_currentUser);
+            SearchPagePayload payloadToSend = new SearchPagePayload();
+            payloadToSend.CurrentUser = _currentUser;
+            _navigationService.NavigateTo("SearchEventPage", payloadToSend);
         }
 
         public void GoToCreateEvent()
         {
-            _navigationService.NavigateTo("CreateEventPage",_currentUser);
+            CreateEventPagePayload payload = new CreateEventPagePayload();
+            payload.CurrentUser = _currentUser;
+            _navigationService.NavigateTo("CreateEventPage", payload);
         }
 
         public void CloseOpenPane()
         {
             IsPaneOpen = !IsPaneOpen;
         }
-        */
+        
     }
 }

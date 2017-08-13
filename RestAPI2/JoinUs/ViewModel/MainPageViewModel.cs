@@ -89,17 +89,23 @@ namespace JoinUs.ViewModel
 
         public void GoToProfile()
         {
-            _navigationService.NavigateTo("ProfilePage", _currentUser);
+            ProfilePagePayload payloadToSend = new ProfilePagePayload();
+            payloadToSend.CurrentUser = _currentUser;
+            _navigationService.NavigateTo("ProfilePage", payloadToSend);
         }
 
         public void GoToSearchEvent()
         {
-            _navigationService.NavigateTo("SearchEventPage", _currentUser);
+            SearchPagePayload payloadToSend = new SearchPagePayload();
+            payloadToSend.CurrentUser = _currentUser;
+            _navigationService.NavigateTo("SearchEventPage", payloadToSend);
         }
 
         public void GoToCreateEvent()
         {
-            _navigationService.NavigateTo("CreateEventPage", _currentUser);
+            CreateEventPagePayload payload = new CreateEventPagePayload();
+            payload.CurrentUser = _currentUser;
+            _navigationService.NavigateTo("CreateEventPage", payload);
         }
 
         public void CloseOpenPane()

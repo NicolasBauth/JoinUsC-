@@ -1,8 +1,10 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Views;
+using JoinUs.AppToastCenter;
 using JoinUs.DAO;
 using JoinUs.Model;
+using JoinUs.Model.EventDTOs;
 using JoinUs.StaticServices;
 using System;
 using System.Collections.Generic;
@@ -12,13 +14,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.Devices.Geolocation;
+using Windows.System;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Navigation;
 
 namespace JoinUs.ViewModel
 {
     public class SearchPageViewModel : ViewModelBase, INotifyPropertyChanged
     {
-        /*private INavigationService _navigationService;
+        private INavigationService _navigationService;
 
         public SearchPageViewModel(INavigationService navigationService)
         {
@@ -28,26 +33,60 @@ namespace JoinUs.ViewModel
         private ICommand _goToSearchEventCommand;
         private ICommand _goToCreateEventCommand;
         private ICommand _closeOpenPaneCommand;
-        private ICommand _goToFoundEventListCommand;
+        private ICommand _launchScanCommand;
+        private ICommand _scanFromGivenPositionCommand;
         private ObservableCollection<CategoriesCheckBoxListViewModel> _categories;
-        private User _currentUser;
+        private AuthenticatedUser _currentUser;
         private int _searchRadius;
-        private string _city;
-        private string _tags;
+        private Geopoint _scanCenter;
+        private string _address;
 
         public void OnNavigatedTo(NavigationEventArgs e)
         {
-            _currentUser = (User)e.Parameter;
-            
-            List<Category> userInterests = (List<Category>)_currentUser.Interests;
-            List<CategoriesCheckBoxListViewModel> categories = new List<CategoriesCheckBoxListViewModel>();
-            foreach (var category in userInterests)
+            SearchPagePayload payload =(SearchPagePayload)e.Parameter;
+            _currentUser = payload.CurrentUser;
+            if (!(payload.ScanCenter == null))
             {
-                categories.Add(new CategoriesCheckBoxListViewModel(category.Title));
+                ScanCenter = payload.ScanCenter.Location;
+                Address = payload.ScanCenter.Address;
             }
-            Categories = new ObservableCollection<CategoriesCheckBoxListViewModel>(categories);
+            
+            
+             List<Category> userInterests = _currentUser.Interests;
+             List<CategoriesCheckBoxListViewModel> categories = new List<CategoriesCheckBoxListViewModel>();
+             foreach (var category in userInterests)
+             {
+                categories.Add(new CategoriesCheckBoxListViewModel(category.Title));
+             }
+             Categories = new ObservableCollection<CategoriesCheckBoxListViewModel>(categories);
+            
+        }
+        
+        public Geopoint ScanCenter
+        {
+            get
+            {
+                return _scanCenter;
+            }
+            set
+            {
+                _scanCenter = value;
+                RaisePropertyChanged("ScanCenter");
+            }
         }
 
+        public string Address
+        {
+            get
+            {
+                return _address;
+            }
+            set
+            {
+                _address = value;
+                RaisePropertyChanged("Address");
+            }
+        }
         public ObservableCollection<CategoriesCheckBoxListViewModel> Categories
         {
             get { return _categories; }
@@ -57,6 +96,7 @@ namespace JoinUs.ViewModel
                 RaisePropertyChanged("Categories");
             }
         }
+        
 
         public int SearchRadius
         {
@@ -70,66 +110,102 @@ namespace JoinUs.ViewModel
                 RaisePropertyChanged("SearchRadius");
             }
         }
-
-        public string City
+        public string FeatureDescription
         {
             get
             {
-                return _city;
-            }
-            set
-            {
-                _city = value;
-                RaisePropertyChanged("City");
+                return "Sélectionnez le rayon de scan (en km) \n puis les catégories que vous voulez utiliser \n comme filtres.\n  Si vous ne sélectionnez pas de catégorie,\n aucun filtre ne sera appliqué.\nCliquez sur le bouton ci-dessous pour\n définir le centre du scan.";
             }
         }
-
-        public string Tags
+        public string LocateButtonTitle
         {
             get
             {
-                return _tags;
-            }
-            set
-            {
-                _tags = value;
-                RaisePropertyChanged("Tags");
-            }
-        }
-
-
-        public ICommand GoToFoundEventListCommand
-        {
-            get
-            {
-                if(_goToFoundEventListCommand == null)
+                if(_scanCenter == null)
                 {
-                    _goToFoundEventListCommand = new RelayCommand(() => GoToFoundEventList());
+                    return "Définir le centre du scan";
                 }
-                return _goToFoundEventListCommand;
+                return "Modifier le centre du scan";
             }
         }
 
-        public void GoToFoundEventList()
+        public ICommand ScanFromGivenPositionCommand
         {
-            List<string> categoriesNameToSearch = new List<string>();
-            foreach(var category in Categories)
+            get
             {
-                if(category.IsChecked)
+                if (this._scanFromGivenPositionCommand == null)
                 {
-                    categoriesNameToSearch.Add(category.CategoryName);
+                    this._scanFromGivenPositionCommand = new RelayCommand(async() => await ScanFromGivenPosition());
                 }
+                return this._scanFromGivenPositionCommand;
             }
-            List<Category> categoriesToSearch = new List<Category>();
-            foreach(var categoryName in categoriesNameToSearch)
-            {
-                categoriesToSearch.Add(new Category(categoryName,CategoryService.getIdOfCategoryName(categoryName)));
-            }
-            List<Event> matchingEvents = EventDAO.GetEventsAround(SearchRadius, categoriesToSearch);
-            EventListPayload payloadToSend = new EventListPayload(_currentUser, matchingEvents);
-            _navigationService.NavigateTo("EventListPage", payloadToSend);
         }
 
+        public async Task ScanFromGivenPosition()
+        {
+            try
+            {
+                BasicGeoposition mapcenterPosition = new BasicGeoposition();
+                mapcenterPosition.Latitude = 50.40;
+                mapcenterPosition.Longitude = 4.45;
+                Geopoint mapCenter = new Geopoint(mapcenterPosition);
+                LocateCenterPayload payloadToSend = new LocateCenterPayload();
+                payloadToSend.CurrentUser = _currentUser;
+                payloadToSend.MapCenter = mapCenter;
+                
+                _navigationService.NavigateTo("LocateCenterPage", payloadToSend);
+            }
+            catch(UnauthorizedAccessException)
+            {
+                ToastCenter.InformativeNotify("Veuillez accepter la localisation", "Cette application nécessite d'accéder à votre position pour fonctionner correctement. Veuillez autoriser l'application JoinUs à accéder à votre position dans la fenêtre qui vient de s'ouvrir.");
+                await Launcher.LaunchUriAsync(new Uri("ms-settings-location:"));
+            }
+        }
+
+        public ICommand LaunchScanCommand
+        {
+            get
+            {
+                if(this._launchScanCommand == null)
+                {
+                    this._launchScanCommand = new RelayCommand(async() => await LaunchScan());
+                }
+                return this._launchScanCommand;
+            }
+        }
+        public async Task LaunchScan()
+         {
+            if (_scanCenter == null)
+            {
+                ToastCenter.InformativeNotify("Scan impossible", "Vous ne pouvez pas lancer le scan maintenant : définissez d'abord le centre du scan");
+            }
+            else
+            {
+                if(SearchRadius == 0)
+                {
+                    SearchRadius = 1;
+                }
+                List<string> selectedCategoriesNames = new List<string>();
+                foreach(var categoryCheckBox in _categories)
+                {
+                    if(categoryCheckBox.IsChecked)
+                    {
+                        selectedCategoriesNames.Add(categoryCheckBox.CategoryName);
+                    }
+                }
+                List<EventShortDTO> foundEvents = await EventDAO.GetEventsAroundPoint(_scanCenter, _searchRadius,selectedCategoriesNames);
+                if (foundEvents.Count == 0)
+                {
+                    ToastCenter.InformativeNotify("Pas d'évènement trouvé", "Il semble qu'aucun évènement ne se trouve dans cette zone...");
+                }
+                else
+                {
+                    EventListPayload payloadToSend = new EventListPayload(_currentUser, foundEvents);
+                    _navigationService.NavigateTo("EventListPage", payloadToSend);
+                }
+            }
+
+        }
         private bool _isPaneOpen;
 
         public bool IsPaneOpen
@@ -194,23 +270,29 @@ namespace JoinUs.ViewModel
 
         public void GoToProfile()
         {
-            _navigationService.NavigateTo("ProfilePage",_currentUser);
+            ProfilePagePayload payloadToSend = new ProfilePagePayload();
+            payloadToSend.CurrentUser = _currentUser;
+            _navigationService.NavigateTo("ProfilePage", payloadToSend);
         }
 
         public void GoToSearchEvent()
         {
-            _navigationService.NavigateTo("SearchEventPage",_currentUser);
+            SearchPagePayload payloadToSend = new SearchPagePayload();
+            payloadToSend.CurrentUser = _currentUser;
+            _navigationService.NavigateTo("SearchEventPage",payloadToSend);
         }
 
         public void GoToCreateEvent()
         {
-            _navigationService.NavigateTo("CreateEventPage",_currentUser);
+            CreateEventPagePayload payload = new CreateEventPagePayload();
+            payload.CurrentUser = _currentUser;
+            _navigationService.NavigateTo("CreateEventPage", payload);
         }
 
         public void CloseOpenPane()
         {
             IsPaneOpen = !IsPaneOpen;
         }
-        */
+        
     }
 }

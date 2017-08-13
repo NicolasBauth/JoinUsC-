@@ -61,7 +61,7 @@
                                             <ColumnDefinition Width="*" MinWidth="70"/>
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Text="{Binding Title}" FontFamily="Impact" FontSize="14" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" MinHeight="35" MaxHeight="45"/>
-                                        <TextBlock Text="{Binding Adress}" FontFamily="Impact" FontSize="14" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" MinHeight="35" MaxHeight="45"/>
+                                        <TextBlock Text="{Binding Address}" FontFamily="Impact" FontSize="14" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" MinHeight="35" MaxHeight="45"/>
                                         <TextBlock Text="{Binding Date}" FontFamily="Impact" FontSize="14" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" MinHeight="35" MaxHeight="45"/>
                                     </Grid>
                                 </Border>

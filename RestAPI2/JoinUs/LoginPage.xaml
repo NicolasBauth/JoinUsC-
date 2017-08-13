@@ -24,7 +24,7 @@
             <Border Background="SteelBlue" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"/>
             <TextBlock Text="Identifiez-vous!" Foreground="Gold" FontSize="40" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
-            <TextBlock Text="Votre pseudo:" Foreground="Black" FontSize="25" Grid.Column="0" Grid.Row="1"  HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Impact"/>
+            <TextBlock Text="Votre e-mail:" Foreground="Black" FontSize="25" Grid.Column="0" Grid.Row="1"  HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Impact"/>
             <TextBox  BorderBrush="LightGray"  Text="{Binding Login,Mode=TwoWay}" Grid.Column="1" Grid.Row="1"  HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Segoe UI Light Italic" MinWidth="120" IsSpellCheckEnabled="False" InputScope="EmailNameOrAddress" />
 
             <TextBlock  Foreground="Black" Text="Mot de passe"  FontSize="25" FontFamily="Impact" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>

@@ -37,5 +37,6 @@ namespace JoinUs.Model
                 return _age;
             }
         }
+        public int DbId { get; set; }
     }
 }

@@ -58,14 +58,27 @@
                     <Border Background="SteelBlue" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5"/>
                     <TextBlock Text="{Binding Title}" Foreground="Gold" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontFamily="Impact" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5"/>
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="5">
-                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="17" FontFamily="Impact" Text="{Binding Adress}"/>
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="17" FontFamily="Impact" Text="{Binding Address}"/>
                         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="17" FontFamily="Impact" Text="{Binding EventDate}"/>
                     </StackPanel>
-                    <TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="5" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding Description}" FontSize="15" FontFamily="Impact" TextWrapping="Wrap" MaxWidth="300"/>
-                    <RelativePanel MaxWidth="330" MaxHeight="150" Grid.Column="0" Grid.ColumnSpan="5" HorizontalAlignment="Left" Grid.Row="5" VerticalAlignment="Center">
-                        <Image Source="{Binding FirstCategoryImagePath}" Stretch="Uniform" Grid.Column="0" Grid.Row="5" MaxHeight="100" MaxWidth="100" Name="CategoryImage"/>
-                        <TextBlock Text="{Binding TagsString}" TextWrapping="Wrap" FontFamily="Impact" FontSize="15" MaxWidth="230" Name="Tags" RelativePanel.RightOf="CategoryImage"/>
-                    </RelativePanel>
+                    <Button Content="Voir sur la carte" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="5" Command="{Binding ShowEventLocationCommand}" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Impact" FontSize="18" Background="SteelBlue" Foreground="Gold"/>
+                    <TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="5" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Description}" FontSize="15" FontFamily="Impact" TextWrapping="Wrap" MaxWidth="300"/>
+                    <GridView Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="5" ItemsSource="{Binding CategoriesDisplay,Mode=TwoWay}"  MaxWidth="360" BorderBrush="SteelBlue" BorderThickness="3" HorizontalAlignment="Center" MinWidth="300" MinHeight="150">
+                        <GridView.ItemTemplate>
+                            <DataTemplate>
+                                <RelativePanel  MaxHeight="120" MaxWidth="90">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="5*"/>
+                                            <RowDefinition Height="2*"/>
+                                        </Grid.RowDefinitions>
+                                        <Image Source="{Binding ImagePath}" Stretch="Uniform" Grid.Row="0"/>
+                                        <TextBlock Text="{Binding Title}" Grid.Row="1"/>
+                                    </Grid>
+                                </RelativePanel>
+                            </DataTemplate>
+                        </GridView.ItemTemplate>
+                    </GridView>
                     <RelativePanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="5" MaxWidth="330" MaxHeight="150" HorizontalAlignment="Left" VerticalAlignment="Center">
                         <Image x:Name="AllParticipantsImage" Source="Assets/usersIcon.jpg" MinWidth ="90" MinHeight="90" MaxWidth="100" MaxHeight="100"/>
                         <TextBlock x:Name="ParticipantCount" TextWrapping="Wrap" FontFamily="Impact" FontSize="15" MaxWidth="230" RelativePanel.RightOf="AllParticipantsImage" Text="{Binding NumberOfParticipantsString}"/>
@@ -75,10 +88,12 @@
                         <TextBlock x:Name="UserText" TextWrapping="Wrap" FontFamily="Impact" FontSize="15" MaxWidth="230" RelativePanel.RightOf="UserImage" Text="{Binding CreatorString}"/>
                     </RelativePanel>
 
-                    <StackPanel Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="5" MaxWidth="330" MaxHeight="150" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <StackPanel Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="5" MaxWidth="330" MaxHeight="250" HorizontalAlignment="Center" VerticalAlignment="Center">
                         <Button Content="{Binding ParticipateButtonText}" HorizontalAlignment="Center" VerticalAlignment="Top" FontFamily="Impact" FontSize="18" Background="SteelBlue" Foreground="Gold" Command="{Binding ParticipateCommand}"/>
                         <Button Content="Evènement Facebook" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Impact" FontSize="18" Background="SteelBlue" Foreground="Gold" Command="{Binding GoToFacebookCommand}" Margin="0,15,0,0"/>
                         <Button Content="Profil du créateur" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontFamily="Impact" FontSize="18" Background="SteelBlue" Foreground="Gold" Command="{Binding GoToCreatorProfileCommand}" Margin="0,15,0,0"/>
+                        <Button Content="Supprimer l'évènement" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontFamily="Impact" FontSize="18" Background="SteelBlue" Foreground="Gold" Command="{Binding DeleteEventCommand}" Visibility="{Binding AdminButtonsVisibility}" Margin="0,15,0,0"/>
+                        <Button Content="Retour" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontFamily="Impact" FontSize="18" Background="SteelBlue" Foreground="Gold" Command="{Binding GoBackCommand}"  Margin="0,15,0,0"/>
                     </StackPanel>
                 </Grid>
             </ScrollViewer>

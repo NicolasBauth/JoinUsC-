@@ -1,8 +1,10 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Views;
+using JoinUs.AppToastCenter;
 using JoinUs.DAO;
 using JoinUs.Model;
+using JoinUs.Model.EventDTOs;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -17,40 +19,102 @@ namespace JoinUs.ViewModel
         private string _profileImagePath;
         private ObservableCollection<Category> _categories;
         private string _presentationString;
-        private AuthenticatedUser _owner;
+        private User _owner;
+        private AuthenticatedUser _currentUser;
         private INavigationService _navigationService;
         private ICommand _goToEditInterestsCommand;
-        private ICommand _browseEventsCommand;
+        private ICommand _browseEventsCreatedCommand;
+        private ICommand _browseEventsParticipatingCommand;
 
-        public ICommand BrowseEventsCommand
+        public ICommand BrowseEventsCreatedCommand
         {
             get
             {
-                if (_browseEventsCommand == null)
+                if (_browseEventsCreatedCommand == null)
                 {
-                    _browseEventsCommand = new RelayCommand(() => BrowseEvents());
+                    _browseEventsCreatedCommand = new RelayCommand(async () => await BrowseEventsCreated());
                 }
-                return _browseEventsCommand;
+                return _browseEventsCreatedCommand;
+            }
+        }
+        public ICommand BrowseEventsParticipatingCommand
+        {
+            get
+            {
+                if (_browseEventsParticipatingCommand == null)
+                {
+                    _browseEventsParticipatingCommand = new RelayCommand(async () => await BrowseEventsParticipating());
+                }
+                return _browseEventsParticipatingCommand;
+            }
+        }
+        public bool IsCurrentUserOwnerOfProfile
+        {
+            get
+            {
+                return (_currentUser.UserName == _owner.UserName);
+            }
+        }
+        public string AdminButtonsVisibility
+        {
+            get
+            {
+                if(IsCurrentUserOwnerOfProfile)
+                {
+                    return "Visible";
+                }
+                return "Collapsed";
+            }
+        }
+        public string CreatedEventsButtonText
+        {
+            get
+            {
+                if(IsCurrentUserOwnerOfProfile)
+                {
+                    return "Vos évènements";
+                }
+                return "Ses évènements";
+            }
+        }
+        public string ParticipatingEventsButtonText
+        {
+            get
+            {
+                if(IsCurrentUserOwnerOfProfile)
+                {
+                    return "Vos participations";
+                }
+                return "Ses participations";
             }
         }
 
-        public void BrowseEvents()
+        public async Task BrowseEventsCreated()
         {
-            /*
-            if (EventDAO.GetAllEventsOfUser(Owner) != null)
+            List<EventShortDTO> eventsToDisplay = await EventDAO.GetAllEventsCreatedByUser(Owner.UserName);
+            if(eventsToDisplay.Count != 0)
             {
-                if (EventDAO.GetAllEventsOfUser(Owner).Count != 0)
-                {
-                    List<Event> eventsToDisplay = EventDAO.GetAllEventsOfUser(Owner);
-                    EventListPayload payloadToSend = new EventListPayload(Owner, eventsToDisplay);
-                    _navigationService.NavigateTo("EventListPage", payloadToSend);
-                }
-                else
-                {
-                    ToastCenter.InformativeNotify("Pas d'évènements", "L'utilisateur n'a aucun évènement à afficher");
-                }
+                EventListPayload payloadToSend = new EventListPayload(_currentUser, eventsToDisplay);
+                _navigationService.NavigateTo("EventListPage", payloadToSend);
             }
-            */
+            else
+            {
+                ToastCenter.InformativeNotify("Pas d'évènements", "Aucun évènement créé n'est associé à ce profil. Si vous êtes certain qu'il s'agit d'une erreur, vérifiez votre connexion internet.");
+            }       
+        }
+
+        public async Task BrowseEventsParticipating()
+        {
+            List<EventShortDTO> eventsToDisplay = await EventDAO.GetAllEventsUserParticipates(Owner.UserName);
+            if (eventsToDisplay.Count != 0)
+            {
+                EventListPayload payloadToSend = new EventListPayload(_currentUser, eventsToDisplay);
+                _navigationService.NavigateTo("EventListPage", payloadToSend);
+            }
+            else
+            {
+                ToastCenter.InformativeNotify("Pas d'évènements", "Aucune participation ne correspond à ce profil. Si vous êtes certain qu'il s'agit d'une erreur, vérifiez votre connexion internet.");
+            }
         }
 
         public ICommand GoToEditInterestsCommand
@@ -67,17 +131,40 @@ namespace JoinUs.ViewModel
 
         public async Task GoToEditInterests()
         {
-            List<Category> allCategories = await CategoryDAO.GetAllCategories();
-            EditInterestPayload payload = new EditInterestPayload();
-            payload.AllCategories = allCategories;
-            payload.CurrentUser = _owner;
-            _navigationService.NavigateTo("EditInterestsPage", payload);
+            if (IsCurrentUserOwnerOfProfile)
+            {
+                List<Category> allCategories = await CategoryDAO.GetAllCategories();
+                EditInterestPayload payload = new EditInterestPayload();
+                payload.AllCategories = allCategories;
+                payload.CurrentUser = _currentUser;
+                _navigationService.NavigateTo("EditInterestsPage", payload);
+            }
+            else
+            {
+                ToastCenter.InformativeNotify("Action refusée", "Seul le propriétaire du profil peut modifier les intérêts.");
+            }
         }
 
 
         public void OnNavigatedTo(NavigationEventArgs e)
         {
-            Owner = (AuthenticatedUser)e.Parameter;
+            ProfilePagePayload payload = (ProfilePagePayload)e.Parameter;
+            if (payload.ProfileOwner == null)
+            {
+                User profile = new Model.User();
+                profile.Birthdate = payload.CurrentUser.BirthDate;
+                profile.FirstName = payload.CurrentUser.FirstName;
+                profile.Interests = payload.CurrentUser.Interests;
+                profile.LastName = payload.CurrentUser.LastName;
+                profile.ProfileImagePath = payload.CurrentUser.ProfileImagePath;
+                profile.UserName = payload.CurrentUser.UserName;
+                Owner = profile;
+            }
+            else
+            {
+                Owner = payload.ProfileOwner;
+            }
+            _currentUser = payload.CurrentUser;
             Categories = new ObservableCollection<Category>(Owner.Interests);
             PresentationString = Owner.FirstName + " " + Owner.LastName + "," + Owner.Age + " ans";
             ProfileImagePath = Owner.ProfileImagePath;
@@ -111,7 +198,7 @@ namespace JoinUs.ViewModel
             }
         }
 
-        public AuthenticatedUser Owner
+        public User Owner
         {
             get { return _owner; }
             set
@@ -196,17 +283,23 @@ namespace JoinUs.ViewModel
 
         public void GoToProfile()
         {
-            _navigationService.NavigateTo("ProfilePage", Owner);
+            ProfilePagePayload payloadToSend = new ProfilePagePayload();
+            payloadToSend.CurrentUser = _currentUser;
+            _navigationService.NavigateTo("ProfilePage", payloadToSend);
         }
 
         public void GoToSearchEvent()
         {
-            _navigationService.NavigateTo("SearchEventPage", Owner);
+            SearchPagePayload payloadToSend = new SearchPagePayload();
+            payloadToSend.CurrentUser = _currentUser;
+            _navigationService.NavigateTo("SearchEventPage", payloadToSend);
         }
 
         public void GoToCreateEvent()
         {
-            _navigationService.NavigateTo("CreateEventPage", Owner);
+            CreateEventPagePayload payload = new CreateEventPagePayload();
+            payload.CurrentUser = _currentUser;
+            _navigationService.NavigateTo("CreateEventPage", payload);
         }
 
         public void CloseOpenPane()

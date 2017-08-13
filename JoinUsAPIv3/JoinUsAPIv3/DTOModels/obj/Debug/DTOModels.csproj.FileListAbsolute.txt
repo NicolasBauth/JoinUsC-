@@ -1,0 +1,5 @@
+C:\Users\nicol\Desktop\Joynus\JoinUsC-\JoinUsAPIv3\JoinUsAPIv3\DTOModels\bin\Debug\DTOModels.dll
+C:\Users\nicol\Desktop\Joynus\JoinUsC-\JoinUsAPIv3\JoinUsAPIv3\DTOModels\bin\Debug\DTOModels.pdb
+C:\Users\nicol\Desktop\Joynus\JoinUsC-\JoinUsAPIv3\JoinUsAPIv3\DTOModels\obj\Debug\DTOModels.csprojResolveAssemblyReference.cache
+C:\Users\nicol\Desktop\Joynus\JoinUsC-\JoinUsAPIv3\JoinUsAPIv3\DTOModels\obj\Debug\DTOModels.dll
+C:\Users\nicol\Desktop\Joynus\JoinUsC-\JoinUsAPIv3\JoinUsAPIv3\DTOModels\obj\Debug\DTOModels.pdb

@@ -116,7 +116,13 @@
     <Compile Include="EventListPage.xaml.cs">
       <DependentUpon>EventListPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="EventPositionPage.xaml.cs">
+      <DependentUpon>EventPositionPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Factory\ToastFactory.cs" />
+    <Compile Include="LocateCenterPage.xaml.cs">
+      <DependentUpon>LocateCenterPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LocateEventPage.xaml.cs">
       <DependentUpon>LocateEventPage.xaml</DependentUpon>
     </Compile>
@@ -136,18 +142,17 @@
     <Compile Include="Model\EventDTOs\EventScanDTO.cs" />
     <Compile Include="Model\EventDTOs\EventSearchDTO.cs" />
     <Compile Include="Model\EventDTOs\EventShortDTO.cs" />
+    <Compile Include="Model\LocationInformation.cs" />
     <Compile Include="Model\Tag.cs" />
     <Compile Include="Model\TagDTOs\TagNameDTO.cs" />
     <Compile Include="Model\User.cs" />
+    <Compile Include="Model\UserDTOs\EventParticipationForm.cs" />
     <Compile Include="Model\UserDTOs\RegisterFormDTO.cs" />
     <Compile Include="Model\UserDTOs\TokenPackage.cs" />
     <Compile Include="Model\UserDTOs\UserCredentialsDTO.cs" />
     <Compile Include="Model\UserDTOs\UserFullDTO.cs" />
     <Compile Include="Model\UserDTOs\UserProfileDTO.cs" />
     <Compile Include="Model\UserDTOs\UserShortDTO.cs" />
-    <Compile Include="ProfileFromOutsidePage.xaml.cs">
-      <DependentUpon>ProfileFromOutsidePage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ProfilePage.xaml.cs">
       <DependentUpon>ProfilePage.xaml</DependentUpon>
     </Compile>
@@ -160,7 +165,9 @@
     </Compile>
     <Compile Include="AppToastCenter\ToastCenter.cs" />
     <Compile Include="StaticServices\CategoryService.cs" />
+    <Compile Include="StaticServices\EventService.cs" />
     <Compile Include="StaticServices\UserService.cs" />
+    <Compile Include="ViewModel\CreateEventPagePayload.cs" />
     <Compile Include="ViewModel\CreateEventPageViewModel.cs" />
     <Compile Include="ViewModel\EditInterestPayload.cs" />
     <Compile Include="ViewModel\EditInterestsPageViewModel.cs" />
@@ -168,13 +175,18 @@
     <Compile Include="ViewModel\EventDescriptionPayload.cs" />
     <Compile Include="ViewModel\EventListPageViewModel.cs" />
     <Compile Include="ViewModel\EventListPayload.cs" />
+    <Compile Include="ViewModel\EventPositionPagePayload.cs" />
+    <Compile Include="ViewModel\EventPositionPageViewModel.cs" />
+    <Compile Include="ViewModel\LocateCenterPageViewModel.cs" />
+    <Compile Include="ViewModel\LocateCenterPayload.cs" />
+    <Compile Include="ViewModel\LocateEventPayload.cs" />
     <Compile Include="ViewModel\LocateEventsPageViewModel.cs" />
     <Compile Include="ViewModel\LoginPageViewModel.cs" />
     <Compile Include="ViewModel\MainPageViewModel.cs" />
-    <Compile Include="ViewModel\ProfileFromOutsidePageViewModel.cs" />
-    <Compile Include="ViewModel\ProfileFromOutsidePayload.cs" />
+    <Compile Include="ViewModel\ProfilePagePayload.cs" />
     <Compile Include="ViewModel\ProfilePageViewModel.cs" />
     <Compile Include="ViewModel\RegisterPageViewModel.cs" />
+    <Compile Include="ViewModel\SearchPagePayload.cs" />
     <Compile Include="ViewModel\SearchPageViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
   </ItemGroup>
@@ -187,6 +199,7 @@
   <ItemGroup>
     <Content Include="Assets\BoardGame.jpg" />
     <Content Include="Assets\Culture.jpg" />
+    <Content Include="Assets\customPushpin.png" />
     <Content Include="Assets\Dinner.png" />
     <Content Include="Assets\Joynus.png" />
     <Content Include="Assets\languages.jpg" />
@@ -229,6 +242,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="EventPositionPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LocateCenterPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="LocateEventPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -240,10 +261,6 @@
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ProfileFromOutsidePage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ProfilePage.xaml">
       <SubType>Designer</SubType>

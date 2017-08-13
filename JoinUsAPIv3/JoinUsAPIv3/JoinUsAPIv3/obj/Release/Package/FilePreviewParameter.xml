@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="IIS Web Application Name" description="" value="JoinUsAPIv3" tags="IisApp">
+    <parameterEntry kind="ProviderPath" scope="IisApp" match="^C:\\Users\\nicol\\Desktop\\Joynus\\JoinUsC-\\JoinUsAPIv3\\JoinUsAPIv3\\JoinUsAPIv3\\obj\\Release\\Package\\PackageTmp$" />
+    <parameterEntry kind="ProviderPath" scope="setAcl" match="^C:\\Users\\nicol\\Desktop\\Joynus\\JoinUsC-\\JoinUsAPIv3\\JoinUsAPIv3\\JoinUsAPIv3\\obj\\Release\\Package\\PackageTmp$" />
+  </parameter>
+  <parameter name="JoinUsAPIv3Context-Web.config Connection String" description="" value="Data Source=(localdb)\MSSQLLocalDB; Initial Catalog=JoinUsAPIv3Context-20170513145236; Integrated Security=True; MultipleActiveResultSets=True; AttachDbFilename=|DataDirectory|JoinUsAPIv3Context-20170513145236.mdf" tags="">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\nicol\\Desktop\\Joynus\\JoinUsC-\\JoinUsAPIv3\\JoinUsAPIv3\\JoinUsAPIv3\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='JoinUsAPIv3Context']/@connectionString" />
+  </parameter>
+  <parameter name="DefaultConnection-Web.config Connection String" description="DefaultConnection Connection String used in web.config by the application to access the database." value="Data Source=(LocalDb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\aspnet-JoinUsAPIv3-20170513015906.mdf;Initial Catalog=aspnet-JoinUsAPIv3-20170513015906;Integrated Security=True" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\nicol\\Desktop\\Joynus\\JoinUsC-\\JoinUsAPIv3\\JoinUsAPIv3\\JoinUsAPIv3\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='DefaultConnection']/@connectionString" />
+  </parameter>
+</parameters>

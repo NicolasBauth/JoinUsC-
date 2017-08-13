@@ -39,8 +39,9 @@ namespace JoinUsAPIv3.Utility
                 Id = eventToParse.Id,
                 Title = eventToParse.Title,
                 UrlFacebook = eventToParse.UrlFacebook,
-                UserCount = eventToParse.Participants.Count
-                
+                UserCount = eventToParse.Participants.Count,
+                Latitude = eventToParse.Latitude,
+                Longitude = eventToParse.Longitude
             };
             return parsedEvent;
         }

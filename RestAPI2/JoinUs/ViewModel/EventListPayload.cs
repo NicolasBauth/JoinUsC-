@@ -1,4 +1,5 @@
 ﻿using JoinUs.Model;
+using JoinUs.Model.EventDTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,13 +10,13 @@ namespace JoinUs.ViewModel
 {
     public class EventListPayload
     {
-        /*public User CurrentUser { get; set; }
-        public List<Event> EventsToDisplay { get; set; }
+        public AuthenticatedUser CurrentUser { get; set; }
+        public List<EventShortDTO> EventsToDisplay { get; set; }
 
-        public EventListPayload(User currentUser, List<Event> eventsToDisplay)
+        public EventListPayload(AuthenticatedUser currentUser, List<EventShortDTO> eventsToDisplay)
         {
             CurrentUser = currentUser;
             EventsToDisplay = eventsToDisplay;
-        }*/
+        }
     }
 }

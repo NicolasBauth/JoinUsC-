@@ -1,4 +1,5 @@
-﻿using JoinUs.AppToastCenter;
+﻿using DTOModels.UserDTOs;
+using JoinUs.AppToastCenter;
 using JoinUs.Model;
 using JoinUs.Model.UserDTOs;
 using JoinUs.StaticServices;
@@ -65,6 +66,76 @@ namespace JoinUs.DAO
                 return true;
             }
             return false;
+        }
+        public static async Task<User> LoadUserProfileAsync(string username)
+        {
+            HttpClient client = HttpClientSingleton.Client;
+            var profileResponse = await client.GetAsync("api/UserProfiles/UserProfileByUsername?username=" + username);
+            var stringResult = await profileResponse.Content.ReadAsStringAsync();
+            var parsedProfileResult = JsonConvert.DeserializeObject<UserProfileDTO>(stringResult);
+            User profile = new Model.User();
+            profile.Birthdate = parsedProfileResult.BirthDate;
+            profile.FirstName = parsedProfileResult.FirstName;
+            profile.LastName = parsedProfileResult.LastName;
+            profile.UserName = username;
+            profile.ProfileImagePath = "Assets/userIcon.jpg";
+            profile.Interests = CategoryService.parseCategoryNameListToCategoryList(parsedProfileResult.Interests);
+            return profile;
+        }
+
+        public static async Task<bool> IsUserParticipating(string username, long eventId)
+        {
+            HttpClient client = HttpClientSingleton.Client;
+            EventParticipationForm form = new EventParticipationForm();
+            form.Username = username;
+            form.EventId = eventId;
+            var formContent = JsonConvert.SerializeObject(form);
+            var httpContent = new StringContent(formContent, Encoding.UTF8, "application/json");
+            var httpResponse = await client.PutAsync("api/Events/IsUserParticipatingToEvent", httpContent);
+            var stringResult = await httpResponse.Content.ReadAsStringAsync();
+            var parsedProfileResult = JsonConvert.DeserializeObject<bool>(stringResult);
+            return parsedProfileResult;
+        }
+        public static async Task<bool> ParticipateToEvent(string username, long eventId)
+        {
+            HttpClient client = HttpClientSingleton.Client;
+            EventParticipationForm form = new EventParticipationForm();
+            form.Username = username;
+            form.EventId = eventId;
+            var formContent = JsonConvert.SerializeObject(form);
+            var httpContent = new StringContent(formContent, Encoding.UTF8, "application/json");
+            var httpResponse = await client.PutAsync("api/Events/ParticipateToEvent", httpContent);
+            if(!httpResponse.IsSuccessStatusCode)
+            {
+                ToastCenter.InformativeNotify("Impossible de participer", "Une erreur est survenue. Vérifiez votre connexion internet, et tentez de relancer l'application");
+                return false;
+            }
+            else
+            {
+                ToastCenter.InformativeNotify("Participation réussie", "Vous avec bien été inscrit à l'évènement.");
+                return true;
+            }
+        }
+
+        public static async Task<bool> CancelParticipationToEvent(string username, long eventId)
+        {
+            HttpClient client = HttpClientSingleton.Client;
+            EventParticipationForm form = new EventParticipationForm();
+            form.Username = username;
+            form.EventId = eventId;
+            var formContent = JsonConvert.SerializeObject(form);
+            var httpContent = new StringContent(formContent, Encoding.UTF8, "application/json");
+            var httpResponse = await client.PutAsync("api/Events/CancelParticipationToEvent", httpContent);
+            if (!httpResponse.IsSuccessStatusCode)
+            {
+                ToastCenter.InformativeNotify("Impossible d'annuler", "Une erreur est survenue. Vérifiez votre connexion internet, et tentez de relancer l'application");
+                return false;
+            }
+            else
+            {
+                ToastCenter.InformativeNotify("Annulation réussie", "Vous ne participez plus à l'évènement.");
+                return true;
+            }
         }
     }
 }

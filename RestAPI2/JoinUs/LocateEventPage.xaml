@@ -5,6 +5,7 @@
     xmlns:local="using:JoinUs"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:Maps="using:Windows.UI.Xaml.Controls.Maps"
     mc:Ignorable="d"
     DataContext="{Binding Source={StaticResource Locator}, Path=LocateEvent}">
     <SplitView x:Name="accueilSplitView" DisplayMode="CompactOverlay" IsPaneOpen="{Binding IsPaneOpen}"
@@ -35,9 +36,29 @@
             </StackPanel>
         </SplitView.Pane>
         <SplitView.Content>
-            <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
-            </Grid>
+            <ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible">
+                <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" MinWidth="100"/>
+                        <ColumnDefinition Width="*" MinWidth="100"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" MinHeight="40"/>
+                        <RowDefinition Height="*" MinHeight="60"/>
+                        <RowDefinition Height="8*" MinHeight="320"/>
+                        <RowDefinition Height="*" MinHeight="40"/>
+                    </Grid.RowDefinitions>
+                    <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Background="SteelBlue"></Border>
+                    <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Background="Honeydew"></Border>
+                    <Border Grid.Row="3" Grid.ColumnSpan="2" Grid.Column="0" Background="SteelBlue"></Border>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" TextAlignment="Center" Foreground="Gold" Text="Localisez l'évènement!" Name="LocateEventTitle" FontSize="40"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" TextAlignment="Center" Foreground="Black" Text="Montrez-nous l'évènement sur la carte!" Name="LocateEventDescription" FontSize="24"/>
+                    <Maps:MapControl x:Name="LocateEventMapControl1" MapServiceToken="KctPchhALOqx8CQX9ZsX~uwjsPlRxRL5DwRv78CrijQ~AqnbIDBjUnrHK22SDLaxERr8EZL9J4bmDV97i9QLtGkSTjSgmi3o7K3l5QasrqTJ" Grid.Row="2" Grid.Column ="0" Grid.ColumnSpan="2" Center="{Binding MapCenter,Mode=OneWay}" ZoomLevel="4" MapTapped="LocateEventMapControl1_MapTapped">
+                    </Maps:MapControl>
+                    <Button Grid.Row="3" Grid.Column="0" HorizontalAlignment="Left" Grid.ColumnSpan="1" Background="Gold" Foreground="Black" Content="Annuler" Command="{Binding CancelCommand}"/>
+                    <Button Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right" Grid.ColumnSpan="1" Background="Gold" Foreground="Black" Content="Valider" Command="{Binding ValidateCommand}"/>
+                </Grid>
+            </ScrollViewer>
         </SplitView.Content>
     </SplitView>
     

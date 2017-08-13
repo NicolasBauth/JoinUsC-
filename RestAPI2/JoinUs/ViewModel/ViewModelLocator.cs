@@ -24,7 +24,8 @@ namespace JoinUs.ViewModel
             SimpleIoc.Default.Register<EventListPageViewModel>();
             SimpleIoc.Default.Register<LoginPageViewModel>();
             SimpleIoc.Default.Register<RegisterPageViewModel>();
-            SimpleIoc.Default.Register<ProfileFromOutsidePageViewModel>();
+            SimpleIoc.Default.Register<EventPositionPageViewModel>();
+            SimpleIoc.Default.Register<LocateCenterPageViewModel>();
 
             NavigationService navigationPages = new NavigationService();
             
@@ -39,7 +40,8 @@ namespace JoinUs.ViewModel
             navigationPages.Configure("ProfilePage", typeof(ProfilePage));
             navigationPages.Configure("SearchEventPage", typeof(SearchPage));
             navigationPages.Configure("RegisterPage", typeof(RegisterPage));
-            navigationPages.Configure("ProfileFromOutsidePage", typeof(ProfileFromOutsidePage));
+            navigationPages.Configure("EventPositionPage", typeof(EventPositionPage));
+            navigationPages.Configure("LocateCenterPage", typeof(LocateCenterPage));
         }
         public MainPageViewModel Main
         {
@@ -81,11 +83,15 @@ namespace JoinUs.ViewModel
         public RegisterPageViewModel RegisterPage
         {
             get { return ServiceLocator.Current.GetInstance<RegisterPageViewModel>(); }
-        }
-        
-        public ProfileFromOutsidePageViewModel ProfileFromOutside
+        }  
+        public EventPositionPageViewModel EventPosition
         {
-            get { return ServiceLocator.Current.GetInstance<ProfileFromOutsidePageViewModel>(); }
-        }     
+            get { return ServiceLocator.Current.GetInstance<EventPositionPageViewModel>(); }
+        } 
+
+        public LocateCenterPageViewModel LocateCenter
+        {
+            get { return ServiceLocator.Current.GetInstance<LocateCenterPageViewModel>(); }
+        }
     }
 }

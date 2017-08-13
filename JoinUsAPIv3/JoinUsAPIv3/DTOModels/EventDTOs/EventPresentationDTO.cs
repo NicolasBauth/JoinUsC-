@@ -13,6 +13,7 @@ namespace DTOModels.EventDTOs
         public List<string> CategoriesNames { get; set; }
         public string CreatorFirstName { get; set; }
         public string CreatorLastName { get; set; }
+        public string CreatorUsername { get; set; }
         public string Description { get; set; }
         public string UrlFacebook { get; set; }
         public double Latitude { get; set; }

@@ -48,7 +48,8 @@
                 <RowDefinition Height="*" MinHeight="60" MaxHeight="120"/>
                 <RowDefinition Height="*" MinHeight="120" MaxHeight="200"/>
                 <RowDefinition Height="2*" MinHeight="120" MaxHeight="240"/>
-            </Grid.RowDefinitions>
+                        <RowDefinition Height="2*" MinHeight="60" MaxHeight="120"/>
+                    </Grid.RowDefinitions>
             <Image Source="{Binding ProfileImagePath}" Grid.Column="0" Grid.Row="0" Stretch="Uniform" MaxWidth="100"/>
             <TextBlock Text="{Binding PresentationString}" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             <TextBlock Text="Intérêts" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" HorizontalAlignment="Center" FontSize="40"/>
@@ -70,9 +71,10 @@
                         </DataTemplate>
                     </GridView.ItemTemplate>
                 </GridView>
-                <Button Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Content="Vos évènements" HorizontalAlignment="Center" VerticalAlignment="Center" Background="SteelBlue" Foreground="Gold" Command="{Binding BrowseEventsCommand}"></Button>
-            <Button Grid.Column="2" Grid.Row="3" Grid.ColumnSpan="2" Content="Editer les intérêts" HorizontalAlignment="Center" VerticalAlignment="Center" Background="SteelBlue" Foreground="Gold" Command="{Binding GoToEditInterestsCommand}"/>
-        </Grid>
+                    <Button Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Content="{Binding CreatedEventsButtonText}" HorizontalAlignment="Center" VerticalAlignment="Center" Background="SteelBlue" Foreground="Gold" Command="{Binding BrowseEventsCreatedCommand}"></Button>
+                    <Button Grid.Column="2" Grid.Row="3" Grid.ColumnSpan="2" Content="Editer les intérêts" HorizontalAlignment="Center" VerticalAlignment="Center" Background="SteelBlue" Foreground="Gold" Command="{Binding GoToEditInterestsCommand}" Visibility="{Binding AdminButtonsVisibility}"/>
+                    <Button Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="4" Content="{Binding ParticipatingEventsButtonText}" HorizontalAlignment="Center" VerticalAlignment="Center" Background="SteelBlue" Foreground="Gold" Command="{Binding BrowseEventsParticipatingCommand}"/>
+                </Grid>
             </ScrollViewer>
         </SplitView.Content>
     </SplitView>
